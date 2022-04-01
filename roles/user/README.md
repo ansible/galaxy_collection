@@ -31,7 +31,6 @@ ah_configuration_user_secure_logging defaults to the value of ah_configuration_s
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`username`|""|yes|str|Username. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 |`groups`|[]|no|list|List of the groups to update.|
 |`append`|true|no|str|Whether to append or replace the group list provided.|
 |`first_name`|""|no|str|User's first name.|
@@ -40,6 +39,7 @@ ah_configuration_user_secure_logging defaults to the value of ah_configuration_s
 |`is_superuser`|false|no|bool|Whether the user is a superuser.|
 |`password`|""|no|bool|User's password as a clear string. The password must contain at least 9 characters with numbers or special characters.|
 |`state`|`present`|no|str|Desired state of the user.|
+<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field).| -->
 
 ### Standard Project Data Structure
 

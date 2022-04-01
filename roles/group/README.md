@@ -31,9 +31,9 @@ ah_configuration_group_secure_logging defaults to the value of ah_configuration_
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Group Name. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 |`perms`|""|yes|str|The list of permissions to add to or remove from the given group. See below for options.|
 |`state`|`present`|no|str|Desired state of the group.|
+<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field).| -->
 
 #### perms
 

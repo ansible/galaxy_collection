@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Fix tables that were not rendered properly due to a commented row. See https://stackoverflow.com/a/52656453.
+...

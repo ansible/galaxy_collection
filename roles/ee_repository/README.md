@@ -31,11 +31,11 @@ ah_configuration_ee_repository_secure_logging defaults to the value of ah_config
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Namespace name. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 |`description`|""|yes|str|Description to use for the Namespace.|
 |`readme`|""|no|str|The readme for the ee repository. (mutex with readme_file)|
 |`readme_file`|""|no|str|The file location for the readme for the ee repository. (mutex with readme)|
 |`state`|`present`|no|str|Desired state of the ee_repository.|
+<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field).| -->
 
 ### Standard Project Data Structure
 

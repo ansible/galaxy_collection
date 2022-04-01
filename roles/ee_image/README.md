@@ -31,10 +31,10 @@ ah_configuration_ee_image_secure_logging defaults to the value of ah_configurati
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Execution environment image name. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 |`append`|true|no|bool|Whether to append or replace the tags specified to the image.|
 |`tags`|""|no|str|List of the image tags to update.|
 |`state`|`updated`|no|str|Desired state of the ee_image. (Possible values of updated or absent)|
+<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field).| -->
 
 ### Standard Project Data Structure
 
