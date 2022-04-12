@@ -11,6 +11,7 @@ import time
 
 from .ah_api_module import AHAPIModuleError
 from .ah_pulp_object import AHPulpTask
+from ansible.module_utils.six.moves.urllib.parse import urlparse, urlencode
 
 __metaclass__ = type
 
@@ -1295,3 +1296,57 @@ class AHUIEEImage(AHUIObject):
                 self.digest = asset["digest"]
                 self.tags = asset["tags"]
                 break
+
+
+class AHUIEXECUTIONREMOTE(AHUIObject):
+    """Manage the Ansible Automation Hub UI Execution Enviroments Remote API.
+
+    Getting the details of a Remote Execution Environment:
+        ``GET api/galaxy/_ui/v1/execution-environments/remotes/ ::
+        {
+            "pulp_id": "d61aeb25-f33f-4085-8e3d-a640a81aff8e",
+            "name": "ansible/awx-ee",
+            "upstream_name": "ansible/awx-ee",
+            "registry": "77e9e0bf-8842-453a-a9be-db3516f9d729",
+            "last_sync_task": {
+                "task_id": "a5051760-5c44-41cd-ab2f-a82a2eb8e459",
+                "state": "completed",
+                "started_at": "2022-04-09T22:02:25.135318Z",
+                "finished_at": "2022-04-09T22:04:11.397193Z",
+                "error": null
+            },
+            "created_at": "2022-04-06T19:43:34.205150Z",
+            "updated_at": "2022-04-12T00:33:33.699245Z",
+            "include_foreign_layers": false,
+            "include_tags": [
+                "asdf"
+            ],
+            "exclude_tags": [
+                "1234"
+            ]
+        },
+    """
+
+    def __init__(self, API_object, data={}):
+        """Initialize the object."""
+        super(AHUIEEImage, self).__init__(API_object, data)
+        self.endpoint = "execution-environments/remotes"
+        self.object_type = "container"
+        self.name_field = "name"
+
+    @property
+    def id_endpoint(self):
+        """Return the object's endpoint."""
+        name = self.image_name
+        if name is None:
+            return self.endpoint
+        
+        # https://ah.node/pulp/api/v3/remotes/container/container/?name=ansible%2Fawx-ee
+        query = {self.name_field: urlencode(name)}
+        lookup_endpoint = 'remotes/container/container'
+        url = self.api.build_pulp_url(lookup_endpoint, query_params=query)
+        response = self.make_request_raw_reponse("GET", url)
+
+        #### ??????
+
+        return "{endpoint}/{pulp_id}".format(endpoint=self.endpoint, pulp_id=pulp_id)
