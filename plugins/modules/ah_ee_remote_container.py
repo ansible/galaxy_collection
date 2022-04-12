@@ -14,7 +14,11 @@ ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported
 
 DOCUMENTATION = """
 ---
+<<<<<<< HEAD
 module: ah_ee_remote_container
+=======
+module: ah_namespace
+>>>>>>> e86bf25cf4d7f072385eb2c26a12a420c8bee84d
 author: "Sean Sullivan (@sean-m-sullivan)"
 short_description: create, update, or destroy Automation Hub Namespace.
 description:
@@ -27,13 +31,11 @@ options:
       required: True
       type: str
 
-
 extends_documentation_fragment: redhat_cop.ah_configuration.auth
 """
 
 
 EXAMPLES = """
-
 
 """
 
