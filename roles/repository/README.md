@@ -3,6 +3,7 @@
 An Ansible Role to create Repositories in Automation Hub.
 
 ## Variables
+These are the sub options for the vars ah_repository_certified and ah_repository_community which are dictionaries with the options you want. See examples for details.
 |Variable Name|Default Value|Required|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|
 |`url`|""|yes|Remote URL for the repository.||
