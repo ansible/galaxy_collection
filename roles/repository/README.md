@@ -6,7 +6,7 @@ An Ansible Role to create Repositories in Automation Hub.
 These are the sub options for the vars ah_repository_certified and ah_repository_community which are dictionaries with the options you want. See examples for details.
 |Variable Name|Default Value|Required|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|
-|`url`|""|yes|Remote URL for the repository.||
+|`url`|"cloud.redhat or galaxy"|no|Remote URL for the repository.||
 |`auth_url`|""|no|Remote URL for the repository authentication if separate.||
 |`token`|""|no|Token to authenticate to the remote repository.||
 |`username`|""|no|Username to authenticate to the remote repository.||
