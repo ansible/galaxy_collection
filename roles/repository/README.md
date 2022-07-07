@@ -6,7 +6,7 @@ An Ansible Role to create Repositories in Automation Hub.
 |Variable Name|Default Value|Required|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|
 |`url`|""|yes|Remote URL for the repository.||
-|`auth_url`|""|no|Remote URL for the repository authentication if seperate.||
+|`auth_url`|""|no|Remote URL for the repository authentication if separate.||
 |`token`|""|no|Token to authenticate to the remote repository.||
 |`username`|""|no|Username to authenticate to the remote repository.||
 |`password`|""|no|Password to authenticate to the remote repository.||
@@ -15,7 +15,16 @@ An Ansible Role to create Repositories in Automation Hub.
 |`proxy_url`|""|no|Proxy URL to use for the connection.||
 |`proxy_username`|""|no|Proxy URL to use for the connection.||
 |`proxy_password`|""|no|Proxy URL to use for the connection.||
-|`download_concurrency`|""|no| Number of concurrent collections to download.||
+|`download_concurrency`|"10"|no| Number of concurrent collections to download.||
+|`rate_limit`|"8"|Limits total download rate in requests per second||
+|`signed_only`|""|no|Only download signed collections|True|
+|`tls_validation`|""|no|Whether to use TLS validation against the remote repository|True|
+|`client_key`|""|no|A PEM encoded private key file used for authentication||
+|`client_cert`|""|no|A PEM encoded client certificate used for authentication||
+|`ca_cert`|""|no|A PEM encoded CA certificate used for authentication||
+|`client_key_path`|""|no|Path to a PEM encoded private key file used for authentication||
+|`client_cert_path`|""|no|Path to a PEM encoded client certificate used for authentication||
+|`ca_cert_path`|""|no|Path to a PEM encoded CA certificate used for authentication||
 
 ### Secure Logging Variables
 The following Variables compliment each other.
