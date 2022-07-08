@@ -91,4 +91,4 @@ ah_repository_community:
 [GPLv3+](LICENSE)
 
 ## Author
-[Inderpal Tiwana](https://github.com/inderpaltiwana/)
+[Inderpal Tiwana](https://github.com/inderpaltiwana/) and [David Danielsson](https://github.com/djdanielsson)
