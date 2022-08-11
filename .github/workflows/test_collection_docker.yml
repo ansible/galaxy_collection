@@ -1,7 +1,7 @@
 ---
 name: Test collection against galaxy_ng
 
-on: deployment # [push, pull_request] Disabled until working
+on: [push, pull_request]
 
 jobs:
   Integration-test:
