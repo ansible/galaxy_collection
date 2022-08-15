@@ -49,9 +49,6 @@ jobs:
       - name: set the hub ui path in .compose.env
         run: echo "ANSIBLE_HUB_UI_PATH='/home/runner/work/ah_configuration/ah_configuration/ansible-hub-ui'" >> galaxy_ng/.compose.env
 
-      - name: disable approval setting override
-        run: sed -i.bak 's/PULP_GALAXY_REQUIRE_CONTENT_APPROVAL/#PULP_GALAXY_REQUIRE_CONTENT_APPROVAL/' galaxy_ng/dev/standalone/galaxy_ng.env
-
       - name: cat
         run: cat galaxy_ng/.compose.env
 
