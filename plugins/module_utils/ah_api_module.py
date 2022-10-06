@@ -50,6 +50,7 @@ class AHAPIModule(AnsibleModule):
         ah_password=dict(no_log=True, required=False, fallback=(env_fallback, ["AH_PASSWORD"])),
         ah_path_prefix=dict(required=False, fallback=(env_fallback, ["GALAXY_API_PATH_PREFIX"])),
         validate_certs=dict(type="bool", aliases=["ah_verify_ssl"], required=False, fallback=(env_fallback, ["AH_VERIFY_SSL"])),
+        ah_token=dict(type="raw", no_log=True, required=False, fallback=(env_fallback, ["AH_API_TOKEN"])),
     )
     short_params = {
         "host": "ah_host",
@@ -57,11 +58,13 @@ class AHAPIModule(AnsibleModule):
         "password": "ah_password",
         "verify_ssl": "validate_certs",
         "path_prefix": "ah_path_prefix",
+        "oauth_token": "ah_token",
     }
 
     host = "127.0.0.1"
     username = None
     password = None
+    oauth_token = None
     verify_ssl = True
     path_prefix = "galaxy"
     authenticated = False

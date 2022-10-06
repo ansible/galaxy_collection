@@ -31,6 +31,14 @@ options:
     - Password for your Ansible Galaxy or Automation Hub instance.
     - If value not set, will try environment variable C(AH_PASSWORD)
     type: str
+  ah_token:
+    description:
+    - The Ansible Galaxy or Automation Hub API token to use.
+    - This value can be in one of two formats.
+    - A string which is the token itself. (i.e. bqV5txm97wqJqtkxlMkhQz0pKhRMMX)
+    - A dictionary structure as returned by the ah_token module.
+    - If value not set, will try environment variable C(AH_API_TOKEN)
+    type: raw
   validate_certs:
     description:
     - Whether to allow insecure connections to Galaxy or Automation Hub Server.
