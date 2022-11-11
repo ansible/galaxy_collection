@@ -119,7 +119,7 @@ options:
         type: str
         default: 8
 
-extends_documentation_fragment: redhat_cop.ah_configuration.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 
@@ -136,7 +136,7 @@ EXAMPLES = """
     name: community
     url: https://galaxy.ansible.com/api/
     requirements:
-      - redhat_cop.ah_configuration
+      - infra.ah_configuration
       - redhat_cop.tower_configuration
 
 - name: Configure community repo from a file

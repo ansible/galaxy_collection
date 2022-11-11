@@ -43,7 +43,7 @@ options:
         - If waiting for the project to update this will abort after this
           amount of seconds
       type: int
-extends_documentation_fragment: redhat_cop.ah_configuration.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 

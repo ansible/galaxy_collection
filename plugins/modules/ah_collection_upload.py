@@ -33,7 +33,7 @@ options:
       default: False
       type: bool
 
-extends_documentation_fragment: redhat_cop.ah_configuration.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 

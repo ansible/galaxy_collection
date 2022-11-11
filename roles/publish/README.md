@@ -1,4 +1,4 @@
-# redhat_cop.ah_configuration.publish
+# infra.ah_configuration.publish
 
 ## Description
 

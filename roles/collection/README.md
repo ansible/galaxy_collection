@@ -1,4 +1,4 @@
-# redhat_cop.ah_configuration.collection
+# infra.ah_configuration.collection
 
 ## Description
 
