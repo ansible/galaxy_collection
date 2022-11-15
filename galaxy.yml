@@ -1,0 +1,29 @@
+---
+authors:
+  - Sean Sullivan @sean-m-sullivan
+  - Tom Page @Tompage1994
+dependencies: {}
+description: Ansible content that interacts with the Ansible Automation Hub or Galaxy NG API.
+documentation: https://github.com/redhat-cop/ah_configuration/blob/master/README.md
+issues: https://github.com/redhat-cop/ah_configuration/issues
+license:
+  - GPL-3.0-only
+namespace: infra
+name: ah_configuration
+version: 0.9.2
+readme: README.md
+repository: https://github.com/redhat-cop/ah_configuration
+issues: https://github.com/redhat-cop/ah_configuration/issues
+tags:
+  - cloud
+  - infrastructure
+  - galaxy
+  - ansible
+  - galaxy
+  - automation
+build_ignore:
+  - tools
+  - setup.cfg
+  - galaxy.yml.j2
+  - template_galaxy.yml
+  - '*.tar.gz'
