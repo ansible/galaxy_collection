@@ -111,12 +111,12 @@ options:
 notes:
   - Supports C(check_mode).
   - Only works with private automation hub v4.4.0 or later.
-extends_documentation_fragment: redhat_cop.ah_configuration.auth_ui
+extends_documentation_fragment: infra.ah_configuration.auth_ui
 """
 
 EXAMPLES = r"""
 - name: Add a remote registry to AH
-  redhat_cop.ah_configuration.ah_ee_registry:
+  infra.ah_configuration.ah_ee_registry:
     name: my_quayio
     state: present
     url: https://quay.io/my/registry
@@ -125,7 +125,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Add a remote registry which requires auth to AH
-  redhat_cop.ah_configuration.ah_ee_registry:
+  infra.ah_configuration.ah_ee_registry:
     name: my_quayio_auth
     state: present
     url: https://quay.io/my/registry
@@ -136,7 +136,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Remove a remote registry from AH
-  redhat_cop.ah_configuration.ah_ee_registry:
+  infra.ah_configuration.ah_ee_registry:
     name: examplehub
     state: absent
     ah_host: hub.example.com

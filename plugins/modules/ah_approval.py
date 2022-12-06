@@ -41,12 +41,12 @@ options:
       required: True
       type: str
 
-extends_documentation_fragment: redhat_cop.ah_configuration.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 
 EXAMPLES = """
-- name: Approve redhat_cop.ah_configuration:v1.0.0
+- name: Approve infra.ah_configuration:v1.0.0
   ah_approval:
     namespace: redhat_cop
     name: ah_configuration

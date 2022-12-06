@@ -50,7 +50,7 @@ options:
 
 
 EXAMPLES = """
-- name: Build redhat_cop.ah_configuration:v1.0.0
+- name: Build infra.ah_configuration:v1.0.0
   ah_build:
     path: /home/ansible/ah_configuration
     force: true

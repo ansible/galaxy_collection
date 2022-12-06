@@ -49,7 +49,7 @@ options:
       type: int
 notes:
   - Only works when registry URL is registry.redhat.io
-extends_documentation_fragment: redhat_cop.ah_configuration.auth_ui
+extends_documentation_fragment: infra.ah_configuration.auth_ui
 """
 
 
