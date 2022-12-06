@@ -284,7 +284,7 @@ class AHAPIModule(AnsibleModule):
         # A background task has been triggered. Check if the task is completed
         if response.status == 202 and "task" in response_json and wait_for_task:
             url = url._replace(path=response_json["task"], query="")
-            for _ in range(5):
+            for _count in range(5):
                 time.sleep(3)
                 bg_task = self.make_request("GET", url)
                 if "state" in bg_task["json"] and bg_task["json"]["state"].lower().startswith("complete"):
@@ -414,8 +414,8 @@ class AHAPIModule(AnsibleModule):
                             break
             except AHAPIModuleError:
                 test_url = self.build_ui_url("me")
-                basic_str = base64.b64encode("{}:{}".format(self.username, self.password).encode("ascii"))
-                header = {"Authorization": "Basic {}".format(basic_str.decode("ascii"))}
+                basic_str = base64.b64encode("{0}:{1}".format(self.username, self.password).encode("ascii"))
+                header = {"Authorization": "Basic {0}".format(basic_str.decode("ascii"))}
                 response = self.make_request_raw_reponse("GET", test_url, headers=header)
                 self.headers.update(header)
         except AHAPIModuleError as e:
@@ -428,7 +428,7 @@ class AHAPIModule(AnsibleModule):
                 b_file_data = f.read()
             return to_text(b_file_data)
         except FileNotFoundError:
-            self.fail_json(msg="No such file found on the local filesystem: '{}'".format(path))
+            self.fail_json(msg="No such file found on the local filesystem: '{0}'".format(path))
 
     def logout(self):
         if not self.authenticated:

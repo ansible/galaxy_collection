@@ -90,6 +90,7 @@ options:
       description:
         - Requirements to download from remote.
       type: list
+      elements: str
     requirements_file:
       description:
         - A yaml requirements file to download from remote.
@@ -159,19 +160,19 @@ def main():
         name=dict(required=True),
         url=dict(required=True),
         auth_url=dict(),
-        token=dict(),
+        token=dict(no_log=True),
         username=dict(),
         password=dict(no_log=True),
         tls_validation=dict(type="bool", default=True),
         client_key=dict(no_log=True),
         client_cert=dict(),
         ca_cert=dict(),
-        client_key_path=dict(),
+        client_key_path=dict(no_log=False),
         client_cert_path=dict(),
         ca_cert_path=dict(),
         requirements=dict(type="list", elements="str"),
         requirements_file=dict(),
-        signed_only=dict(type="bool"),
+        signed_only=dict(type="bool", default=False),
         proxy_url=dict(),
         proxy_username=dict(),
         proxy_password=dict(no_log=True),
@@ -228,7 +229,7 @@ def main():
         "client_cert",
         "ca_cert",
     ):
-        path_val = module.params.get("{}_path".format(field_name))
+        path_val = module.params.get("{0}_path".format(field_name))
         if path_val is not None:
             field_val = module.getFileContent(path_val)
             new_fields[field_name] = field_val

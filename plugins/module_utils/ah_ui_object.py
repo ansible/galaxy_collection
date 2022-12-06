@@ -27,7 +27,7 @@ class AHUIObject(object):
     :type data: dict
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the module."""
         # The API endpoint is the last component of the URL and allows access
         # to the object API:
@@ -59,7 +59,7 @@ class AHUIObject(object):
 
         # JSON data returned by the last API call. This typically stores the
         # object details ({ "username": "jdoe", "last_name": "Doe", ...})
-        self.data = data
+        self.data = data if data else {}
 
         # Is the class instance has been initialized with a valid object?
         self.exists = True if data else False
@@ -515,7 +515,7 @@ class AHUIUser(AHUIObject):
         ``PUT /api/galaxy/_ui/v1/users/``
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIUser, self).__init__(API_object, data)
         self.endpoint = "users"
@@ -610,7 +610,7 @@ class AHUIGroup(AHUIObject):
         The API does not allow changing the group name.
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIGroup, self).__init__(API_object, data)
         self.endpoint = "groups"
@@ -747,7 +747,7 @@ class AHUIGroupPerm(AHUIObject):
         """Return the endpoint for permissions for the given group."""
         return "groups/{id}/model-permissions".format(id=group_id)
 
-    def __init__(self, API_object, group_id, data={}):
+    def __init__(self, API_object, group_id, data=None):
         """Initialize the object."""
         super(AHUIGroupPerm, self).__init__(API_object, data)
         self.endpoint = AHUIGroupPerm.perm_endpoint(group_id)
@@ -832,7 +832,7 @@ class AHUIEENamespace(AHUIObject):
             }
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIEENamespace, self).__init__(API_object, data)
         self.endpoint = "execution-environments/namespaces"
@@ -956,7 +956,7 @@ class AHUIEENamespace(AHUIObject):
 
 
 class AHUIEERemote(AHUIObject):
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIEERemote, self).__init__(API_object, data)
         self.endpoint = "execution-environments/remotes"
@@ -1035,7 +1035,7 @@ class AHUIEERepository(AHUIObject):
         ``PUT /api/galaxy/_ui/v1/execution-environments/repositories/<name>/_content/readme/``
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIEERepository, self).__init__(API_object, data)
         self.endpoint = "execution-environments/repositories"
@@ -1274,7 +1274,7 @@ class AHUIEERegistry(AHUIObject):
             }
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIEERegistry, self).__init__(API_object, data)
         self.endpoint = "execution-environments/registries"
@@ -1448,7 +1448,7 @@ class AHUIEEImage(AHUIObject):
             }
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHUIEEImage, self).__init__(API_object, data)
         self.endpoint = "execution-environments/repositories"

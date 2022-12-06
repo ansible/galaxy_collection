@@ -59,7 +59,7 @@ options:
         - Overwrites an existing collection.
         - Requires version to be set.
       type: bool
-      default: true
+      default: false
     state:
       description:
         - Desired state of the resource.

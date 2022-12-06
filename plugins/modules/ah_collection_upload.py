@@ -34,7 +34,7 @@ options:
     wait:
       description:
         - Wait for the collection to be uploaded.
-      default: False
+      default: True
       type: bool
 
 extends_documentation_fragment: redhat_cop.ah_configuration.auth

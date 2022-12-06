@@ -37,7 +37,7 @@ options:
       description:
         - Whether to force the build to take place.
       required: False
-      type: str
+      type: bool
       default: false
     output_path:
       description:
@@ -65,7 +65,7 @@ def main():
     # Any additional arguments that are not fields of the item can be added here
     argument_spec = dict(
         path=dict(required=False, default="."),
-        force=dict(type="bool"),
+        force=dict(type="bool", default=False),
         output_path=dict(required=False, default="."),
     )
 

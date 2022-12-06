@@ -26,7 +26,7 @@ class AHPulpObject(object):
     :type data: dict
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the module."""
         # The API endpoint is the last component of the URL and allows access
         # to the object API:
@@ -51,7 +51,7 @@ class AHPulpObject(object):
         #      "pulp_created": "2021-08-16T09:22:40.249903Z",
         #      "pulp_href": "/pulp/api/v3/pulp_container/namespaces/017bc08f-99f7-4fc6-859c-3cff0713e39b/"
         #   }
-        self.data = data
+        self.data = data if data else {}
 
         # Is the class instance has been initialized with a valid object?
         self.exists = True if data else False
@@ -380,7 +380,7 @@ class AHPulpEENamespace(AHPulpObject):
         ``DELETE /pulp/api/v3/pulp_container/namespaces/dd54d0df-cd88-420b-922a-43a0725a20fc/``
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHPulpEENamespace, self).__init__(API_object, data)
         self.endpoint = "pulp_container/namespaces"
@@ -427,7 +427,7 @@ class AHPulpEERemote(AHPulpObject):
         ``DELETE /pulp/api/v3/remotes/container/container/d610ec76-ec86-427e-89d4-4d28c37515e1/``
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHPulpEERemote, self).__init__(API_object, data)
         self.endpoint = "remotes/container/container"
@@ -479,7 +479,7 @@ class AHPulpEERepository(AHPulpObject):
         ``DELETE /pulp/api/v3/distributions/container/container/d610ec76-ec86-427e-89d4-4d28c37515e1/``
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHPulpEERepository, self).__init__(API_object, data)
         self.endpoint = "distributions/container/container"
@@ -807,15 +807,15 @@ class AHPulpTask(AHPulpObject):
 
     """
 
-    def __init__(self, API_object, data={}):
+    def __init__(self, API_object, data=None):
         """Initialize the object."""
         super(AHPulpTask, self).__init__(API_object, data)
         self.endpoint = "tasks"
         self.object_type = "task"
         self.name_field = "name"
 
-    def get_object(self, task):
-        url = self.api.build_pulp_url("{endpoint}/{task_id}".format(endpoint=self.endpoint, task_id=task.split("/")[-2]))
+    def get_object(self, name):
+        url = self.api.build_pulp_url("{endpoint}/{task_id}".format(endpoint=self.endpoint, task_id=name.split("/")[-2]))
         try:
             response = self.api.make_request("GET", url)
         except AHAPIModuleError as e:

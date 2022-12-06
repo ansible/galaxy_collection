@@ -1,0 +1,5 @@
+---
+bugfixes:
+  - Fixed doc issue in ah_collection role where overwrite_existing option was reported with default True when functionality was False
+  - Fixed doc issue in ah_collection_upload role where wait option was reported with default True when functionality was False
+...

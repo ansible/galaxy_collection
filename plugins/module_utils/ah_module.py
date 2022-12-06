@@ -199,8 +199,8 @@ class AHModule(AnsibleModule):
             # If we have a oauth token, we just use a bearer header
             headers["Authorization"] = "Token {0}".format(self.oauth_token)
         elif self.basic_auth:
-            basic_str = base64.b64encode("{}:{}".format(self.username, self.password).encode("ascii"))
-            headers["Authorization"] = "Basic {}".format(basic_str.decode("ascii"))
+            basic_str = base64.b64encode("{0}:{1}".format(self.username, self.password).encode("ascii"))
+            headers["Authorization"] = "Basic {0}".format(basic_str.decode("ascii"))
         if method in ["POST", "PUT", "PATCH"]:
             headers.setdefault("Content-Type", "application/json")
             kwargs["headers"] = headers
@@ -383,14 +383,14 @@ class AHModule(AnsibleModule):
                 except HTTPError:
                     test_url = self.build_url("namespaces").geturl()
                     self.basic_auth = True
-                    basic_str = base64.b64encode("{}:{}".format(self.username, self.password).encode("ascii"))
+                    basic_str = base64.b64encode("{0}:{1}".format(self.username, self.password).encode("ascii"))
                     response = self.session.open(
                         "GET",
                         test_url,
                         validate_certs=self.verify_ssl,
                         headers={
                             "Content-Type": "application/json",
-                            "Authorization": "Basic {}".format(basic_str.decode("ascii")),
+                            "Authorization": "Basic {0}".format(basic_str.decode("ascii")),
                         },
                     )
             except HTTPError as he:
@@ -417,7 +417,7 @@ class AHModule(AnsibleModule):
 
     def existing_item_add_url(self, existing_item, endpoint, key="url"):
         # Add url and type to response as its missing in current iteration of Automation Hub.
-        existing_item[key] = "{0}{1}/".format(self.build_url(endpoint).geturl()[len(self.host) :], existing_item["name"])
+        existing_item[key] = "{0}{1}/".format(self.build_url(endpoint).geturl()[len(self.host):], existing_item["name"])
         existing_item["type"] = endpoint
         return existing_item
 
@@ -575,7 +575,7 @@ class AHModule(AnsibleModule):
                 if item_type != "token":
                     self.json_output["id"] = response["json"]["id"]
                     item_url = "{0}{1}/".format(
-                        self.build_url(endpoint).geturl()[len(self.host) :],
+                        self.build_url(endpoint).geturl()[len(self.host):],
                         new_item["name"],
                     )
                 self.json_output["changed"] = True
@@ -671,7 +671,7 @@ class AHModule(AnsibleModule):
             # We cannot just call ``as_string`` since it provides no way
             # to specify ``maxheaderlen``
             # cStringIO seems to be required here
-            fp = cStringIO()  # noqa: F821
+            fp = cStringIO()  # noqa: F821 # pylint: disable=undefined-variable
             # Ensure headers are not split over multiple lines
             g = email.generator.Generator(fp, maxheaderlen=0)
             g.flatten(m)
@@ -699,7 +699,7 @@ class AHModule(AnsibleModule):
                 b_file_data = f.read()
             return to_text(b_file_data)
         except FileNotFoundError:
-            self.fail_json(msg="No such file found on the local filesystem: '{}'".format(path))
+            self.fail_json(msg="No such file found on the local filesystem: '{0}'".format(path))
 
     def wait_for_complete(self, task_url):
         endpoint = task_url
@@ -901,7 +901,7 @@ class AHModule(AnsibleModule):
         if len(sample["json"]["data"]) > 1:
             sample["json"]["data"] = sample["json"]["data"][:2] + ["...more results snipped..."]
         url = self.build_url(endpoint, query_params)
-        display_endpoint = url.geturl()[len(self.host) :]  # truncate to not include the base URL
+        display_endpoint = url.geturl()[len(self.host):]  # truncate to not include the base URL
         self.fail_json(
             msg="Request to {0} returned {1} items, expected 1".format(display_endpoint, response["json"]["meta"]["count"]),
             query=query_params,

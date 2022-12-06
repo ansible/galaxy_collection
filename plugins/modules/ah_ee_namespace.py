@@ -244,7 +244,7 @@ def main():
                 perms = []
                 for p in group.get_perms():
                     if p.startswith("container."):
-                        p = p[len("container.") :]
+                        p = p[len("container."):]
                     if p in PERM_NAMES:
                         perms.append(p)
                 group.data["object_permissions"] = perms
