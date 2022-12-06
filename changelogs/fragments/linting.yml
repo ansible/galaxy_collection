@@ -2,4 +2,8 @@
 bugfixes:
   - Fixed doc issue in ah_collection role where overwrite_existing option was reported with default True when functionality was False
   - Fixed doc issue in ah_collection_upload role where wait option was reported with default True when functionality was False
+  - Secret fields (password, client_key, proxy_password) set to no_log in ah_ee_registry module
+  - url field explicitly required when state=present in ah_ee_registry module
+  - Enforced type checking on groups option of ah_namespace
+  - token option in ah_repository set as no_log to prevent exposure of secret
 ...
