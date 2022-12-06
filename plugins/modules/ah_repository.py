@@ -9,7 +9,11 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "community"}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 
 DOCUMENTATION = """
@@ -82,42 +86,42 @@ options:
         - Path to a PEM encoded CA certificate used for authentication.
         - Mutually exclusive with C(ca_cert)
       type: str
-      requirements:
-        description:
-          - Requirements to download from remote.
-        type: list
-      requirements_file:
-        description:
-          - A yaml requirements file to download from remote.
-        type: str
-      signed_only:
-        description:
-          - Whether to only download signed collections
-          - Only available in AAP 2.2 or later
-        type: bool
-        default: False
-      proxy_url:
-        description:
-          - Proxy URL to use for the connection
-        type: str
-      proxy_username:
-        description:
-          - Proxy URL to use for the connection
-        type: str
-      proxy_password:
-        description:
-          - Proxy URL to use for the connection
-        type: str
-      download_concurrency:
-        description:
-          - Number of concurrent collections to download.
-        type: str
-        default: 10
-      rate_limit:
-        description:
-          - Limits total download rate in requests per second.
-        type: str
-        default: 8
+    requirements:
+      description:
+        - Requirements to download from remote.
+      type: list
+    requirements_file:
+      description:
+        - A yaml requirements file to download from remote.
+      type: str
+    signed_only:
+      description:
+        - Whether to only download signed collections
+        - Only available in AAP 2.2 or later
+      type: bool
+      default: False
+    proxy_url:
+      description:
+        - Proxy URL to use for the connection
+      type: str
+    proxy_username:
+      description:
+        - Proxy URL to use for the connection
+      type: str
+    proxy_password:
+      description:
+        - Proxy URL to use for the connection
+      type: str
+    download_concurrency:
+      description:
+        - Number of concurrent collections to download.
+      type: str
+      default: 10
+    rate_limit:
+      description:
+        - Limits total download rate in requests per second.
+      type: str
+      default: 8
 
 extends_documentation_fragment: redhat_cop.ah_configuration.auth
 """
@@ -232,7 +236,14 @@ def main():
     # If the state was present and we can let the module build or update the existing item, this will return on its own
     endpoint = "api/galaxy/content/{0}/v3/sync/config".format(name)
     existing_item = module.get_only(endpoint, name_or_id=name, key="req_url")
-    module.create_or_update_if_needed(existing_item, new_fields, endpoint, "repository config", require_id=False, fixed_url=endpoint)
+    module.create_or_update_if_needed(
+        existing_item,
+        new_fields,
+        endpoint,
+        "repository config",
+        require_id=False,
+        fixed_url=endpoint,
+    )
 
 
 if __name__ == "__main__":

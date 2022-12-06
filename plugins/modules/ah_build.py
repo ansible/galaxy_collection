@@ -9,7 +9,11 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "community"}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 
 DOCUMENTATION = """
@@ -59,7 +63,11 @@ from ..module_utils.ah_module import AHModule
 
 def main():
     # Any additional arguments that are not fields of the item can be added here
-    argument_spec = dict(path=dict(required=False, default="."), force=dict(type="bool"), output_path=dict(required=False, default="."))
+    argument_spec = dict(
+        path=dict(required=False, default="."),
+        force=dict(type="bool"),
+        output_path=dict(required=False, default="."),
+    )
 
     # Create a module for ourselves
     module = AHModule(argument_spec=argument_spec, require_auth=False)

@@ -171,7 +171,11 @@ def main():
     module = AHAPIModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        mutually_exclusive=[("client_key", "client_key_path"), ("client_cert", "client_cert_path"), ("ca_cert", "ca_cert_path")],
+        mutually_exclusive=[
+            ("client_key", "client_key_path"),
+            ("client_cert", "client_cert_path"),
+            ("ca_cert", "ca_cert_path"),
+        ],
     )
 
     # Extract our parameters

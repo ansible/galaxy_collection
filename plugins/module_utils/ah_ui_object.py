@@ -189,10 +189,17 @@ class AHUIObject(object):
             error_msg = self.api.extract_error_msg(response)
             if error_msg:
                 fail_msg = "Unable to get {object_type} {name}: {code}: {error}".format(
-                    object_type=self.object_type, name=name, code=response["status_code"], error=error_msg
+                    object_type=self.object_type,
+                    name=name,
+                    code=response["status_code"],
+                    error=error_msg,
                 )
             else:
-                fail_msg = "Unable to get {object_type} {name}: {code}".format(object_type=self.object_type, name=name, code=response["status_code"])
+                fail_msg = "Unable to get {object_type} {name}: {code}".format(
+                    object_type=self.object_type,
+                    name=name,
+                    code=response["status_code"],
+                )
             if exit_on_error:
                 self.api.fail_json(msg=fail_msg)
             else:
@@ -254,7 +261,12 @@ class AHUIObject(object):
 
         if response["status_code"] in [202, 204]:
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             self.exists = False
             self.data = {}
@@ -264,7 +276,11 @@ class AHUIObject(object):
         if error_msg:
             self.api.fail_json(msg="Unable to delete {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
         self.api.fail_json(
-            msg="Unable to delete {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"])
+            msg="Unable to delete {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
         )
 
     def create(self, new_item, auto_exit=True):
@@ -283,7 +299,12 @@ class AHUIObject(object):
         if self.api.check_mode:
             self.data.update(new_item)
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -300,14 +321,25 @@ class AHUIObject(object):
             if self.name_field not in self.data:
                 self.data[self.name_field] = new_item[self.name_field]
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
         error_msg = self.api.extract_error_msg(response)
         if error_msg:
             self.fail_json(msg="Unable to create {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
-        self.fail_json(msg="Unable to create {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"]))
+        self.fail_json(
+            msg="Unable to create {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
+        )
 
     def update(self, new_item, auto_exit=True):
         """Update the existing object in private automation hub.
@@ -334,14 +366,24 @@ class AHUIObject(object):
 
         if not needs_patch:
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": False}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": False,
+                }
                 self.api.exit_json(**json_output)
             return False
 
         if self.api.check_mode:
             self.data.update(new_item)
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -358,14 +400,25 @@ class AHUIObject(object):
             if self.name_field not in self.data:
                 self.data[self.name_field] = new_item[self.name_field]
             if auto_exit:
-                json_output = {"name": self.name, "id": self.id, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "id": self.id,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
         error_msg = self.api.extract_error_msg(response)
         if error_msg:
             self.fail_json(msg="Unable to update {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
-        self.fail_json(msg="Unable to update {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"]))
+        self.fail_json(
+            msg="Unable to update {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
+        )
 
     def create_or_update(self, new_item, auto_exit=True):
         """Create or update the current object in private automation hub.
@@ -581,11 +634,16 @@ class AHUIGroup(AHUIObject):
             error_msg = self.api.extract_error_msg(response)
             if error_msg:
                 fail_msg = "Unable to get permissions for {object_type} {name}: {code}: {error}".format(
-                    object_type=self.object_type, name=self.name, code=response["status_code"], error=error_msg
+                    object_type=self.object_type,
+                    name=self.name,
+                    code=response["status_code"],
+                    error=error_msg,
                 )
             else:
                 fail_msg = "Unable to get permissions for {object_type} {name}: {code}".format(
-                    object_type=self.object_type, name=self.name, code=response["status_code"]
+                    object_type=self.object_type,
+                    name=self.name,
+                    code=response["status_code"],
                 )
             self.api.fail_json(msg=fail_msg)
 
@@ -839,14 +897,22 @@ class AHUIEENamespace(AHUIObject):
 
         if not needs_patch:
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": False}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": False,
+                }
                 self.api.exit_json(**json_output)
             return False
 
         if self.api.check_mode:
             self.data["groups"].new_item
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -866,7 +932,11 @@ class AHUIEENamespace(AHUIObject):
             if self.name_field not in self.data:
                 self.data[self.name_field] = new_item[self.name_field]
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -874,7 +944,11 @@ class AHUIEENamespace(AHUIObject):
         if error_msg:
             fail_msg = "Unable to update {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg)
         else:
-            fail_msg = "Unable to update {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"])
+            fail_msg = "Unable to update {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
         if exit_on_error:
             self.api.fail_json(msg=fail_msg)
         else:
@@ -1011,7 +1085,12 @@ class AHUIEERepository(AHUIObject):
                     if taskPulp.data["error"]:
                         sync_status = "Complete"
                         error_output = taskPulp.data["error"]["description"].split(",")
-                        self.api.fail_json(status=error_output[0], msg=error_output[1], url=error_output[2], traceback=taskPulp.data["error"]["traceback"])
+                        self.api.fail_json(
+                            status=error_output[0],
+                            msg=error_output[1],
+                            url=error_output[2],
+                            traceback=taskPulp.data["error"]["traceback"],
+                        )
                     if taskPulp.data["state"] == "completed":
                         sync_status = "Complete"
                         break
@@ -1020,7 +1099,12 @@ class AHUIEERepository(AHUIObject):
                     if timeout and elapsed > timeout:
                         self.api.fail_json(msg="Timed out awaiting sync")
 
-            json_output = {"name": self.name, "changed": True, "sync_status": sync_status, "task": response["json"]["task"]}
+            json_output = {
+                "name": self.name,
+                "changed": True,
+                "sync_status": sync_status,
+                "task": response["json"]["task"],
+            }
             self.api.exit_json(**json_output)
             return True
 
@@ -1028,7 +1112,11 @@ class AHUIEERepository(AHUIObject):
         if error_msg:
             self.api.fail_json(msg="Unable to create {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
         self.api.fail_json(
-            msg="Unable to create {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"])
+            msg="Unable to create {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
         )
 
     def get_readme(self):
@@ -1063,7 +1151,9 @@ class AHUIEERepository(AHUIObject):
             )
         self.fail_json(
             msg="Unable to retrieve the README for {object_type} {name}: {code}".format(
-                object_type=self.object_type, name=self.name, code=response["status_code"]
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
             )
         )
 
@@ -1084,13 +1174,21 @@ class AHUIEERepository(AHUIObject):
         old_readme = self.get_readme()
         if old_readme.strip() == readme.strip():
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": False}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": False,
+                }
                 self.api.exit_json(**json_output)
             return False
 
         if self.api.check_mode:
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -1102,7 +1200,11 @@ class AHUIEERepository(AHUIObject):
 
         if response["status_code"] == 200:
             if auto_exit:
-                json_output = {"name": self.name, "type": self.object_type, "changed": True}
+                json_output = {
+                    "name": self.name,
+                    "type": self.object_type,
+                    "changed": True,
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -1113,7 +1215,9 @@ class AHUIEERepository(AHUIObject):
             )
         self.fail_json(
             msg="Unable to update the README for {object_type} {name}: {code}".format(
-                object_type=self.object_type, name=self.name, code=response["status_code"]
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
             )
         )
 
@@ -1209,7 +1313,12 @@ class AHUIEERegistry(AHUIObject):
                 task_status = taskPulp.wait_for_children(parentTask, interval, timeout)
 
             if auto_exit:
-                json_output = {"name": self.name, "changed": True, "task_status": task_status, "task": response["json"]["task"]}
+                json_output = {
+                    "name": self.name,
+                    "changed": True,
+                    "task_status": task_status,
+                    "task": response["json"]["task"],
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -1217,7 +1326,11 @@ class AHUIEERegistry(AHUIObject):
         if error_msg:
             self.api.fail_json(msg="Unable to create {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
         self.api.fail_json(
-            msg="Unable to create {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"])
+            msg="Unable to create {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
         )
 
     def index(self, wait, interval, timeout, auto_exit=True):
@@ -1251,7 +1364,12 @@ class AHUIEERegistry(AHUIObject):
                 task_status = taskPulp.wait_for_children(parentTask, interval, timeout)
 
             if auto_exit:
-                json_output = {"name": self.name, "changed": True, "task_status": task_status, "task": response["json"]["task"]}
+                json_output = {
+                    "name": self.name,
+                    "changed": True,
+                    "task_status": task_status,
+                    "task": response["json"]["task"],
+                }
                 self.api.exit_json(**json_output)
             return True
 
@@ -1259,7 +1377,11 @@ class AHUIEERegistry(AHUIObject):
         if error_msg:
             self.api.fail_json(msg="Unable to create {object_type} {name}: {error}".format(object_type=self.object_type, name=self.name, error=error_msg))
         self.api.fail_json(
-            msg="Unable to create {object_type} {name}: {code}".format(object_type=self.object_type, name=self.name, code=response["status_code"])
+            msg="Unable to create {object_type} {name}: {code}".format(
+                object_type=self.object_type,
+                name=self.name,
+                code=response["status_code"],
+            )
         )
 
 
@@ -1367,10 +1489,17 @@ class AHUIEEImage(AHUIObject):
             error_msg = self.api.extract_error_msg(response)
             if error_msg:
                 fail_msg = "Unable to get {object_type} {name}: {code}: {error}".format(
-                    object_type=self.object_type, name=name, code=response["status_code"], error=error_msg
+                    object_type=self.object_type,
+                    name=name,
+                    code=response["status_code"],
+                    error=error_msg,
                 )
             else:
-                fail_msg = "Unable to get {object_type} {name}: {code}".format(object_type=self.object_type, name=name, code=response["status_code"])
+                fail_msg = "Unable to get {object_type} {name}: {code}".format(
+                    object_type=self.object_type,
+                    name=name,
+                    code=response["status_code"],
+                )
             self.api.fail_json(msg=fail_msg)
 
         if "meta" not in response["json"] or "count" not in response["json"]["meta"] or "data" not in response["json"]:

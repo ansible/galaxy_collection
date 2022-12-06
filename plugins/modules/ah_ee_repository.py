@@ -171,7 +171,14 @@ def delete_empty_namespace(module, repository_name):
         namespace_pulp.delete(auto_exit=False)
 
 
-def rename_repository(module, repository_pulp, remote_pulp, old_name, new_name, delete_namespace_if_empty=True):
+def rename_repository(
+    module,
+    repository_pulp,
+    remote_pulp,
+    old_name,
+    new_name,
+    delete_namespace_if_empty=True,
+):
     """Rename the given repository.
 
     :param module: The API object that the function uses to access the API.
@@ -213,7 +220,10 @@ def main():
     module = AHAPIModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        mutually_exclusive=[("readme", "readme_file"), ("include_tags", "exclude_tags")],
+        mutually_exclusive=[
+            ("readme", "readme_file"),
+            ("include_tags", "exclude_tags"),
+        ],
         required_by={"registry": "upstream_name"},
     )
 
@@ -278,7 +288,14 @@ def main():
                 name = new_name
                 repository_ui.get_object(name)
         elif repository_pulp.exists:
-            rename_repository(module, repository_pulp, remote_pulp, name, new_name, delete_namespace_if_empty)
+            rename_repository(
+                module,
+                repository_pulp,
+                remote_pulp,
+                name,
+                new_name,
+                delete_namespace_if_empty,
+            )
             name = new_name
             changed = True
 
@@ -336,13 +353,21 @@ def main():
         changed = True
 
     if readme is None:
-        json_output = {"name": name, "type": repository_pulp.object_type, "changed": changed}
+        json_output = {
+            "name": name,
+            "type": repository_pulp.object_type,
+            "changed": changed,
+        }
         module.exit_json(**json_output)
 
     # API (GET): /api/galaxy/_ui/v1/execution-environments/repositories/<name>/_content/readme/
     # API (PUT): /api/galaxy/_ui/v1/execution-environments/repositories/<name>/_content/readme/
     updated = repository_ui.update_readme(readme, auto_exit=False)
-    json_output = {"name": name, "type": repository_ui.object_type, "changed": changed or updated}
+    json_output = {
+        "name": name,
+        "type": repository_ui.object_type,
+        "changed": changed or updated,
+    }
     module.exit_json(**json_output)
 
 

@@ -168,14 +168,24 @@ def main():
         repository_pulp.create_tag(image_ui.digest, t, auto_exit=False)
 
     if append:
-        json_output = {"name": name, "tag": tag, "type": "image", "changed": True if tags_to_add else False}
+        json_output = {
+            "name": name,
+            "tag": tag,
+            "type": "image",
+            "changed": True if tags_to_add else False,
+        }
         module.exit_json(**json_output)
 
     # Removing tags from the image
     tags_to_remove = current_tags - new_tags
     for t in tags_to_remove:
         repository_pulp.delete_tag(image_ui.digest, t, auto_exit=False)
-    json_output = {"name": name, "tag": tag, "type": "image", "changed": True if tags_to_remove or tags_to_add else False}
+    json_output = {
+        "name": name,
+        "tag": tag,
+        "type": "image",
+        "changed": True if tags_to_remove or tags_to_add else False,
+    }
     module.exit_json(**json_output)
 
 

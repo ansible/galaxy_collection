@@ -161,7 +161,11 @@ def rename_namespace(module, src_namespace_pulp, dest_namespace_pulp, dest_names
         dest_namespace_ui = AHUIEENamespace(module)
         try:
             dest_namespace_ui.get_object(dest_namespace_name, exit_on_error=False)
-            dest_namespace_ui.update_groups({"groups": src_namespace_ui.data["groups"]}, auto_exit=False, exit_on_error=False)
+            dest_namespace_ui.update_groups(
+                {"groups": src_namespace_ui.data["groups"]},
+                auto_exit=False,
+                exit_on_error=False,
+            )
         except AHAPIModuleError as e:
             # Roll back
             try:
@@ -318,9 +322,17 @@ def main():
     # API (PUT): /api/galaxy/_ui/v1/execution-environments/namespaces/<name>/
     updated = namespace_ui.update_groups({"groups": group_ids}, auto_exit=False)
     if changed or updated:
-        json_output = {"name": namespace_ui.name, "type": namespace_ui.object_type, "changed": True}
+        json_output = {
+            "name": namespace_ui.name,
+            "type": namespace_ui.object_type,
+            "changed": True,
+        }
     else:
-        json_output = {"name": namespace_ui.name, "type": namespace_ui.object_type, "changed": False}
+        json_output = {
+            "name": namespace_ui.name,
+            "type": namespace_ui.object_type,
+            "changed": False,
+        }
     module.exit_json(**json_output)
 
 

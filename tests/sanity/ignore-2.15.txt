@@ -1,0 +1,2 @@
+plugins/module_utils/ah_module.py pep8 # conforming to black
+plugins/modules/ah_ee_namespace.py pep8 # conforming to black
