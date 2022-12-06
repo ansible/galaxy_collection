@@ -57,11 +57,13 @@ options:
       - The tags to pull in.
     type: list
     elements: str
+    default: []
   exclude_tags:
     description:
       - The tags to avoid pulling in.
     type: list
     elements: str
+    default: []
   readme:
     description:
       - README text in Markdown format for the repository.

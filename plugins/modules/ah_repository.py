@@ -117,12 +117,12 @@ options:
       description:
         - Number of concurrent collections to download.
       type: str
-      default: 10
+      default: "10"
     rate_limit:
       description:
         - Limits total download rate in requests per second.
       type: str
-      default: 8
+      default: "8"
 
 extends_documentation_fragment: infra.ah_configuration.auth
 """

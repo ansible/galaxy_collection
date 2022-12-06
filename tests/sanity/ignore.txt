@@ -1,2 +1,0 @@
-plugins/module_utils/ah_module.py pylint # conforming to black
-plugins/modules/ah_ee_namespace.py pylint # conforming to black

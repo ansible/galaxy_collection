@@ -91,8 +91,9 @@ options:
         object_permissions:
           description:
             - List of Permisions granted to the group.
-          choices: ["change_namespace", "upload_to_namespace"]
+            - Applicable options are `change_namespace`, `upload_to_namespace`
           type: list
+          elements: str
           required: True
 
 extends_documentation_fragment: infra.ah_configuration.auth
@@ -132,7 +133,10 @@ def main():
         avatar_url=dict(),
         resources=dict(),
         links=dict(type="list", elements="dict"),
-        groups=dict(type="list", elements="dict", default=[]),
+        groups=dict(type="list", elements="dict", default=[], options=dict(
+            name=dict(required=True),
+            object_permissions=dict(type="list", elements="str", required=True)
+        )),
         state=dict(choices=["present", "absent"], default="present"),
     )
 

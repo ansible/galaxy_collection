@@ -30,14 +30,6 @@ repos:
     rev: v0.5.1
     hooks:
       - id: markdownlint-cli2
-  - repo: https://github.com/ambv/black
-    rev: 22.10.0
-    hooks:
-      - id: black
-        name: black
-        entry: black
-        args: [--config=.black.cfg, --check, --diff]
-        types: [python]
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
