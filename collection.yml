@@ -1,0 +1,32 @@
+---
+- name: Testing Galaxy
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  collections:
+    - infra.ah_configuration
+  vars:
+    ah_host: hub.nas
+    ah_username: admin
+    ah_password: secret123
+    ah_validate_certs: false
+    ah_collections:
+      - collection_name: collection_test
+        git_url: https://github.com/sean-m-sullivan/collection_test
+
+  tasks:
+
+    - name: Upload collection to automation hub
+      ah_group_roles:
+        name: galaxy.stuff.mcsutffins23
+        perms:
+          - add_user
+          - change_user
+          - delete_user
+          - view_user
+        state: present
+        ah_host: "{{ ah_host }}"
+        ah_username: "{{ ah_username }}"
+        ah_password: "{{ ah_password }}"
+        ah_path_prefix: galaxy
+        validate_certs: false

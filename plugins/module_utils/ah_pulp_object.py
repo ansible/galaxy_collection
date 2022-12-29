@@ -350,6 +350,73 @@ class AHPulpObject(object):
             )
         )
 
+class AHPulpRolePerm(AHPulpObject):
+    """Manage the roles that contain permisions with the Pulp API.
+
+    The :py:class:``AHPulpRolePerm`` creates and deletes namespaces.
+
+    Getting the details of a role:
+        ``GET /pulp/api/v3/roles/?name=<name>`` ::
+            {
+                "count": 1,
+                "next": null,
+                "previous": null,
+                "results": [
+                    {
+                        "pulp_href": "/api/galaxy/pulp/api/v3/roles/2b43c4c2-a9ef-4828-8653-c3bb69a49709/",
+                        "pulp_created": "2022-12-28T21:13:53.428816Z",
+                        "name": "galaxy.stuff.mcsutffins",
+                        "description": null,
+                        "permissions": [
+                            "galaxy.add_containerregistryremote"
+                        ],
+                        "locked": false
+                    }
+                ]
+            }
+
+    Create a namespace:
+        ``POST /pulp/api/v3/roles/``
+    Update a namespace:
+        ``POST/PATCH /pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
+    Delete a namespace:
+        ``DELETE /pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
+    """
+
+    def __init__(self, API_object, data=None):
+        """Initialize the object."""
+        super(AHPulpRolePerm, self).__init__(API_object, data)
+        self.endpoint = "roles"
+        self.object_type = "role"
+        self.name_field = "name"
+        self.perms = []
+
+    def get_perms(self):
+        """Return the permissions associated with the group.
+
+        :return: The list of permission names.
+        :rtype: list
+        """
+        return [p.name for p in self.perms]
+
+    def delete_perms(self, perms_to_delete):
+        """Remove permissions from the group.
+
+        The method exits the module.
+
+        :param perms_to_delete: List of the permission names to remove from the
+                                group.
+        :type perms_to_delete: list
+        """
+        if perms_to_delete is not None and len(perms_to_delete) > 0:
+            for perm_name in perms_to_delete:
+                for perm in self.perms:
+                    if perm.is_perm(perm_name):
+                        perm.delete(auto_exit=False)
+                        break
+            self.api.exit_json(changed=True)
+        self.api.exit_json(changed=False)
+
 
 class AHPulpEENamespace(AHPulpObject):
     """Manage the execution environment namespace with the Pulp API.
