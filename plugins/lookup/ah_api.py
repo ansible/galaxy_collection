@@ -21,7 +21,7 @@ options:
       - "'ee_namespaces'"
       - "'ee_registries'"
       - "'ee_repositories'"
-      - "'collections', [repository={published, rh_certified, validated, community}]"
+      - "'collections', [repository={published, rh_certified, validated, community}, default=published]"
       - "'collection', [repository={published, rh_certified, validated, community}], [collection_namespace], [collection_name]"
       - "'groups'"
       - "'namespaces'"
@@ -162,8 +162,10 @@ class LookupModule(LookupBase):
                 raise AnsibleError("A second term for the name of the ee repository is required")
             endpoint = endpoints[terms[0]].format(prefix=module.path_prefix, ee_repository=terms[1])
         elif terms[0] == "collections":
-            if len(terms) != 2:
+            if len(terms) > 2:
                 raise AnsibleError("2 terms are required with: 'collection', <repository>")
+            elif len(terms) == 1:
+                terms += ['published']
             endpoint = endpoints[terms[0]].format(
                 prefix=module.path_prefix,
                 repository=terms[1]
