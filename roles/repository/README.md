@@ -60,9 +60,9 @@ ah_repository_community:
   url: https://galaxy.ansible.com/api/
   requirements:
     - infra.ah_configuration
-    - redhat_cop.controller_configuration
-    - redhat_cop.aap_utilities
-    - redhat_cop.ee_utilities
+    - infra.controller_configuration
+    - infra.aap_utilities
+    - infra.ee_utilities
 ```
 
 ## Playbook Examples
@@ -93,7 +93,7 @@ ah_repository_community:
 
 ## License
 
-[GPLv3+](LICENSE)
+[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
 
 ## Author
 

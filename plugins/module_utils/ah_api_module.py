@@ -117,12 +117,17 @@ class AHAPIModule(AnsibleModule):
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        self.session = Request(validate_certs=self.verify_ssl, headers=self.headers)
+        self.session = Request(validate_certs=self.verify_ssl, headers=self.headers, follow_redirects=True)
 
         # Define the API paths
         self.galaxy_path_prefix = "/api/{prefix}".format(prefix=self.path_prefix.strip("/"))
         self.ui_path_prefix = "{galaxy_prefix}/_ui/v1".format(galaxy_prefix=self.galaxy_path_prefix)
-        self.pulp_path_prefix = "/pulp/api/v3"
+        self.authenticate()
+        vers = self.get_server_version()
+        if vers < "4.6":
+            self.pulp_path_prefix = "/pulp/api/v3"
+        else:
+            self.pulp_path_prefix = "{galaxy_prefix}/pulp/api/v3".format(galaxy_prefix=self.galaxy_path_prefix)
 
     def _build_url(self, prefix, endpoint=None, query_params=None):
         """Return a URL from the given prefix and endpoint.

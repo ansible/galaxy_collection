@@ -223,6 +223,7 @@ class AHPulpObject(object):
                     "type": self.object_type,
                     "changed": True,
                 }
+                json_output.update(self.data)
                 self.api.exit_json(**json_output)
             return True
 
@@ -230,7 +231,7 @@ class AHPulpObject(object):
         try:
             response = self.api.make_request("POST", url, data=new_item)
         except AHAPIModuleError as e:
-            self.api.fail_json(msg="Create error: {error}".format(error=e))
+            self.api.fail_json(msg="Create error: {error}, url: {url}".format(error=e, url=url.geturl()))
 
         if response["status_code"] in [200, 201]:
             self.exists = True
@@ -245,6 +246,7 @@ class AHPulpObject(object):
                     "type": self.object_type,
                     "changed": True,
                 }
+                json_output.update(self.data)
                 self.api.exit_json(**json_output)
             return True
 
@@ -287,11 +289,6 @@ class AHPulpObject(object):
         # requests. Making sure that it is present.
         if self.name_field not in new_item:
             new_item[self.name_field] = self.name
-        if "base_path" not in new_item:
-            if "base_path" in self.data:
-                new_item["base_path"] = self.data["base_path"]
-            else:
-                new_item["base_path"] = self.name
 
         # Check to see if anything within the item requires the item to be
         # updated.
@@ -305,6 +302,7 @@ class AHPulpObject(object):
                     "type": self.object_type,
                     "changed": False,
                 }
+                json_output.update(self.data)
                 self.api.exit_json(**json_output)
             return False
 
@@ -317,6 +315,7 @@ class AHPulpObject(object):
                     "type": self.object_type,
                     "changed": True,
                 }
+                json_output.update(self.data)
                 self.api.exit_json(**json_output)
             return True
 
@@ -336,6 +335,7 @@ class AHPulpObject(object):
                     "type": self.object_type,
                     "changed": True,
                 }
+                json_output.update(self.data)
                 self.api.exit_json(**json_output)
             return True
 
@@ -349,6 +349,7 @@ class AHPulpObject(object):
                 code=response["status_code"],
             )
         )
+
 
 class AHPulpRolePerm(AHPulpObject):
     """Manage the roles that contain permisions with the Pulp API.
@@ -376,11 +377,11 @@ class AHPulpRolePerm(AHPulpObject):
             }
 
     Create a namespace:
-        ``POST /pulp/api/v3/roles/``
+        ``POST /api/galaxy/pulp/api/v3/roles/``
     Update a namespace:
-        ``POST/PATCH /pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
+        ``POST/PATCH /api/galaxy/pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
     Delete a namespace:
-        ``DELETE /pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
+        ``DELETE /api/galaxy/pulp/api/v3/roles/dd54d0df-cd88-420b-922a-43a0725a20fc/``
     """
 
     def __init__(self, API_object, data=None):
@@ -390,32 +391,6 @@ class AHPulpRolePerm(AHPulpObject):
         self.object_type = "role"
         self.name_field = "name"
         self.perms = []
-
-    def get_perms(self):
-        """Return the permissions associated with the group.
-
-        :return: The list of permission names.
-        :rtype: list
-        """
-        return [p.name for p in self.perms]
-
-    def delete_perms(self, perms_to_delete):
-        """Remove permissions from the group.
-
-        The method exits the module.
-
-        :param perms_to_delete: List of the permission names to remove from the
-                                group.
-        :type perms_to_delete: list
-        """
-        if perms_to_delete is not None and len(perms_to_delete) > 0:
-            for perm_name in perms_to_delete:
-                for perm in self.perms:
-                    if perm.is_perm(perm_name):
-                        perm.delete(auto_exit=False)
-                        break
-            self.api.exit_json(changed=True)
-        self.api.exit_json(changed=False)
 
 
 class AHPulpEENamespace(AHPulpObject):

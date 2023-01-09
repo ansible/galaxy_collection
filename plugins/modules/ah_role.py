@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2021, Herve Quatremain <hquatrem@redhat.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
 # You can consult the UI API documentation directly on a running private
 # automation hub at https://hub.example.com/pulp/api/v3/docs/
 
+# (c) 2020, Sean Sullivan <@sean-m-sullivan>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -15,12 +14,12 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: ah_group_roles
+module: ah_role
 short_description: Manage a role of group permissions
 description:
   - Manage a role of group permisions
-version_added: '1.0.0'
-author: Herve Quatremain (@herve4m)
+version_added: '1.1.0'
+author: Sean Sullivan (@sean-m-sullivan)
 options:
   name:
     description:
@@ -31,7 +30,6 @@ options:
   description:
     description:
       - Description to use for the role.
-    required: true
     type: str
   perms:
     description:
@@ -111,7 +109,7 @@ EXAMPLES = r"""
 
 RETURN = r""" # """
 
-from ..module_utils.ah_api_module import AHAPIModule, AHAPIModuleError
+from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_pulp_object import AHPulpRolePerm
 
 # Mapping between the permission names that the user provides in perms and the
@@ -205,13 +203,20 @@ def main():
     if state == "absent":
         role_pulp.delete()
 
-    role_data = {
-        'name': name,
-        'description': description,
-        'permissions': role_perms,
-    }
-
-    role_pulp.create(role_data)
+    if not role_pulp.exists:
+        role_data = {
+            'name': name,
+            'description': description,
+            'permissions': role_perms,
+        }
+        role_pulp.create(role_data)
+    else:
+        role_data = {
+            'name': name,
+            'description': description,
+            'permissions': role_perms,
+        }
+        role_pulp.update(role_data)
 
 
 if __name__ == "__main__":
