@@ -5,6 +5,14 @@ infra.ah_configuration Release Notes
 .. contents:: Topics
 
 
+v1.0.2-devel
+============
+
+Minor Changes
+-------------
+
+- add the ah_role module to add role permisions.
+
 v1.0.1
 ======
 

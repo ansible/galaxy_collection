@@ -242,3 +242,10 @@ releases:
     - api_lookup.yml
     - approval.yaml
     release_date: '2023-01-11'
+  1.0.2-devel:
+    changes:
+      minor_changes:
+      - add the ah_role module to add role permisions.
+    fragments:
+    - role.yaml
+    release_date: '2023-01-13'
