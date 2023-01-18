@@ -228,7 +228,8 @@ def main():
         registry_obj.get_object(registry, vers)
 
         new_fields = {}
-        new_fields["registry"] = registry_obj.id
+        new_fields["registry"] = registry_obj.data['id']
+        # module.fail_json(msg="The {file}".format(file=registry_obj.data['id']))
         for field_name in (
             "upstream_name",
             "include_tags",

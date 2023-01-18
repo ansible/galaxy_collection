@@ -1,0 +1,7 @@
+---
+minor_changes:
+  - updated ah_collection_upload to exit properly.
+  - updated testing coverage.
+  - updated ah_role to not require permisions in order to allow for deletion.
+  - added ansible role 'role' for creating roles of group permsions.
+...
