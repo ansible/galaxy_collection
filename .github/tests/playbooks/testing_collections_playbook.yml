@@ -63,7 +63,7 @@
         url: https://galaxy.ansible.com/api/
         requirements:
           - name: infra.ah_configuration
-          - name: redhat_cop.tower_configuration
+          - name: redhat_cop.controller_configuration
         ah_host: "{{ ah_hostname }}"
         ah_token: "{{ ah_token }}"
         ah_path_prefix: "{{ ah_path_prefix }}"
@@ -109,6 +109,21 @@
         ah_path_prefix: "{{ ah_path_prefix }}"
         validate_certs: "{{ ah_validate_certs }}"
 
+    - name: Download Tower tarball
+      ansible.builtin.get_url:
+        url: https://galaxy.ansible.com/download/redhat_cop-tower_configuration-1.5.2-3.8.2.tar.gz
+        dest: "{{playbook_dir}}/redhat_cop-tower_configuration-1.5.2-3.8.2.tar.gz"
+        mode: '0440'
+
+    - name: Upload Tower collection to automation hub
+      ah_collection_upload:
+        path: "{{playbook_dir}}/redhat_cop-tower_configuration-1.5.2-3.8.2.tar.gz"
+        wait: true
+        ah_host: "{{ ah_hostname }}"
+        ah_token: "{{ ah_token }}"
+        ah_path_prefix: "{{ ah_path_prefix }}"
+        validate_certs: "{{ ah_validate_certs }}"
+
     - name: Deauthenticate
       ah_token:
         ah_host: "{{ ah_hostname }}"
@@ -116,5 +131,4 @@
         ah_path_prefix: "{{ ah_path_prefix }}"
         validate_certs: "{{ ah_validate_certs }}"
         state: absent
-
 ...

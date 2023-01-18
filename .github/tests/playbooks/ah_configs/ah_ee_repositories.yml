@@ -1,0 +1,29 @@
+---
+ah_ee_registries:
+  - name: quay
+    url: https://quay.io/
+    rate_limit: 100
+    download_concurrency: 3
+    tls_validation: false
+ah_ee_repositories:
+  # Adding a Remote repository
+  - name: config_as_code_ee
+    description: The infra config as code official EE
+    registry: quay
+    upstream_name: redhat_cop/config_as_code_ee
+    wait: true
+    interval: 5
+    timeout: 600
+  # Adding a description and a README file to the repository
+  - name: test-namespace/ee-minimal-rhel8
+    # Testing with UTF-8 characters
+    description: To jest jakiś opis
+    readme: |
+      # Min avrättningsmiljö
+
+      * bullet 1
+      * bullet 2
+  # Testing updating the repository README file from a local file
+  - name: test-namespace/ee-minimal-rhel8
+    readme_file: "{{ tempfile['path'] }}"
+...

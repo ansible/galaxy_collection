@@ -48,7 +48,6 @@ options:
       - You can also grant or revoke all permissions with C(*) or C(all).
     type: list
     elements: str
-    required: true
   state:
     description:
       - If C(absent), then the module removes the listed permissions from the
@@ -159,7 +158,7 @@ def main():
     argument_spec = dict(
         name=dict(required=True),
         description=dict(),
-        perms=dict(type="list", elements="str", required=True),
+        perms=dict(type="list", elements="str"),
         state=dict(choices=["present", "absent"], default="present"),
     )
 
@@ -182,6 +181,11 @@ def main():
 
     # Process the object from the Pulp API (delete or create)
     role_pulp = AHPulpRolePerm(module)
+    role_pulp.get_object(name)
+
+    # Remove the role
+    if state == "absent":
+        role_pulp.delete()
 
     # Convert the given permission list to a list of internal names
     role_perms = []
@@ -196,12 +200,6 @@ def main():
             role_perms.append(perm)
         else:
             module.fail_json(msg="Unknown perm ({perm}) defined".format(perm=perm))
-
-    role_pulp.get_object(name)
-
-    # Removing the permissions
-    if state == "absent":
-        role_pulp.delete()
 
     if not role_pulp.exists:
         role_data = {
