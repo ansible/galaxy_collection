@@ -1,0 +1,43 @@
+---
+- name: Testing Galaxy
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  collections:
+    - infra.ah_configuration
+  vars:
+    ah_hostname: http://10.242.42.169:8002
+    ah_username: admin
+    ah_password: admin
+    ah_path_prefix: automation-hub
+    ah_validate_certs: false
+    ah_ee_registries:
+      - name: quay
+        url: https://quay.io/
+        rate_limit: 100
+        download_concurrency: 3
+        tls_validation: false
+    ah_ee_repositories:
+      # Adding a Remote repository
+      - name: config_as_code_ee
+        description: The infra config as code official EE
+        registry: quay
+        upstream_name: redhat_cop/config_as_code_ee
+        wait: true
+        interval: 5
+        timeout: 600
+      # Adding a description and a README file to the repository
+
+
+  tasks:
+#    - name: Registery creation
+#      ansible.builtin.include_role:
+#        name: ee_registry
+    - name: Repository creation
+      ansible.builtin.include_role:
+        name: ee_repository
+    - name: Repository sync
+      ansible.builtin.include_role:
+        name: ee_repository_sync
+
+...
