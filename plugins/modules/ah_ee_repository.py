@@ -228,8 +228,7 @@ def main():
         registry_obj.get_object(registry, vers)
 
         new_fields = {}
-        new_fields["registry"] = registry_obj.data['id']
-        # module.fail_json(msg="The {file}".format(file=registry_obj.data['id']))
+
         for field_name in (
             "upstream_name",
             "include_tags",
@@ -239,11 +238,18 @@ def main():
             new_fields[field_name] = field_val
 
         remote = AHUIEERemote(module)
+        if vers > "4.7.0":
+            new_fields["registry"] = registry_obj.data['id']
+            remote.name_field = "id"
+            registry_obj.id_field = "id"
+        else:
+            new_fields["registry"] = registry_obj.id
         if repository_ui.exists:
-            remote.get_object(repository_ui.data["pulp"]["repository"]["remote"]["pulp_id"], vers)
-
+            if vers > "4.7.0":
+                remote.get_object(repository_ui.data["pulp"]["repository"]["remote"]["id"], vers)
+            else:
+                remote.get_object(repository_ui.data["pulp"]["repository"]["remote"]["pulp_id"], vers)
         new_fields["name"] = name
-
         remote_changed = remote.create_or_update(new_fields, auto_exit=False)
         changed = changed or remote_changed
 
