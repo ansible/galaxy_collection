@@ -90,6 +90,8 @@ def main():
     vers = module.get_server_version()
     registry = AHUIEERegistry(module)
     registry.get_object(name, vers)
+    if vers > "4.7.0":
+        registry.id_field = "id"
 
     registry.sync(wait, interval, timeout)
 

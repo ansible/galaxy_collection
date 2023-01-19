@@ -11,9 +11,13 @@
     ah_password: admin
     ah_path_prefix: automation-hub
     ah_validate_certs: false
+    ah_configuration_ee_registry_sync_async_delay: 5
     ah_ee_registries:
-      - name: quay
-        url: https://quay.io/
+      - name: redhat
+        new_name: redhat_renamed
+        url: https://registry.redhat.io/v2/
+        username: rhn##
+        password: ##
         rate_limit: 100
         download_concurrency: 3
         tls_validation: false
@@ -26,18 +30,10 @@
         wait: true
         interval: 5
         timeout: 600
-      # Adding a description and a README file to the repository
-
 
   tasks:
-#    - name: Registery creation
-#      ansible.builtin.include_role:
-#        name: ee_registry
-    - name: Repository creation
+    - name: Registery creation
       ansible.builtin.include_role:
-        name: ee_repository
-    - name: Repository sync
-      ansible.builtin.include_role:
-        name: ee_repository_sync
+        name: ee_registry
 
 ...
