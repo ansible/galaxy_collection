@@ -36,10 +36,32 @@
       ansible.builtin.include_role:
         name: namespace
 
+    - name: Rename namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: test_namespace
+            new_name: test_namespace_renamed
+
+    - name: Delete renamed namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: test_namespace_renamed
+            state: absent
+
     - name: Upload Collection
       ansible.builtin.include_role:
         name: collection
 
+    - name: Overwrite Collection
+      ansible.builtin.include_role:
+        name: collection
+      vars:
+        ah_collections: "{{ ah_collections_overwrite }}"
+        
     - name: Publish Collections
       ansible.builtin.include_role:
         name: publish
@@ -52,48 +74,6 @@
         name: ah_configuration
         version: 0.9.2
         state: absent
-        ah_host: "{{ ah_hostname }}"
-        ah_token: "{{ ah_token }}"
-        ah_path_prefix: "{{ ah_path_prefix }}"
-        validate_certs: "{{ ah_validate_certs }}"
-
-    - name: Configure community repo
-      ah_repository:
-        name: community
-        url: https://galaxy.ansible.com/api/
-        requirements:
-          - name: infra.ah_configuration
-          - name: redhat_cop.controller_configuration
-        ah_host: "{{ ah_hostname }}"
-        ah_token: "{{ ah_token }}"
-        ah_path_prefix: "{{ ah_path_prefix }}"
-        validate_certs: "{{ ah_validate_certs }}"
-
-    - name: Configure community repo from file
-      ah_repository:
-        name: community
-        url: https://galaxy.ansible.com/api/
-        requirements_file: files/collection_requirement_file.yml
-        ah_host: "{{ ah_hostname }}"
-        ah_token: "{{ ah_token }}"
-        ah_path_prefix: "{{ ah_path_prefix }}"
-        validate_certs: "{{ ah_validate_certs }}"
-
-    - name: Sync community repo
-      ah_repository_sync:
-        name: community
-        wait: true
-        ah_host: "{{ ah_hostname }}"
-        ah_token: "{{ ah_token }}"
-        ah_path_prefix: "{{ ah_path_prefix }}"
-        validate_certs: "{{ ah_validate_certs }}"
-
-    - name: Configure rh-certified repo
-      ah_repository:
-        name: rh-certified
-        url: https://cloud.redhat.com/api/automation-hub/
-        auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-        token: aabbcc
         ah_host: "{{ ah_hostname }}"
         ah_token: "{{ ah_token }}"
         ah_path_prefix: "{{ ah_path_prefix }}"

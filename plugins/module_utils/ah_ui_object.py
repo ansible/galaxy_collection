@@ -1071,7 +1071,7 @@ class AHUIEERepository(AHUIObject):
             response = self.api.make_request("GET", url)
         except AHAPIModuleError as e:
             if exit_on_error:
-                self.api.fail_json(msg="GET error: {error}".format(error=e))
+                self.api.fail_json(msg="GET error: {error}, url: {url}".format(error=e, url=url))
             else:
                 raise
 

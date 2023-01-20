@@ -18,3 +18,4 @@ jobs:
     secrets:
       redhat_catalog_username: ${{ secrets.REDHAT_CATALOG_USERNAME }}
       redhat_catalog_password: ${{ secrets.REDHAT_CATALOG_PASSWORD }}
+      redhat_hub_token: ${{ secrets.REDHAT_HUB_TOKEN }}
