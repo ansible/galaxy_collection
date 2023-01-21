@@ -7,11 +7,4 @@ ah_repository_community:
   wait: true
   interval: 25
   timeout: 1000000
-
-ah_repository_certified:
-  url: https://console.redhat.com/api/automation-hub/content/901532-synclist/
-  token: "{{ redhat_hub_token }}"
-  tls_validation: false
-  rate_limit: 100000
-  download_concurrency: 25
 ...

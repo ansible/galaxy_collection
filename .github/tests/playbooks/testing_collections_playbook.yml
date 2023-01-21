@@ -61,7 +61,7 @@
         name: collection
       vars:
         ah_collections: "{{ ah_collections_overwrite }}"
-        
+
     - name: Publish Collections
       ansible.builtin.include_role:
         name: publish
