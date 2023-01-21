@@ -66,40 +66,22 @@
     - name: Registery creation
       ansible.builtin.include_role:
         name: ee_registry
+
     - name: Repository creation
       ansible.builtin.include_role:
         name: ee_repository
+
     - name: Repository sync
       ansible.builtin.include_role:
         name: ee_repository_sync
-      vars:
-        ah_ee_repositories:
-          # Adding a Remote repository
-          - name: config_as_code_ee
-            wait: true
-            interval: 5
-            timeout: 600
+
     - name: Registery Index
       ansible.builtin.include_role:
         name: ee_registry_index
-      vars:
-        ah_ee_registries:
-          # Adding a Remote repository
-          - name: redhat
-            wait: true
-            interval: 5
-            timeout: 600
+
     - name: Registery sync
       ansible.builtin.include_role:
         name: ee_registry_sync
-      vars:
-        ah_configuration_ee_registry_sync_async_delay: 20
-        ah_ee_registries:
-          # Adding a Remote repository
-          - name: redhat
-            wait: true
-            interval: 20
-            timeout: 1100
 
     - name: Tag image
       ansible.builtin.include_role:

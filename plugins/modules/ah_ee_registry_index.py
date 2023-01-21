@@ -95,6 +95,9 @@ def main():
         registry.id_field = "id"
     registry.get_object(name, vers)
 
+    if not registry.exists:
+        module.fail_json(msg="The registery with name: {name}, was not found.".format(name=name))
+
     registry.index(wait, interval, timeout)
 
 

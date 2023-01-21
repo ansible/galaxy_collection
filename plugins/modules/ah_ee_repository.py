@@ -170,7 +170,6 @@ def main():
         supports_check_mode=True,
         mutually_exclusive=[
             ("readme", "readme_file"),
-            ("include_tags", "exclude_tags"),
         ],
         required_by={"registry": "upstream_name"},
     )
@@ -228,7 +227,6 @@ def main():
         registry_obj.get_object(registry, vers)
 
         new_fields = {}
-        new_fields["registry"] = registry_obj.data['id']
         for field_name in (
             "upstream_name",
             "include_tags",
