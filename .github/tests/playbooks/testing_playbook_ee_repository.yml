@@ -79,8 +79,6 @@
             wait: true
             interval: 5
             timeout: 600
-<<<<<<< HEAD
-=======
     - name: Registery Index
       ansible.builtin.include_role:
         name: ee_registry_index
@@ -102,7 +100,6 @@
             wait: true
             interval: 20
             timeout: 1100
->>>>>>> 328e43a265ab2bf03bb5372108c4189681ff40f9
 
     - name: Tag image
       ansible.builtin.include_role:
