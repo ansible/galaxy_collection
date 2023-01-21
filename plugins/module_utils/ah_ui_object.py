@@ -386,7 +386,6 @@ class AHUIObject(object):
                 }
                 self.api.exit_json(**json_output)
             return True
-
         url = self.api.build_ui_url(self.id_endpoint)
         try:
             response = self.api.make_request("PUT", url, data=new_item)
