@@ -91,6 +91,8 @@ def main():
     module.authenticate()
     vers = module.get_server_version()
     registry = AHUIEERegistry(module)
+    if vers > "4.7.0":
+        registry.id_field = "id"
     registry.get_object(name, vers)
 
     registry.index(wait, interval, timeout)

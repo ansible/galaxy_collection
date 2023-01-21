@@ -238,10 +238,15 @@ def main():
             new_fields[field_name] = field_val
 
         remote = AHUIEERemote(module)
+        if vers > "4.7.0":
+            new_fields["registry"] = registry_obj.data['id']
+            remote.name_field = "id"
+            registry_obj.id_field = "id"
+        else:
+            new_fields["registry"] = registry_obj.id
         if repository_ui.exists:
-            if vers == "4.7.0dev":
+            if vers > "4.7.0":
                 remote.get_object(repository_ui.data["pulp"]["repository"]["remote"]["id"], vers)
-                remote.name_field = "id"
             else:
                 remote.get_object(repository_ui.data["pulp"]["repository"]["remote"]["pulp_id"], vers)
         new_fields["name"] = name

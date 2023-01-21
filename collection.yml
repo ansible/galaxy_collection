@@ -11,33 +11,28 @@
     ah_password: admin
     ah_path_prefix: automation-hub
     ah_validate_certs: false
-    ah_ee_registries:
-      - name: quay
-        url: https://quay.io/
-        rate_limit: 100
-        download_concurrency: 3
-        tls_validation: false
-    ah_ee_repositories:
-      # Adding a Remote repository
-      - name: config_as_code_ee
-        description: The infra config as code official EE
-        registry: quay
-        upstream_name: redhat_cop/config_as_code_ee
-        wait: true
-        interval: 5
-        timeout: 600
-      # Adding a description and a README file to the repository
+    ah_configuration_ee_registry_sync_async_delay: 5
 
-
+    ah_namespaces:
+      - name: community_test
   tasks:
-#    - name: Registery creation
-#      ansible.builtin.include_role:
-#        name: ee_registry
-    - name: Repository creation
+    - name: Create namespace
       ansible.builtin.include_role:
-        name: ee_repository
-    - name: Repository sync
-      ansible.builtin.include_role:
-        name: ee_repository_sync
+        name: namespace
 
+    - name: Rename namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: community_test
+            new_name: community_test_renamed
+
+    - name: Delete renamed namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: community_test_renamed
+            state: absent
 ...

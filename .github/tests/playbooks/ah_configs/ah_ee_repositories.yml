@@ -5,6 +5,13 @@ ah_ee_registries:
     rate_limit: 100
     download_concurrency: 3
     tls_validation: false
+  - name: redhat
+    url: https://registry.redhat.io/v2/
+    username: "{{ redhat_catalog_username }}"
+    password: "{{ redhat_catalog_password }}"
+    rate_limit: 100000
+    download_concurrency: 25
+    tls_validation: false
 ah_ee_repositories:
   # Adding a Remote repository
   - name: config_as_code_ee

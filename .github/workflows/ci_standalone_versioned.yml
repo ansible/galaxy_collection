@@ -8,7 +8,16 @@ on:
         description: The version to pull of galaxy_ng
         required: true
         type: string
-
+    secrets:
+      redhat_catalog_username:
+        description: Username for Red Hat Catalog
+        required: true
+      redhat_catalog_password:
+        description: Password for Red Hat Catalog
+        required: true
+      redhat_hub_token:
+        description: Token for Red Hat Hub
+        required: true
 jobs:
 
   integration:
@@ -99,6 +108,9 @@ jobs:
       - name: "Perform playbook collection tests"
         run: ansible-playbook .github/tests/playbooks/testing_collections_playbook.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
 
+      - name: "Perform collection repository tests"
+        run: ansible-playbook .github/tests/playbooks/testing_collections_repos.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e redhat_hub_token=${{ secrets.redhat_hub_token }}
+
       - name: "Perform playbook user and group management tests"
         run: ansible-playbook .github/tests/playbooks/testing_playbook_user.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
 
@@ -107,4 +119,4 @@ jobs:
         if: ${{ inputs.galaxy_ng_version == 'stable-4.4' || inputs.galaxy_ng_version == 'stable-4.5'  }}  # ee_namespace APIs have changed in 4.6 so need to revisit this (see #183)
 
       - name: "Perform playbook repository tests"
-        run: ansible-playbook .github/tests/playbooks/testing_playbook_ee_repository.yml -vv -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
+        run: ansible-playbook .github/tests/playbooks/testing_playbook_ee_repository.yml -vv -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e redhat_catalog_username=${{ secrets.redhat_catalog_username }} -e redhat_catalog_password=${{ secrets.redhat_catalog_password }}

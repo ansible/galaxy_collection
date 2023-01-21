@@ -36,10 +36,32 @@
       ansible.builtin.include_role:
         name: namespace
 
+    - name: Rename namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: test_namespace
+            new_name: test_namespace_renamed
+
+    - name: Delete renamed namespace
+      ansible.builtin.include_role:
+        name: namespace
+      vars:
+        ah_namespaces:
+          - name: test_namespace_renamed
+            state: absent
+
     - name: Upload Collection
       ansible.builtin.include_role:
         name: collection
 
+    - name: Overwrite Collection
+      ansible.builtin.include_role:
+        name: collection
+      vars:
+        ah_collections: "{{ ah_collections_overwrite }}"
+        
     - name: Publish Collections
       ansible.builtin.include_role:
         name: publish
@@ -57,6 +79,7 @@
         ah_path_prefix: "{{ ah_path_prefix }}"
         validate_certs: "{{ ah_validate_certs }}"
 
+<<<<<<< HEAD
     - name: Configure community repo
       ah_repository:
         name: community
@@ -99,6 +122,8 @@
         ah_path_prefix: "{{ ah_path_prefix }}"
         validate_certs: "{{ ah_validate_certs }}"
 
+=======
+>>>>>>> 328e43a265ab2bf03bb5372108c4189681ff40f9
     - name: Add EE Registry
       ah_ee_registry:
         name: myreg
