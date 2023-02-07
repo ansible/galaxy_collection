@@ -15,6 +15,7 @@ use_default_rules: true
 # verbosity: 1
 skip_list:
   - meta-unsupported-ansible
+  - fqcn[action-core]  # The testing requires us to use ../../<role_name> so need to skip this
 kinds:
   - playbooks: "**/examples/*.{yml,yaml}"
   - tasks: "**/examples/tasks/*.yml"
