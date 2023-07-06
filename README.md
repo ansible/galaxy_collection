@@ -18,8 +18,8 @@ This Ansible collection allows for easy interaction with an Ansible Automation H
 |                                      Collection Name                                       |                 Purpose                  |
 |:------------------------------------------------------------------------------------------:|:----------------------------------------:|
 | [Controller Configuration](https://github.com/redhat-cop/controller_configuration) |   Automation controller configuration    |
-|             [EE Utilities](https://galaxy.ansible.com/redhat_cop/ee_utilities)             | Execution Environment creation utilities |
-|     [AAP installation Utilities](https://github.com/redhat-cop/ee_utilities)      |  Ansible Automation Platform Utilities   |
+|             [EE Utilities](https://github.com/redhat-cop/ee_utilities)             | Execution Environment creation utilities |
+|     [AAP installation Utilities](https://github.com/redhat-cop/aap_utilities)      |  Ansible Automation Platform Utilities   |
 |   [AAP Configuration Template](https://github.com/redhat-cop/aap_configuration_template)   |  Configuration Template for this suite   |
 
 ## Included content
