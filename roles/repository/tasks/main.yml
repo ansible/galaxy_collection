@@ -3,7 +3,7 @@
 - name: Add Automation Hub repository
   ah_repository:
     name: "{{ __repository_item['name'] }}"
-    url: "{{ __repository_item['url']  }}"
+    url: "{{ __repository_item['url'] }}"
     auth_url: "{{ __repository_item['auth_url'] | default(omit) }}"
     token: "{{ __repository_item['token'] | default(omit) }}"
     username: "{{ __repository_item['username'] | default(omit) }}"

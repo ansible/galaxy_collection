@@ -2,7 +2,7 @@
 - name: Sync Automation Hub repository
   ah_repository_sync:
     name: "{{ __repository_item.name }}"
-    wait: "{{ __repository_item.wait | default(omit)  }}"
+    wait: "{{ __repository_item.wait | default(omit) }}"
     interval: "{{ __repository_item.interval | default(1) }}"
     timeout: "{{ __repository_item.timeout | default(omit) }}"
     ah_host: "{{ ah_host | default(ah_hostname) }}"
@@ -23,7 +23,7 @@
     ansible_async_dir: '/tmp/.ansible_async'
 
 - name: "Repository Sync | Wait for finish the repository_sync to finish"
-  async_status:
+  ansible.builtin.async_status:
     jid: "{{ __repositories_syncs_job_async_result_item.ansible_job_id }}"
   register: __repositories_syncs_job_async_result
   until: __repositories_syncs_job_async_result.finished
