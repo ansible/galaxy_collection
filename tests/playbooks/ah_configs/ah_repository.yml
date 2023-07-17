@@ -1,5 +1,6 @@
 ---
 ah_repository_community:
+  name: community
   url: https://galaxy.ansible.com/api/
   requirements:
     - name: infra.ee_utilities
