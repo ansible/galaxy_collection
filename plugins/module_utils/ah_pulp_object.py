@@ -233,7 +233,7 @@ class AHPulpObject(object):
         except AHAPIModuleError as e:
             self.api.fail_json(msg="Create error: {error}, url: {url}".format(error=e, url=url.geturl()))
 
-        if response["status_code"] in [200, 201]:
+        if response["status_code"] in [200, 201, 202]:
             self.exists = True
             self.data = response["json"]
             # Make sure the object name is available in the response
@@ -813,6 +813,159 @@ class AHPulpEERepository(AHPulpObject):
                 code=response["status_code"],
             )
         )
+
+
+class AHPulpAnsibleRepository(AHPulpObject):
+    """Manage the ansible repository with the Pulp API.
+
+    TODO: add description
+
+    Getting the details of a repository:
+        ``GET /pulp/api/v3/repositories/ansible/ansible/?name=<name>`` ::
+
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "pulp_href": "/api/automation-hub/pulp/api/v3/repositories/ansible/ansible/018983f5-c249-7bd1-9e68-47a07b03d11b/",
+                    "pulp_created": "2023-07-23T18:14:28.682316Z",
+                    "versions_href": "/api/automation-hub/pulp/api/v3/repositories/ansible/ansible/018983f5-c249-7bd1-9e68-47a07b03d11b/versions/",
+                    "pulp_labels": {},
+                    "latest_version_href": "/api/automation-hub/pulp/api/v3/repositories/ansible/ansible/018983f5-c249-7bd1-9e68-47a07b03d11b/versions/0/",
+                    "name": "alpine",
+                    "description": null,
+                    "retain_repo_versions": 1,
+                    "remote": null,
+                    "last_synced_metadata_time": null,
+                    "gpgkey": null,
+                    "last_sync_task": null,
+                    "private": false
+                }
+            ]
+        }
+    """
+
+    def __init__(self, API_object, data=None):
+        """Initialize the object."""
+        super(AHPulpAnsibleRepository, self).__init__(API_object, data)
+        self.endpoint = "repositories/ansible/ansible"
+        self.object_type = "repository"
+        self.name_field = "name"
+
+
+class AHPulpAnsibleDistribution(AHPulpObject):
+    """Manage the ansible distribution with the Pulp API.
+
+    TODO: add description
+
+    Getting the details of a repository:
+        ``GET /pulp/api/v3/distributions/ansible/ansible/?name=<name>`` ::
+
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "pulp_href": "/api/automation-hub/pulp/api/v3/distributions/ansible/ansible/018983f5-5afb-7272-9ce3-a825f11c1f7d/",
+                    "pulp_created": "2023-07-23T18:14:02.236595Z",
+                    "base_path": "alpine",
+                    "content_guard": "/api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/01898355-81e9-7ed6-9a49-2fcc84754196/",
+                    "name": "alpine",
+                    "repository": "/api/automation-hub/pulp/api/v3/repositories/ansible/ansible/018983f5-5986-7da9-b42c-a0534d7a9524/",
+                    "repository_version": null,
+                    "client_url": "http://localhost:5001/pulp_ansible/galaxy/alpine/",
+                    "pulp_labels": {}
+                }
+            ]
+        }
+    """
+
+    def __init__(self, API_object, data=None):
+        """Initialize the object."""
+        super(AHPulpAnsibleDistribution, self).__init__(API_object, data)
+        self.endpoint = "distributions/ansible/ansible"
+        self.object_type = "distribution"
+        self.name_field = "name"
+
+
+class AHPulpAnsibleRemote(AHPulpObject):
+    """Manage the ansible remote with the Pulp API.
+
+    TODO: add description
+
+    Getting the details of a repository:
+        ``GET /pulp/api/v3/remotes/ansible/collection/?name=<name>`` ::
+
+        {
+            "count": 2,
+            "next": "http://localhost:5001/api/automation-hub/pulp/api/v3/remotes/ansible/collection/?limit=1&offset=1",
+            "previous": null,
+            "results": [
+                {
+                    "pulp_href": "/api/automation-hub/pulp/api/v3/remotes/ansible/collection/01898d7c-8342-7689-9daa-36aa574cb186/",
+                    "pulp_created": "2023-07-25T14:38:14.850795Z",
+                    "name": "rh-certified",
+                    "url": "https://console.redhat.com/api/automation-hub/",
+                    "ca_cert": null,
+                    "client_cert": null,
+                    "tls_validation": true,
+                    "proxy_url": null,
+                    "pulp_labels": {},
+                    "pulp_last_updated": "2023-07-25T14:38:18.034451Z",
+                    "download_concurrency": null,
+                    "max_retries": null,
+                    "policy": "immediate",
+                    "total_timeout": null,
+                    "connect_timeout": null,
+                    "sock_connect_timeout": null,
+                    "sock_read_timeout": null,
+                    "headers": null,
+                    "rate_limit": 8,
+                    "hidden_fields": [
+                        {
+                            "name": "client_key",
+                            "is_set": false
+                        },
+                        {
+                            "name": "proxy_username",
+                            "is_set": false
+                        },
+                        {
+                            "name": "proxy_password",
+                            "is_set": false
+                        },
+                        {
+                            "name": "username",
+                            "is_set": false
+                        },
+                        {
+                            "name": "password",
+                            "is_set": false
+                        },
+                        {
+                            "name": "token",
+                            "is_set": false
+                        }
+                    ],
+                    "requirements_file": null,
+                    "auth_url": "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
+                    "sync_dependencies": true,
+                    "signed_only": false,
+                    "last_sync_task": null
+                }
+            ]
+        }
+    """
+
+    def __init__(self, API_object, data=None):
+        """Initialize the object."""
+        super(AHPulpAnsibleRemote, self).__init__(API_object, data)
+        self.endpoint = "remotes/ansible/collection"
+        self.object_type = "remote"
+        self.name_field = "name"
 
 
 class AHPulpTask(AHPulpObject):
