@@ -20,6 +20,10 @@
         mode: '0755'
 
   tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: A change has been made
+
     - name: Authenticate and get an API token
       ah_token:
         ah_host: "{{ ah_hostname }}"
