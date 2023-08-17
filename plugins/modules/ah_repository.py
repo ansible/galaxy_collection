@@ -189,6 +189,9 @@ def main():
 
     # Create a module for ourselves
     module = AHModule(argument_spec=argument_spec, mutually_exclusive=mutually_exclusive)
+    module.warn("This role 'repository' and module 'ah_repository' will be removed when support for AAP 2.3 ends in May of 2024. "
+                "The module and role collection_repository replaced it."
+                )
 
     # Extract our parameters
     name = module.params.get("name")

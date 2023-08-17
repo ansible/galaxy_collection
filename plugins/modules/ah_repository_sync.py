@@ -79,6 +79,9 @@ def main():
 
     # Create a module for ourselves
     module = AHModule(argument_spec=argument_spec)
+    module.warn("This role 'repository_sync' and module 'ah_repository_sync' will be removed when support for AAP 2.3 ends in May of 2024. "
+                "The module and role collection_repository_sync replaced it."
+                )
 
     # Extract our parameters
     name = module.params.get("name")

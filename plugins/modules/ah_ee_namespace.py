@@ -208,6 +208,9 @@ def main():
 
     # Create a module for ourselves
     module = AHAPIModule(argument_spec=argument_spec, supports_check_mode=True)
+    module.warn("This role 'ee_namespace' and module 'ah_ee_namespace' will be removed when support for AAP 2.2 ends in November of 2023. "
+                "It was removed in 2.3."
+                )
 
     # Extract our parameters
     name = module.params.get("name")

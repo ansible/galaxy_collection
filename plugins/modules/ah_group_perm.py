@@ -165,6 +165,9 @@ def main():
 
     # Create a module for ourselves
     module = AHAPIModule(argument_spec=argument_spec, supports_check_mode=True)
+    module.warn("This module 'ah_group_perm' and the group permision part of the role 'group' will be removed when support for AAP 2.2 "
+                "ends in November of 2023. It was repplaced with role permisions in 2.3."
+                )
 
     # Extract our parameters
     name = module.params.get("name")
