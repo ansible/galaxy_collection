@@ -11,7 +11,7 @@ __metaclass__ = type
 
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
-    "status": ["preview"],
+    "status": ["deprecated"],
     "supported_by": "community",
 }
 
@@ -24,6 +24,11 @@ short_description: Configure a repository.
 description:
     - Configure an Automation Hub remote Repository. See
       U(https://www.ansible.com/) for an overview.
+deprecated:
+  why: The endpoint has been removed and is not supported in AAP 2.4 onwards. It is replaced by collection_remote
+  alternative: collection_remote
+  removed_in: 3.0.0
+  removed_from_collection: ansible.automation_hub
 options:
     name:
       description:
