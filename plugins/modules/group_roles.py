@@ -15,12 +15,12 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: ah_group
-short_description: Manage private automation hub user groups
+module: group_roles
+short_description: Add roles to private automation hub user groups
 description:
-  - Create and delete groups in private automation hub.
-version_added: '0.4.3'
-author: Herve Quatremain (@herve4m)
+  - Add roles to private automation hub user groups
+version_added: '2.0.0'
+author: Sean Sullivan (@sean-m-sullivan)
 options:
   name:
     description:
@@ -35,9 +35,6 @@ options:
     type: str
     default: present
     choices: [absent, present]
-seealso:
-  - module: ansible.automation_hub.ah_group_perm
-  - module: ansible.automation_hub.ah_user
 notes:
   - Supports C(check_mode).
 extends_documentation_fragment: ansible.automation_hub.auth_ui
@@ -65,7 +62,7 @@ RETURN = r""" # """
 
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIGroup
-from ..module_utils.ah_pulp_object import AHPulpGroups
+
 
 def main():
     argument_spec = dict(
@@ -79,27 +76,25 @@ def main():
     # Extract our parameters
     name = module.params.get("name")
     state = module.params.get("state")
-    new_fields = {}
+
     # Authenticate
     module.authenticate()
     vers = module.get_server_version()
+    group = AHUIGroup(module)
 
-    # Use Pulp with newer versions
-    if vers > "4.7.0":
-        group = AHPulpGroups(module)
-        group.get_object(name)
-    else:
-        group = AHUIGroup(module)
-        group.get_object(name, vers)
-    new_fields['name'] = name
+    # Get the group details from its name.
+    # API (GET): /api/galaxy/_ui/v1/groups/?name=<group_name>
+    group.get_object(name, vers)
+
     # Removing the group
     if state == "absent":
         group.delete()
 
-    # Creating the group.
-    group.create_or_update(new_fields, auto_exit=False)
+    # Creating the group. The group can never be updated (name change) because
+    # the API does not allow it.
+    # API (POST): /api/galaxy/_ui/v1/groups/
+    group.create_or_update({"name": name})
 
-    group.api.exit_json(**group.api.json_output)
 
 if __name__ == "__main__":
     main()
