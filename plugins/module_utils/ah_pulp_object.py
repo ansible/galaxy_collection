@@ -372,7 +372,7 @@ class AHPulpObject(object):
 
 
 class AHPulpRolePerm(AHPulpObject):
-    """Manage the roles that contain permisions with the Pulp API.
+    """Manage the roles that contain permissions with the Pulp API.
 
     The :py:class:``AHPulpRolePerm`` creates and deletes namespaces.
 
@@ -975,7 +975,7 @@ class AHPulpTask(AHPulpObject):
 class AHPulpGroups(AHPulpObject):
     """Manage Groups with the Pulp API.
 
-    The :py:class:``AHPulpGroups`` creates, deletes, and add permisions to groups.
+    The :py:class:``AHPulpGroups`` creates, deletes, and add permissions to groups.
 
     Getting the details of a group:
         ``GET /pulp/api/v3/groups/?name=<name>`` ::
@@ -1007,6 +1007,124 @@ class AHPulpGroups(AHPulpObject):
         self.object_type = "group"
         self.name_field = "name"
         self.roles = []
+        self.api.json_output = {
+            "changed": False,
+        }
+
+    def get_perms(self, group):
+        """Return the permissions associated with the group.
+
+        :return: The list of permission names.
+        :rtype: list
+        """
+
+        url = self.api.host_url._replace(path="{endpoint}roles/".format(endpoint=group['pulp_href']))
+        # self.api.fail_json(msg="url: {error}".format(error=url))
+        try:
+            response = self.api.make_request("GET", url, wait_for_task=False)
+        except AHAPIModuleError as e:
+            self.api.fail_json(msg="Error Retrieving Permisions: {error}".format(error=e))
+
+        return response["json"]["results"]
+
+    def associate_permissions(self, group_data=None, new_perms=None, state='present'):
+        """Find the associations of the permissions.
+
+        :return: The list of actions taken
+        :rtype: list
+        """
+        # Find if the permission has been created, set definition
+        response = {}
+        response['removed'] = []
+        response['added'] = []
+        response['existing'] = []
+        for new_permission in new_perms:
+            search_data = self.find_permissions(group_data=group_data, new_perm=new_permission)
+            if search_data['found']:
+                response['existing'].append(
+                    {
+                        "group": group_data['name'],
+                        "group_href": group_data['pulp_href'],
+                        "perms": new_permission
+                    }
+                )
+                group_data = search_data['group_data']
+            if search_data['found'] and state == 'absent':
+                self.remove_permission(search_data['pulp_href'])
+                response['removed'].append(
+                    {
+                        "group": group_data['name'],
+                        "perms": new_permission
+                    }
+                )
+            if not search_data['found'] and (state == 'present' or state == 'enforced'):
+                response['added'].append(self.add_permission(group=group_data, permission=new_permission))
+        if state == 'enforced':
+            for enforced_perm in group_data['before_perms']:
+                if "found" not in enforced_perm:
+                    self.remove_permission(enforced_perm['pulp_href'])
+                    response['removed'].append(
+                        {
+                            "group": group_data['name'],
+                            "perms": enforced_perm
+                        }
+                    )
+        return response
+
+    def find_permissions(self, group_data=None, new_perm=None):
+        """Check if the permission is associated with the group.
+
+        :return: True/False if Found.
+        :rtype: list
+        """
+        response = {'found': False}
+
+        # Find if the permission has been created, set definition
+        for index, current_permission in enumerate(group_data['before_perms']):
+            if new_perm['role'] == current_permission['role'] and new_perm['content_object'] == current_permission['content_object']:
+                response['found'] = True
+                response['pulp_href'] = current_permission['pulp_href']
+                group_data['before_perms'][index]['found'] = True
+                response['group_data'] = group_data
+        return response
+
+    def add_permission(self, group=None, permission=None):
+        """Add listed permissions.
+        "group_perm_list": [
+            {
+            "group": "santa",
+            "group_href": "/api/automation-hub/pulp/api/v3/groups/6/",
+            "perms": {
+                "content_object": "/api/automation-hub/pulp/api/v3/pulp_ansible/namespaces/1/",
+                "role": "galaxy.collection_namespace_owner"
+            }
+            }
+        :return: The list of permission sets.
+        :rtype: list
+        """
+        url = self.api.host_url._replace(path="{endpoint}roles/".format(endpoint=group['pulp_href']))
+        try:
+            response = self.api.make_request("POST", url, data=permission)
+        except AHAPIModuleError as e:
+            self.api.fail_json(msg="Start Sync error: {error}".format(error=e))
+        self.api.json_output['changed'] = True
+        return response['json']
+
+    def remove_permission(self, permission_path):
+        """Remove listed permissions.
+        'removal_list': [
+            '/api/automation-hub/pulp/api/v3/groups/6/roles/018a099e-f8f8-7868-bfcd-68ed880e9296/'
+        ]
+        :return: The list of permission hrefs removed.
+        :rtype: list
+        """
+        url = self.api.host_url._replace(path=permission_path)
+        try:
+            response = self.api.make_request("DELETE", url)
+        except AHAPIModuleError as e:
+            self.api.fail_json(msg="Start Sync error: {error}".format(error=e))
+        self.api.json_output['changed'] = True
+        return response
 
 
 class AHPulpAnsibleRemote(AHPulpObject):
@@ -1188,4 +1306,40 @@ class AHPulpAnsibleDistribution(AHPulpObject):
         super(AHPulpAnsibleDistribution, self).__init__(API_object, data)
         self.endpoint = "distributions/ansible/ansible"
         self.object_type = "collection distribution"
+        self.name_field = "name"
+
+
+class AHPulpAnsibleNamesace(AHPulpObject):
+    """Manage the ansible Namesace with the Pulp API.
+
+    TODO: add description
+    Currently the below Get does not work.
+    Getting the details of a repository:
+        ``GET /pulp/api/v3/pulp_ansible/namespaces/?name=<name>`` ::
+
+        {
+            "count": 1,
+            "next": null,
+            "previous": null,
+            "results": [
+                {
+                    "pulp_href": "/api/automation-hub/pulp/api/v3/distributions/ansible/ansible/018983f5-5afb-7272-9ce3-a825f11c1f7d/",
+                    "pulp_created": "2023-07-23T18:14:02.236595Z",
+                    "base_path": "alpine",
+                    "content_guard": "/api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/01898355-81e9-7ed6-9a49-2fcc84754196/",
+                    "name": "alpine",
+                    "repository": "/api/automation-hub/pulp/api/v3/repositories/ansible/ansible/018983f5-5986-7da9-b42c-a0534d7a9524/",
+                    "repository_version": null,
+                    "client_url": "http://localhost:5001/pulp_ansible/galaxy/alpine/",
+                    "pulp_labels": {}
+                }
+            ]
+        }
+    """
+
+    def __init__(self, API_object, data=None):
+        """Initialize the object."""
+        super(AHPulpAnsibleNamesace, self).__init__(API_object, data)
+        self.endpoint = "pulp_ansible/namespaces"
+        self.object_type = "collection namespace"
         self.name_field = "name"

@@ -45,7 +45,7 @@ options:
         C(add_ansiblerepository), C(change_ansiblerepository), C(delete_ansiblerepository), C(manage_roles_ansiblerepository),
         C(repair_ansiblerepository), C(view_ansiblerepository),
       - For container image management, only with private automation hub v4.3.2 or later,
-        C(change_containernamespace_perms), C(change_container), C(change_image_tag), C(create_container), 
+        C(change_containernamespace_perms), C(change_container), C(change_image_tag), C(create_container),
         Push existing container C(push_container), C(namespace_add_containerdistribution), C(manage_roles_containernamespace),
         and C(delete_containerrepository).
       - For remote registry management, C(add_containerregistryremote), C(change_containerregistryremote), and C(delete_containerregistryremote).

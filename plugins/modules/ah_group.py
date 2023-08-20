@@ -67,6 +67,7 @@ from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIGroup
 from ..module_utils.ah_pulp_object import AHPulpGroups
 
+
 def main():
     argument_spec = dict(
         name=dict(required=True),
@@ -79,7 +80,6 @@ def main():
     # Extract our parameters
     name = module.params.get("name")
     state = module.params.get("state")
-    new_fields = {}
     # Authenticate
     module.authenticate()
     vers = module.get_server_version()
@@ -91,15 +91,13 @@ def main():
     else:
         group = AHUIGroup(module)
         group.get_object(name, vers)
-    new_fields['name'] = name
     # Removing the group
     if state == "absent":
         group.delete()
 
     # Creating the group.
-    group.create_or_update(new_fields, auto_exit=False)
+    group.create_or_update({"name": name})
 
-    group.api.exit_json(**group.api.json_output)
 
 if __name__ == "__main__":
     main()

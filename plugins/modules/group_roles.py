@@ -22,19 +22,66 @@ description:
 version_added: '2.0.0'
 author: Sean Sullivan (@sean-m-sullivan)
 options:
-  name:
+  groups:
     description:
-      - Name of the group to create or delete.
-    required: true
-    type: str
+      - List of Group names that receive the permissions specified by the roles.
+      - If the group is not found, it will be created.
+    type: list
+    elements: str
+  role_list:
+    description:
+      - List of sets of roles and targets to apply to the groups.
+    type: list
+    elements: dict
+    suboptions:
+      roles:
+        description:
+          - List of roles to apply to the groups.
+          type: list
+          elements: str
+      targets:
+        description:
+          - List of targets to apply the roles to.
+          - If left empty, it will give global permisions to the group.
+          - An example of using this would be to give a specific group rights over a list of collection namespaces.
+          type: dict
+          default: {}
+          suboptions:
+            collection_namespaces:
+              description:
+                - List of collection namespaces to limit the role permisons to.
+              type: list
+              default: []
+            collection_remotes:
+              description:
+                - List of collection remotes to limit the role permisons to.
+              type: list
+              default: []
+            collection_repositories:
+              description:
+                - List of collection repositories to limit the role permisons to.
+              type: list
+              default: []
+            execution_environments:
+              description:
+                - List of execution environments to limit the role permisons to.
+              type: list
+              default: []
+            container_registery_remotes:
+              description:
+                - List of container remote registries to limit the role permisons to.
+              type: list
+              default: []
   state:
     description:
-      - If C(absent), then the module deletes the group.
-      - The module does not fail if the group does not exist because the state is already as expected.
-      - If C(present), then the module creates the group if it does not already exist.
+      - If C(absent), then the module deletes the given combination of roles for given groups.
+      - The module does not fail if the combination does not exist because the state is already as expected.
+      - If C(present), then the module creates the group roles if it does not already exist.
+      - If already existing, no change is made.
+      - If C(enforced), then the module will remove any group role combinations not provided.
     type: str
     default: present
-    choices: [absent, present]
+    choices: [present, enforced, absent]
 notes:
   - Supports C(check_mode).
 extends_documentation_fragment: ansible.automation_hub.auth_ui
@@ -42,58 +89,159 @@ extends_documentation_fragment: ansible.automation_hub.auth_ui
 
 EXAMPLES = r"""
 - name: Ensure the group exists
-  ansible.automation_hub.ah_group:
-    name: administrators
+  ansible.automation_hub.group_roles:
+    groups:
+      - santa
+      - group1
+    role_list:
+      - roles:
+          - galaxy.group_admin
+      - roles:
+          - galaxy.collection_remote_owner
+        targets:
+          collection_remotes:
+            - community
+      - roles:
+          - galaxy.execution_environment_admin
+      - roles:
+          - galaxy.collection_namespace_owner
+        targets:
+          collection_namespaces:
+            - autohubtest2
     state: present
     ah_host: hub.example.com
     ah_username: admin
     ah_password: Sup3r53cr3t
 
-- name: Ensure the group is removed
-  ansible.automation_hub.ah_group:
-    name: operators
-    state: absent
-    ah_host: hub.example.com
-    ah_username: admin
-    ah_password: Sup3r53cr3t
 """
 
 RETURN = r""" # """
 
 from ..module_utils.ah_api_module import AHAPIModule
-from ..module_utils.ah_ui_object import AHUIGroup
+from ..module_utils.ah_module import AHModule
+from ..module_utils.ah_ui_object import AHUIEERegistry
+from ..module_utils.ah_pulp_object import (
+    AHPulpRolePerm,
+    AHPulpGroups,
+    AHPulpAnsibleRepository,
+    AHPulpAnsibleRemote,
+    AHPulpEERepository,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(required=True),
-        state=dict(choices=["present", "absent"], default="present"),
+        groups=dict(type='list', elements='str', required=True),
+        role_list=dict(type='list', elements='dict', required=True),
+        state=dict(choices=["present", "enforced", "absent"], default="present"),
     )
 
     # Create a module for ourselves
     module = AHAPIModule(argument_spec=argument_spec, supports_check_mode=True)
-
+    group_role_data = {}
     # Extract our parameters
-    name = module.params.get("name")
+    group_list = module.params.get("groups")
+    group_role_data['role_list'] = module.params.get("role_list")
     state = module.params.get("state")
-
-    # Authenticate
-    module.authenticate()
+    # Set role data defaults
+    group_role_data['perm_list'] = []
+    # Set Group object
+    group = AHPulpGroups(module)
     vers = module.get_server_version()
-    group = AHUIGroup(module)
 
-    # Get the group details from its name.
-    # API (GET): /api/galaxy/_ui/v1/groups/?name=<group_name>
-    group.get_object(name, vers)
+    for index, role_item in enumerate(group_role_data['role_list']):
+        group_role_data['role_list'][index]['content_urls'] = []
+        if "targets" in role_item and role_item['targets'] is not None:
+            if "collection_namespaces" in role_item['targets']:
+                namespace = AHModule(argument_spec=argument_spec)
+                for namespace_item in role_item['targets']['collection_namespaces']:
+                    namespace_lookup = namespace.get_one("namespaces", name_or_id=namespace_item)
+                    if namespace_lookup is not None:
+                        group_role_data['role_list'][index]['content_urls'].append(namespace_lookup['pulp_href'])
+                    else:
+                        module.fail_json(msg="Collection Namespace `{0}` was not found".format(namespace_item))
+            if "users" in role_item['targets']:
+                module.fail_json(msg="*Users cannot have targets, only global permisions allowed")
+            if "groups" in role_item['targets']:
+                module.fail_json(msg="Groups cannot have targets, only global permisions allowed")
+            if "collection_remotes" in role_item['targets']:
+                ansible_remote = AHPulpAnsibleRemote(module)
+                for collection_remote_item in role_item['targets']['collection_remotes']:
+                    ansible_remote.get_object(name=collection_remote_item)
+                    if ansible_remote.exists:
+                        group_role_data['role_list'][index]['content_urls'].append(ansible_remote.data['pulp_href'])
+                    else:
+                        module.fail_json(msg="Collection Remote `{0}` was not found".format(collection_remote_item))
+            if "collection_repositories" in role_item['targets']:
+                ansible_repository = AHPulpAnsibleRepository(module)
+                for collection_repositories_item in role_item['targets']['collection_repositories']:
+                    ansible_repository.get_object(name=collection_repositories_item)
+                    if ansible_repository.exists:
+                        group_role_data['role_list'][index]['content_urls'].append(ansible_repository.data['pulp_href'])
+                    else:
+                        module.fail_json(msg="Collection Repository `{0}` was not found".format(collection_repositories_item))
+            if "execution_environments" in role_item['targets']:
+                repository_pulp = AHPulpEERepository(module)
+                for execution_environment_item in role_item['targets']['execution_environments']:
+                    repository_pulp.get_object(execution_environment_item)
+                    if repository_pulp.exists:
+                        group_role_data['role_list'][index]['content_urls'].append(repository_pulp.data['pulp_href'])
+                    else:
+                        module.fail_json(msg="Execution Environment `{0}` was not found".format(execution_environment_item))
+            if "container_registery_remotes" in role_item['targets']:
+                registry = AHUIEERegistry(module)
+                for container_registery_remote_item in role_item['targets']['container_registery_remotes']:
+                    registry.get_object(container_registery_remote_item, vers)
+                    if registry.exists:
+                        group_role_data['role_list'][index]['content_urls'].append(registry.data['pulp_href'])
+                    else:
+                        module.fail_json(msg="Container Registery Remote `{0}` was not found".format(container_registery_remote_item))
+            for role in role_item['roles']:
+                role_pulp = AHPulpRolePerm(module)
+                role_pulp.get_object(role)
+                if role_pulp.exists:
+                    for content_url in role_item['content_urls']:
+                        group_role_data['perm_list'].append(
+                            {
+                                "role": role_pulp.data['name'],
+                                "content_object": content_url
+                            }
+                        )
+                else:
+                    module.fail_json(msg="Role `{0}` was not found".format(role))
+        else:
+            for role in role_item['roles']:
+                role_pulp = AHPulpRolePerm(module)
+                role_pulp.get_object(role)
+                if role_pulp.exists:
+                    group_role_data['perm_list'].append(
+                        {
+                            "role": role,
+                            "content_object": None
+                        }
+                    )
+                else:
+                    module.fail_json(msg="Role `{0}` was not found".format(role))
 
-    # Removing the group
-    if state == "absent":
-        group.delete()
-
-    # Creating the group. The group can never be updated (name change) because
-    # the API does not allow it.
-    # API (POST): /api/galaxy/_ui/v1/groups/
-    group.create_or_update({"name": name})
+    # Set Base output Lists for actions
+    group.api.json_output['removed'] = []
+    group.api.json_output['added'] = []
+    group.api.json_output['existing'] = []
+    # Process roles on each group
+    for group_item in group_list:
+        group.get_object(group_item)
+        if not group.exists:
+            group.create_or_update({"name": group_item}, auto_exit=False)
+        group.data['before_perms'] = group.get_perms(group.data)
+        # Perform associations
+        associations = group.associate_permissions(group_data=group.data, new_perms=group_role_data['perm_list'], state=state)
+        # Add data to output
+        group.api.json_output['removed'].extend(associations['removed'])
+        group.api.json_output['added'].extend(associations['added'])
+        group.api.json_output['existing'].extend(associations['existing'])
+    # Add general Data to Output
+    group.api.json_output.update(group_role_data)
+    group.api.exit_json(**group.api.json_output)
 
 
 if __name__ == "__main__":
