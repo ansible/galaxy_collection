@@ -14,8 +14,8 @@
     request_timeout:  "{{ ah_request_timeout | default(omit) }}"
   loop: "{{ ah_group_roles }}"
   loop_control:
-    loop_var: "__group_role_role"
-  no_log: "{{ ah_configuration_group_secure_logging }}"
+    loop_var: "__group_role"
+  no_log: "{{ ah_configuration_group_roles_secure_logging }}"
   async: 1000
   poll: 0
   register: __group_roles_job_async
@@ -28,13 +28,13 @@
     jid: "{{ __group_roles_job_async_result_item.ansible_job_id }}"
   register: __group_roles_job_async_result
   until: __group_roles_job_async_result.finished
-  retries: "{{ ah_configuration_group_async_retries }}"
-  delay: "{{ ah_configuration_group_async_delay }}"
+  retries: "{{ ah_configuration_group_roles_async_retries }}"
+  delay: "{{ ah_configuration_group_roles_async_delay }}"
   loop: "{{ __group_roles_job_async.results }}"
   loop_control:
     loop_var: __group_roles_job_async_result_item
   when: __group_roles_job_async_result_item.ansible_job_id is defined
-  no_log: "{{ ah_configuration_group_secure_logging }}"
+  no_log: "{{ ah_configuration_group_roles_secure_logging }}"
   vars:
     ansible_async_dir: '{{ ah_configuration_async_dir }}'
 ...

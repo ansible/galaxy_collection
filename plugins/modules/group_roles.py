@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2021, Herve Quatremain <hquatrem@redhat.com>
+# Copyright: (c) 2023, Sean Sullivan <ssulliva@redhat.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # You can consult the UI API documentation directly on a running private
@@ -13,12 +13,21 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = r"""
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
+
+
+DOCUMENTATION = """
 ---
 module: group_roles
 short_description: Add roles to private automation hub user groups
 description:
   - Add roles to private automation hub user groups
+  - Requires AAP 2.3 or Galaxy 4.6 or Later for global roles
+  - Requires AAP 2.4 or Galaxy 4.7 or Later for most targeted roles.
 version_added: '2.0.0'
 author: Sean Sullivan (@sean-m-sullivan)
 options:
@@ -26,52 +35,59 @@ options:
     description:
       - List of Group names that receive the permissions specified by the roles.
       - If the group is not found, it will be created.
+    required: True
     type: list
     elements: str
   role_list:
     description:
       - List of sets of roles and targets to apply to the groups.
+    required: True
     type: list
     elements: dict
     suboptions:
       roles:
         description:
           - List of roles to apply to the groups.
-          type: list
-          elements: str
+        type: list
+        elements: str
       targets:
         description:
           - List of targets to apply the roles to.
           - If left empty, it will give global permisions to the group.
           - An example of using this would be to give a specific group rights over a list of collection namespaces.
-          type: dict
-          default: {}
-          suboptions:
-            collection_namespaces:
-              description:
-                - List of collection namespaces to limit the role permisons to.
-              type: list
-              default: []
-            collection_remotes:
-              description:
-                - List of collection remotes to limit the role permisons to.
-              type: list
-              default: []
-            collection_repositories:
-              description:
-                - List of collection repositories to limit the role permisons to.
-              type: list
-              default: []
-            execution_environments:
-              description:
-                - List of execution environments to limit the role permisons to.
-              type: list
-              default: []
-            container_registery_remotes:
-              description:
-                - List of container remote registries to limit the role permisons to.
-              type: list
-              default: []
+        type: dict
+        default: {}
+        suboptions:
+          collection_namespaces:
+            description:
+              - List of collection namespaces to limit the role permisons to.
+            type: list
+            default: []
+            elements: str
+          collection_remotes:
+            description:
+              - List of collection remotes to limit the role permisons to.
+            type: list
+            default: []
+            elements: str
+          collection_repositories:
+            description:
+              - List of collection repositories to limit the role permisons to.
+            type: list
+            default: []
+            elements: str
+          execution_environments:
+            description:
+              - List of execution environments to limit the role permisons to.
+            type: list
+            default: []
+            elements: str
+          container_registery_remotes:
+            description:
+              - List of container remote registries to limit the role permisons to.
+            type: list
+            default: []
+            elements: str
   state:
     description:
       - If C(absent), then the module deletes the given combination of roles for given groups.
@@ -82,12 +98,10 @@ options:
     type: str
     default: present
     choices: [present, enforced, absent]
-notes:
-  - Supports C(check_mode).
 extends_documentation_fragment: ansible.automation_hub.auth_ui
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Ensure the group exists
   ansible.automation_hub.group_roles:
     groups:
@@ -112,10 +126,7 @@ EXAMPLES = r"""
     ah_host: hub.example.com
     ah_username: admin
     ah_password: Sup3r53cr3t
-
 """
-
-RETURN = r""" # """
 
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_module import AHModule
