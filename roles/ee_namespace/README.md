@@ -1,4 +1,4 @@
-# ansible.automation_hub.ee_namespace
+# ee_namespace
 
 ## Description
 

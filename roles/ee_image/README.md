@@ -1,4 +1,4 @@
-# ansible.automation_hub.ee_image
+# ee_image
 
 ## Description
 

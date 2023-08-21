@@ -1,4 +1,4 @@
-# ansible.automation_hub.ee_repository
+# ee_repository
 
 ## Description
 

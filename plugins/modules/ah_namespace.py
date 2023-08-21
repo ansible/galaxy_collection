@@ -83,13 +83,13 @@ options:
       elements: str
       default: []
 
-extends_documentation_fragment: ansible.automation_hub.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 
 EXAMPLES = """
 - name: Create Tower Ping job template
-  ansible.automation_hub.ah_namespace:
+  infra.ah_configuration.ah_namespace:
     name: Redhat
     company: Redhat
     email: user@example.com
