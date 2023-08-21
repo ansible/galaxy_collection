@@ -1,6 +1,6 @@
 ---
 major_changes:
-  - Added group_roles role and module to manage and attach roles to groups. Glbal role assignment will only work in Galaxy 4.6 or AAP 2.3 or later, while the targeted role assignment will work in Galaxy 4.7 or AAP 2.4 and above.
+  - Added group_roles role and module to manage and attach roles to groups. Global role assignment will only work in Galaxy 4.6 or AAP 2.3 or later, while the targeted role assignment will work in Galaxy 4.7 or AAP 2.4 and above.
 minor_changes:
   - Updated output in multiple roles to provide more information.
   - Updated server version lookup to remove the dev portion if working on a developmental version of Galaxy.
