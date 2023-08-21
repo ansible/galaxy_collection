@@ -1,4 +1,4 @@
-# ansible.automation_hub.ee_registry_sync
+# ee_registry_sync
 
 ## Description
 

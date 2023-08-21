@@ -1,4 +1,4 @@
-# ansible.automation_hub.collection
+# collection
 
 ## Description
 

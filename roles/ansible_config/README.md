@@ -1,4 +1,4 @@
-# ansible.automation_hub.ansible_config
+# ansible_config
 
 ## Description
 

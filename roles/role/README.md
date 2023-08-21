@@ -1,4 +1,4 @@
-# ansible.automation_hub.role
+# role
 
 ## Description
 

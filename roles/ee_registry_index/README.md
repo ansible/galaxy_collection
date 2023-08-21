@@ -1,4 +1,4 @@
-# ansible.automation_hub.ee_registry_index
+# ee_registry_index
 
 ## Description
 
