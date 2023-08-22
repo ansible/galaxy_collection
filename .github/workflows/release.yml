@@ -27,16 +27,29 @@ jobs:
   release:
     needs:
       - ci_standalone
-    uses: "redhat-cop/ansible_collections_tooling/.github/workflows/release_pipeline_single.yml@main"
+    uses: "redhat-cop/ansible_collections_tooling/.github/workflows/release_pipeline_dual.yml@main"
     with:
-      collection_namespace: infra
-      collection_name: ah_configuration
+      # Galaxy Publish
+      collection_namespace_1: infra
+      collection_name_1: ah_configuration
+      publish_url_collection_1: https://galaxy.ansible.com
+      galaxy_publish_1: true
+      ah_publish_1: false
+      # CRC Publish
+      collection_namespace_2: infra
+      collection_name_2: ah_configuration
+      publish_url_collection_2: https://cloud.redhat.com/api/automation-hub/
+      galaxy_publish_2: false
+      ah_publish_2: true
       collection_version: ${{ github.ref_name }}
       collection_repo: https://github.com/ansible/galaxy_collection
       quay_username: redhat_cop
+      matrix_message: This Ansible collection allows for easy interaction with an Galaxy NG or Ansible Automation Hub via Ansible modules and roles.
     secrets:
-      galaxy_api_key: ${{ secrets.GALAXY_INFRA_KEY }}
-      token: ${{ secrets.GITHUB_TOKEN }}
+      collection_api_key_1: ${{ secrets.GALAXY_INFRA_KEY }}
+      collection_api_key_2: ${{ secrets.CRC_PUBLISH_KEY }}
+      git_token: ${{ secrets.GITHUB_TOKEN }}
       quay_token: ${{ secrets.quay_token }}
+      matrix_token: ${{ secrets.matrix_token }}
 
 ...
