@@ -5,6 +5,56 @@ ansible.automation_hub Release Notes
 .. contents:: Topics
 
 
+v2.0.1
+======
+
+Major Changes
+-------------
+
+- Added collection_remote role and module to manage collection remotes. This will only work in Galaxy 4.7 or AAP 2.4.
+- Added collection_repository and collection_repository_sync roles and modules to manage collection repositories. This will only work in Galaxy 4.7 or AAP 2.4.
+- Added group_roles role and module to manage and attach roles to groups. Global role assignment will only work in Galaxy 4.6 or AAP 2.3 or later, while the targeted role assignment will work in Galaxy 4.7 or AAP 2.4 and above.
+
+Minor Changes
+-------------
+
+- Add arg spec to all roles
+- Add option to change async directory, and set the default to null. /tmp/.ansible_async was a workaround while the default was broken previously.
+- Add role option for proxy information rather than being forced to use global
+- Added argument spec for ansible_config role
+- Added auth_url option for automation_hub_list in ansible_config role
+- Added request_timeout option for plugins and roles in the collection
+- Changed ansible_config template to default to use ah_token and prevent two tokens being added
+- In ansible_config role, changed default singular value of ansible_config_list to take the validate_certs from the ah_validate_certs value as documented
+- Updated ah_groups module to use new Pulp endpoint. The change should be seamless.
+- Updated output in multiple roles to provide more information.
+- Updated server version lookup to remove the dev portion if working on a developmental version of Galaxy.
+- added more permissions to the ah_role modules. Consult your web UI to see what roles are available specific to your version.
+- added more roles to the dispatch role
+- ansible.cfg removed from root and galaxy.yml added to enable install from source
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Update collection repository roles to use allow for lists (you now need to have a name for each repo and update the variable name) as this has been expanded in the newer version of the product.
+
+Deprecated Features
+-------------------
+
+- Added warnings to ah_ee_namespace module to depreciate it and the ee_namespace role that they will be removed when support for AAP 2.2 ends in November of 2023.
+- Added warnings to ah_group_perm module to depreciate it and the group role that uses it they will be removed when support for AAP 2.2 ends in November of 2023.
+- Added warnings to ah_repository module to depreciate it and the repository role that they will be removed when support for AAP 2.3 ends in May of 2024.
+- Added warnings to ah_repository_sync module to depreciate it and the repository_sync role that they will be removed when support for AAP 2.3 ends in May of 2024.
+- ah_repository, ah_repository_sync modules and repository, repository_sync roles are being depreciated, they will be removed when support for AAP 2.3 ends in May of 2024.
+
+Bugfixes
+--------
+
+- Fix issue where changing an execution environment repository caused an error statingCannot make a PUT request to this endpoint.
+- Fixed a flake8 failure with comparison of types.
+- Fixed documentation for ansible_config role
+- Fixed role readme errors and standardised variable section of role readmes
+
 v1.1.1
 ======
 
@@ -50,7 +100,7 @@ Breaking Changes / Porting Guide
 New Modules
 -----------
 
-- ansible.automation_hub.ah_role - Manage a role of group permissions
+- infra.ah_configuration.ah_role - Manage a role of group permissions
 
 v1.0.1
 ======
@@ -199,7 +249,7 @@ Breaking Changes / Porting Guide
 New Modules
 -----------
 
-- ansible.automation_hub.ah_ee_registry - Manage private automation hub execution environment remote registries.
+- infra.ah_configuration.ah_ee_registry - Manage private automation hub execution environment remote registries.
 
 v0.6.1
 ======
@@ -209,7 +259,7 @@ Minor Changes
 
 - added namespace state absent module parameter
 - added new permision options to the ah_group_perm module and group role.
-- ah_ee_namespace and ah_ee_repository - adding the ``new_name`` parameter so that users can rename namespaces and repositories (https://github.com/ansible/galaxy_collection/issues/44)
+- ah_ee_namespace and ah_ee_repository - adding the ``new_name`` parameter so that users can rename namespaces and repositories (https://github.com/redhat-cop/ah_configuration/issues/44)
 - removed dependency for ansible.galaxy module which wasn't accessible in 2.12 Ansible
 
 v0.5.5
