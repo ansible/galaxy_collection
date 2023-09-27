@@ -1,0 +1,49 @@
+---
+
+dir_ah_filetree_vars: ah_filetree_vars
+env: dev
+ah_configuration_filetree_read_secure_logging: "{{ ah_configuration_secure_logging | default(true) }}"
+
+# Automation Hub lists
+ah_collections: []
+ah_collection_remotes: []
+ah_collection_repositories: []
+ah_ee_images: []
+ah_ee_registries: []
+ah_ee_repositories: []
+ah_groups: []
+ah_group_roles: []
+ah_namespaces: []
+ah_repositories: []
+ah_roles: []
+ah_users: []
+
+# Automation Hub Directory Path
+filetree_ah_collections: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_collections.d/"
+filetree_ah_collection_remotes: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_collection_remotes.d/"
+filetree_ah_collection_repositories: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_collection_repositories.d/"
+filetree_ah_ee_images: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_ee_images.d/"
+filetree_ah_ee_registries: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_ee_registries.d/"
+filetree_ah_ee_repositories: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_ee_repositories.d/"
+filetree_ah_groups: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_groups.d/"
+filetree_ah_group_roles: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_group_roles.d/"
+filetree_ah_namespaces: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_namespaces.d/"
+filetree_ah_repositories: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_repositories.d/"
+filetree_ah_roles: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_roles.d/"
+filetree_ah_users: "{{ dir_ah_filetree_vars }}/env/{{ env }}/ah_users.d/"
+
+# ah_filetree_read tasks order and name
+ah_configuration_filetree_read_tasks:
+  - {name: collections, var: ah_collections, tags: collections}
+  - {name: collection_remotes, var: ah_collection_remotes, tags: collection_remotes}
+  - {name: collection_repositories, var: ah_collection_repositories, tags: collection_repositories}
+  - {name: ee_images, var: ah_ee_images, tags: ee_images}
+  - {name: ee_registries, var: ah_ee_registries, tags: ee_registries}
+  - {name: ee_repositories, var: ah_ee_repositories, tags: ee_repositories}
+  - {name: groups, var: ah_groups, tags: groups}
+  - {name: group_roles, var: ah_group_roles, tags: group_roles}
+  - {name: namespaces, var: ah_namespaces, tags: namespaces}
+  - {name: repositories, var: ah_repositories, tags: repositories}
+  - {name: roles, var: ah_roles, tags: roles}
+  - {name: users, var: ah_users, tags: users}
+...

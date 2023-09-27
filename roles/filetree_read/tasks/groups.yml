@@ -1,0 +1,31 @@
+---
+- name: "Get list of files inside {{ filetree_ah_groups }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_ah_groups }}"
+    file_type: file
+    recurse: true
+  register: __list_files_ah_groups
+
+- name: "Read ah_groups definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_groups_definitions_item.path }}"
+  loop: "{{ __list_files_ah_groups.files }}"
+  loop_control:
+    loop_var: __read_groups_definitions_item
+  register: __contents_filetree_ah_groups
+
+- name: "Populate ah_groups list"
+  ansible.builtin.set_fact:
+    __populate_ah_groups: "{{ (__populate_ah_groups | default([])) + __populate_groups_list_item.ansible_facts.ah_groups }}"
+  loop: "{{ __contents_filetree_ah_groups.results }}"
+  loop_control:
+    loop_var: __populate_groups_list_item
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __contents_filetree_ah_groups.results is defined and __populate_groups_list_item.ansible_facts.ah_groups is defined
+
+- name: "Set ah_groups Data Structure"
+  ansible.builtin.set_fact:
+    ah_groups: "{{ __populate_ah_groups }}"
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __populate_ah_groups is defined
+...

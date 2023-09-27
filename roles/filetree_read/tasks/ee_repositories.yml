@@ -1,0 +1,31 @@
+---
+- name: "Get list of files inside {{ filetree_ah_ee_repositories }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_ah_ee_repositories }}"
+    file_type: file
+    recurse: true
+  register: __list_files_ah_ee_repositories
+
+- name: "Read ah_ee_repositories definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_ee_repositories_definitions_item.path }}"
+  loop: "{{ __list_files_ah_ee_repositories.files }}"
+  loop_control:
+    loop_var: __read_ee_repositories_definitions_item
+  register: __contents_filetree_ah_ee_repositories
+
+- name: "Populate ah_ee_repositories list"
+  ansible.builtin.set_fact:
+    __populate_ah_ee_repositories: "{{ (__populate_ah_ee_repositories | default([])) + __populate_ee_repositories_list_item.ansible_facts.ah_ee_repositories }}"
+  loop: "{{ __contents_filetree_ah_ee_repositories.results }}"
+  loop_control:
+    loop_var: __populate_ee_repositories_list_item
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __contents_filetree_ah_ee_repositories.results is defined and __populate_ee_repositories_list_item.ansible_facts.ah_ee_repositories is defined
+
+- name: "Set ah_ee_repositories Data Structure"
+  ansible.builtin.set_fact:
+    ah_ee_repositories: "{{ __populate_ah_ee_repositories }}"
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __populate_ah_ee_repositories is defined
+...

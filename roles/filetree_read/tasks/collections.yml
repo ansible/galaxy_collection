@@ -1,0 +1,31 @@
+---
+- name: "Get list of files inside {{ filetree_ah_collections }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_ah_collections }}"
+    file_type: file
+    recurse: true
+  register: __list_files_ah_collections
+
+- name: "Read ah_collections definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_collections_definitions_item.path }}"
+  loop: "{{ __list_files_ah_collections.files }}"
+  loop_control:
+    loop_var: __read_collections_definitions_item
+  register: __contents_filetree_ah_collections
+
+- name: "Populate ah_collections list"
+  ansible.builtin.set_fact:
+    __populate_ah_collections: "{{ (__populate_ah_collections | default([])) + __populate_collections_list_item.ansible_facts.ah_collections }}"
+  loop: "{{ __contents_filetree_ah_collections.results }}"
+  loop_control:
+    loop_var: __populate_collections_list_item
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __contents_filetree_ah_collections.results is defined and __populate_collections_list_item.ansible_facts.ah_collections is defined
+
+- name: "Set ah_collections Data Structure"
+  ansible.builtin.set_fact:
+    ah_collections: "{{ __populate_ah_collections }}"
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __populate_ah_collections is defined
+...
