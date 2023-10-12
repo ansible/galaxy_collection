@@ -48,12 +48,6 @@ EXAMPLES = """
   infra.ah_configuration.ah_token:
     ah_token: "{{ my_existing_token }}"
 
-- name: Delete this token
-  infra.ah_configuration.ah_token:
-    ah_token: "{{ ah_token }}"
-    state: absent
-
-- name: Create a new token using username/password
   infra.ah_configuration.ah_token:
     state: present
     ah_username: "{{ my_username }}"
