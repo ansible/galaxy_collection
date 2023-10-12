@@ -1,4 +1,4 @@
-# galaxy.galaxy.collection
+# infra.ah_configuration.collection
 
 ## Description
 

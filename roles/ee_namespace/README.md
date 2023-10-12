@@ -1,4 +1,4 @@
-# galaxy.galaxy.ee_namespace
+# infra.ah_configuration.ee_namespace
 
 ## Description
 

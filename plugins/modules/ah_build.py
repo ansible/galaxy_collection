@@ -50,8 +50,8 @@ options:
 
 
 EXAMPLES = """
-- name: Build galaxy.galaxy:v1.0.0
-  galaxy.galaxy.ah_build:
+- name: Build infra.ah_configuration:v1.0.0
+  infra.ah_configuration.ah_build:
     path: /home/ansible/ah_configuration
     force: true
     output_path: /var/tmp

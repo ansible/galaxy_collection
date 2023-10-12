@@ -40,21 +40,21 @@ options:
       choices: ["present", "absent"]
       default: "present"
       type: str
-extends_documentation_fragment: galaxy.galaxy.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 EXAMPLES = """
 - name: Create a new token using an existing token
-  galaxy.galaxy.ah_token:
+  infra.ah_configuration.ah_token:
     ah_token: "{{ my_existing_token }}"
 
 - name: Delete this token
-  galaxy.galaxy.ah_token:
+  infra.ah_configuration.ah_token:
     ah_token: "{{ ah_token }}"
     state: absent
 
 - name: Create a new token using username/password
-  galaxy.galaxy.ah_token:
+  infra.ah_configuration.ah_token:
     state: present
     ah_username: "{{ my_username }}"
     ah_password: "{{ my_password }}"

@@ -98,12 +98,12 @@ options:
     type: str
     default: present
     choices: [present, enforced, absent]
-extends_documentation_fragment: galaxy.galaxy.auth_ui
+extends_documentation_fragment: infra.ah_configuration.auth_ui
 """
 
 EXAMPLES = """
 - name: Ensure the group exists
-  galaxy.galaxy.group_roles:
+  infra.ah_configuration.group_roles:
     groups:
       - santa
       - group1

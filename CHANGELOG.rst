@@ -1,5 +1,5 @@
 ====================================
-galaxy.galaxy Release Notes
+infra.ah_configuration Release Notes
 ====================================
 
 .. contents:: Topics
@@ -50,7 +50,7 @@ Breaking Changes / Porting Guide
 New Modules
 -----------
 
-- galaxy.galaxy.ah_role - Manage a role of group permissions
+- infra.ah_configuration.ah_role - Manage a role of group permissions
 
 v1.0.1
 ======
@@ -199,7 +199,7 @@ Breaking Changes / Porting Guide
 New Modules
 -----------
 
-- galaxy.galaxy.ah_ee_registry - Manage private automation hub execution environment remote registries.
+- infra.ah_configuration.ah_ee_registry - Manage private automation hub execution environment remote registries.
 
 v0.6.1
 ======
