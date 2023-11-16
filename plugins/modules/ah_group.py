@@ -9,6 +9,7 @@
 
 
 from __future__ import absolute_import, division, print_function
+from packaging.version import Version
 
 __metaclass__ = type
 
@@ -82,10 +83,10 @@ def main():
     state = module.params.get("state")
     # Authenticate
     module.authenticate()
-    vers = module.get_server_version()
+    vers = Version(module.get_server_version())
 
     # Use Pulp with newer versions
-    if vers > "4.7.0":
+    if vers > Version("4.7.0"):
         group = AHPulpGroups(module)
         group.get_object(name)
     else:

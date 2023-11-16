@@ -9,6 +9,7 @@
 
 
 from __future__ import absolute_import, division, print_function
+from packaging.version import Version
 
 __metaclass__ = type
 
@@ -186,10 +187,10 @@ def main():
     module.authenticate()
 
     # Only recent versions support execution environment
-    vers = module.get_server_version()
-    if vers < "4.3.2":
+    vers = Version(module.get_server_version())
+    if vers < Version("4.3.2"):
         module.fail_json(msg="This module requires private automation hub version 4.3.2 or later. Your version is {vers}".format(vers=vers))
-    elif vers < "4.4.0" and registry:
+    elif vers < Version("4.4.0") and registry:
         module.fail_json(
             msg="This module requires private automation hub version 4.4.0 or later to create remote repositories. Your version is {vers}".format(vers=vers)
         )

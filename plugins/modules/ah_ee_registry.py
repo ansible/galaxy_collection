@@ -9,7 +9,7 @@
 
 
 from __future__ import absolute_import, division, print_function
-
+from packaging.version import Version
 __metaclass__ = type
 
 
@@ -189,7 +189,7 @@ def main():
     module.authenticate()
     vers = module.get_server_version()
     registry = AHUIEERegistry(module)
-    if vers > "4.7.0":
+    if Version(vers) > Version("4.7.0"):
         registry.id_field = "id"
     # Removing the registry
     if state == "absent":

@@ -9,6 +9,7 @@
 
 
 from __future__ import absolute_import, division, print_function
+from packaging.version import Version
 
 __metaclass__ = type
 
@@ -188,7 +189,7 @@ def main():
     module.authenticate()
 
     vers = module.get_server_version()
-    if vers < "4.3.2":
+    if Version(vers) < Version("4.3.2"):
         del FRIENDLY_PERM_NAMES["change_containernamespace_perms"]
         del FRIENDLY_PERM_NAMES["change_container"]
         del FRIENDLY_PERM_NAMES["change_image_tag"]

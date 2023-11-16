@@ -9,6 +9,7 @@
 from __future__ import absolute_import, division, print_function
 import time
 
+from packaging.version import Version
 from .ah_api_module import AHAPIModuleError
 from .ah_pulp_object import AHPulpTask
 
@@ -1070,7 +1071,7 @@ class AHUIEERepository(AHUIObject):
         """
         query = {self.name_field: name, "limit": "1000"}
         self.vers = vers
-        if vers < "4.7":
+        if Version(vers) < Version("4.7"):
             url = self.api.build_ui_url(self.endpoint, query_params=query)
         else:
             url = self.api.build_plugin_url(self.endpoint, query_params=query)
@@ -1158,7 +1159,7 @@ class AHUIEERepository(AHUIObject):
         :rtype: bool
         """
 
-        if self.vers < "4.7":
+        if Version(self.vers) < Version("4.7"):
             url = self.api.build_ui_url("{endpoint}/_content/sync".format(endpoint=self.id_endpoint))
         else:
             url = self.api.build_plugin_url("{endpoint}/_content/sync".format(endpoint=self.id_endpoint))
@@ -1230,7 +1231,7 @@ class AHUIEERepository(AHUIObject):
         if not self.exists:
             return ""
 
-        if self.vers < "4.7":
+        if Version(self.vers) < Version("4.7"):
             url = self.api.build_ui_url("{endpoint}/_content/readme".format(endpoint=self.id_endpoint))
         else:
             url = self.api.build_plugin_url("{endpoint}/_content/readme".format(endpoint=self.id_endpoint))
@@ -1289,7 +1290,7 @@ class AHUIEERepository(AHUIObject):
                 self.api.exit_json(**json_output)
             return True
 
-        if self.vers < "4.7":
+        if Version(self.vers) < Version("4.7"):
             url = self.api.build_ui_url("{endpoint}/_content/readme".format(endpoint=self.id_endpoint))
         else:
             url = self.api.build_plugin_url("{endpoint}/_content/readme".format(endpoint=self.id_endpoint))
@@ -1579,7 +1580,7 @@ class AHUIEEImage(AHUIObject):
         self.image_name = name
         self.tag = tag
         self.vers = vers
-        if vers < "4.7":
+        if Version(vers) < Version("4.7"):
             url = self.api.build_ui_url(self.id_endpoint, query_params={"limit": 1000})
         else:
             url = self.api.build_plugin_url(self.id_endpoint, query_params={"limit": 1000})

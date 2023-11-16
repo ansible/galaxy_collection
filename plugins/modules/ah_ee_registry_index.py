@@ -5,7 +5,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-
+from packaging.version import Version
 __metaclass__ = type
 
 
@@ -91,7 +91,7 @@ def main():
     module.authenticate()
     vers = module.get_server_version()
     registry = AHUIEERegistry(module)
-    if vers > "4.7.0":
+    if Version(vers) > Version("4.7.0"):
         registry.id_field = "id"
     registry.get_object(name, vers)
 

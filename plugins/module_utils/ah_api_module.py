@@ -16,6 +16,8 @@ import socket
 import json
 import time
 
+from packaging.version import Version
+
 from ansible.module_utils.basic import AnsibleModule, env_fallback
 from ansible.module_utils._text import to_bytes, to_text
 
@@ -134,7 +136,7 @@ class AHAPIModule(AnsibleModule):
         self.plugin_path_prefix = "{galaxy_prefix}/v3/plugin".format(galaxy_prefix=self.galaxy_path_prefix)
         self.authenticate()
         self.server_version = self.get_server_version()
-        if self.server_version < "4.6":
+        if Version(self.server_version) < Version("4.6"):
             self.pulp_path_prefix = "/pulp/api/v3"
         else:
             self.pulp_path_prefix = "{galaxy_prefix}/pulp/api/v3".format(galaxy_prefix=self.galaxy_path_prefix)
