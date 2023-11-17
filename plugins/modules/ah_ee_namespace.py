@@ -9,7 +9,6 @@
 
 
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.compat.version import LooseVersion as Version
 
 __metaclass__ = type
 
@@ -126,6 +125,7 @@ EXAMPLES = r"""
 
 RETURN = r""" # """
 
+from ansible.module_utils.compat.version import LooseVersion as Version
 from ..module_utils.ah_api_module import AHAPIModule, AHAPIModuleError
 from ..module_utils.ah_ui_object import AHUIGroup, AHUIEENamespace
 from ..module_utils.ah_pulp_object import AHPulpEENamespace, AHPulpEERepository
@@ -234,10 +234,10 @@ def main():
     module.authenticate()
 
     # Only recent versions support execution environment
-    vers = Version(module.get_server_version())
-    if vers > Version("4.6.3"):
+    vers = module.get_server_version()
+    if Version(vers) > Version("4.6.3"):
         module.fail_json(msg="This module requires private automation hub version 4.6.2 or earlier. Your version is {vers}".format(vers=vers))
-    elif vers < Version("4.3.2"):
+    elif Version(vers) < Version("4.3.2"):
         module.fail_json(msg="This module requires private automation hub version 4.3.2 or later. Your version is {vers}".format(vers=vers))
 
     # Process the object from the Pulp API (delete or create)

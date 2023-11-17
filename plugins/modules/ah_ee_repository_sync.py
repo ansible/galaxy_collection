@@ -5,7 +5,6 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.compat.version import LooseVersion as Version
 
 __metaclass__ = type
 
@@ -88,7 +87,7 @@ def main():
     timeout = module.params.get("timeout")
 
     module.authenticate()
-    vers = Version(module.get_server_version())
+    vers = module.get_server_version()
     repository = AHUIEERepository(module)
     repository.get_object(name, vers)
 

@@ -9,7 +9,6 @@
 
 
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.compat.version import LooseVersion as Version
 
 __metaclass__ = type
 
@@ -143,6 +142,7 @@ EXAMPLES = r"""
 
 RETURN = r""" # """
 
+from ansible.module_utils.compat.version import LooseVersion as Version
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIEERegistry
 

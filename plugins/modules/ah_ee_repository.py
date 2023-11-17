@@ -9,7 +9,6 @@
 
 
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.compat.version import LooseVersion as Version
 
 __metaclass__ = type
 
@@ -130,6 +129,7 @@ RETURN = r""" # """
 import os
 import os.path
 
+from ansible.module_utils.compat.version import LooseVersion as Version
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIEERepository, AHUIEERegistry, AHUIEERemote
 from ..module_utils.ah_pulp_object import AHPulpEERepository, AHPulpEENamespace
@@ -187,10 +187,10 @@ def main():
     module.authenticate()
 
     # Only recent versions support execution environment
-    vers = Version(module.get_server_version())
-    if vers < Version("4.3.2"):
+    vers = module.get_server_version()
+    if Version(vers) < Version("4.3.2"):
         module.fail_json(msg="This module requires private automation hub version 4.3.2 or later. Your version is {vers}".format(vers=vers))
-    elif vers < Version("4.4.0") and registry:
+    elif Version(vers) < Version("4.4.0") and registry:
         module.fail_json(
             msg="This module requires private automation hub version 4.4.0 or later to create remote repositories. Your version is {vers}".format(vers=vers)
         )

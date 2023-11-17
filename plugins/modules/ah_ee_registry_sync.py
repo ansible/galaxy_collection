@@ -5,7 +5,6 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-from ansible.module_utils.compat.version import LooseVersion as Version
 
 __metaclass__ = type
 
@@ -65,6 +64,7 @@ EXAMPLES = """
     timeout: 300
 """
 
+from ansible.module_utils.compat.version import LooseVersion as Version
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIEERegistry
 
