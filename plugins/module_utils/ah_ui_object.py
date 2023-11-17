@@ -9,7 +9,8 @@
 from __future__ import absolute_import, division, print_function
 import time
 
-from packaging.version import Version
+
+from ansible.module_utils.compat.version import LooseVersion as Version
 from .ah_api_module import AHAPIModuleError
 from .ah_pulp_object import AHPulpTask
 

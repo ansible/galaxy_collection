@@ -9,7 +9,8 @@
 
 
 from __future__ import absolute_import, division, print_function
-from packaging.version import Version
+from ansible.module_utils.compat.version import LooseVersion as Version
+
 __metaclass__ = type
 
 

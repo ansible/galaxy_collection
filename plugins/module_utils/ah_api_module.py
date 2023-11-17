@@ -16,7 +16,7 @@ import socket
 import json
 import time
 
-from packaging.version import Version
+from ansible.module_utils.compat.version import LooseVersion as Version
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback
 from ansible.module_utils._text import to_bytes, to_text
