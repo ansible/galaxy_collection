@@ -3,6 +3,7 @@
 ## Description
 
 An Ansible Role to sync Repositories in Automation Hub.
+This role has been depreciated and is not supported in AAP 2.4 onwards. It is replaced by collection_remote_sync.
 
 ## Variables
 
@@ -64,17 +65,9 @@ This also speeds up the overall role.
 
 ```yaml
 ---
-ah_repository_certified:
-  url: 'https://cloud.redhat.com/api/automation-hub/<custom_sync_url_from_cloud>'
-  token: 'secretToken'
+ah_repositories:
+  - name: community
 
-ah_repository_community:
-  url: https://galaxy.ansible.com/api/
-  requirements:
-    - infra.ah_configuration
-    - infra.controller_configuration
-    - infra.aap_utilities
-    - infra.ee_utilities
 ```
 
 ## Playbook Examples
