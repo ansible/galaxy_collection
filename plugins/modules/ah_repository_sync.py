@@ -11,7 +11,7 @@ __metaclass__ = type
 
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
-    "status": ["preview"],
+    "status": ["deprecated"],
     "supported_by": "community",
 }
 
@@ -24,6 +24,11 @@ short_description: Configure a repository.
 description:
     - Configure an Automation Hub remote Repository. See
       U(https://www.ansible.com/) for an overview.
+deprecated:
+  why: The endpoint has been removed and is not supported in AAP 2.4 onwards. It's functionality has been replaced by collection_remote_sync.
+  alternative: collection_repository_sync
+  removed_in: 3.0.0
+  removed_from_collection: galaxy.galaxy
 options:
     name:
       description:
@@ -47,18 +52,18 @@ options:
         - If waiting for the project to update this will abort after this
           amount of seconds
       type: int
-extends_documentation_fragment: ansible.automation_hub.auth
+extends_documentation_fragment: galaxy.galaxy.auth
 """
 
 
 EXAMPLES = """
 - name: Sync rh-certified repo without waiting
-  ansible.automation_hub.ah_repository_sync:
+  galaxy.galaxy.ah_repository_sync:
     name: rh-certified
     wait: false
 
 - name: Sync community repo and wait up to 60 seconds
-  ansible.automation_hub.ah_repository_sync:
+  galaxy.galaxy.ah_repository_sync:
     name: community
     wait: true
     timeout: 60
@@ -79,6 +84,9 @@ def main():
 
     # Create a module for ourselves
     module = AHModule(argument_spec=argument_spec)
+    module.warn("This role 'repository_sync' and module 'ah_repository_sync' will be removed when support for AAP 2.3 ends in May of 2024. "
+                "The module and role collection_repository_sync replaced it."
+                )
 
     # Extract our parameters
     name = module.params.get("name")

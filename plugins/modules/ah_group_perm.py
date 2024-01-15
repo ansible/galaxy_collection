@@ -13,6 +13,11 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['deprecated'],
+                    'supported_by': 'community'}
+
+
 DOCUMENTATION = r"""
 ---
 module: ah_group_perm
@@ -21,6 +26,11 @@ description:
   - Add and remove permissions for a group.
 version_added: '0.4.3'
 author: Herve Quatremain (@herve4m)
+deprecated:
+  why: The endpoint has been removed and is not supported in AAP 2.3 onwards. It is replaaced by role permisions.
+  alternative: None
+  removed_in: 3.0.0
+  removed_from_collection: galaxy.galaxy
 options:
   name:
     description:
@@ -55,8 +65,8 @@ options:
     default: present
     choices: [absent, present]
 seealso:
-  - module: ansible.automation_hub.ah_group
-  - module: ansible.automation_hub.ah_user
+  - module: galaxy.galaxy.ah_group
+  - module: galaxy.galaxy.ah_user
 notes:
   - Supports C(check_mode).
   - This module only works up to Automation Hub version 4.5 (AAP 2.2)
@@ -64,13 +74,13 @@ notes:
     C(change_container), C(change_image_tag), C(create_container), and
     C(push_container)) are only available with private automation hub v4.3.2 or
     later.
-extends_documentation_fragment: ansible.automation_hub.auth_ui
+extends_documentation_fragment: galaxy.galaxy.auth_ui
 """
 
 
 EXAMPLES = r"""
 - name: Ensure the operators have the correct permissions to manage users
-  ansible.automation_hub.ah_group_perm:
+  galaxy.galaxy.ah_group_perm:
     name: operators
     perms:
       - add_user
@@ -83,7 +93,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the administrators have all the permissions
-  ansible.automation_hub.ah_group_perm:
+  galaxy.galaxy.ah_group_perm:
     name: administrators
     perms: "*"
     state: present
@@ -92,7 +102,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the developers cannot manage groups nor users
-  ansible.automation_hub.ah_group_perm:
+  galaxy.galaxy.ah_group_perm:
     name: developers
     perms:
       - add_user
@@ -165,6 +175,9 @@ def main():
 
     # Create a module for ourselves
     module = AHAPIModule(argument_spec=argument_spec, supports_check_mode=True)
+    module.warn("This module 'ah_group_perm' and the group permision part of the role 'group' will be removed when support for AAP 2.2 "
+                "ends in November of 2023. It was replaced with role permissions in 2.3."
+                )
 
     # Extract our parameters
     name = module.params.get("name")

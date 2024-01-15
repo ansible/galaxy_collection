@@ -1,4 +1,4 @@
-# ansible.automation_hub.role
+# galaxy.galaxy.role
 
 ## Description
 
@@ -61,11 +61,17 @@ The module accepts the following roles:
 - For user management, `add_user`, `change_user`, `delete_user`, and `view_user`.
 - For group management, `add_group`, `change_group`, `delete_group`, and `view_group`.
 - For collection namespace management, `add_namespace`, `change_namespace`, `upload_to_namespace`, and `delete_namespace`.
-- For collection content management, `modify_ansible_repo_content`, and `delete_collection`.
-- For remote repository configuration, `change_collectionremote` and `view_collectionremote`.
-- For container image management, only with private automation hub v4.3.2
-  or later, `change_containernamespace_perms`, `change_container`,
-  `change_image_tag`, `create_container`, `push_container`, and `delete_containerrepository`.
+- For collection content management, `modify_ansible_repo_content`, `delete_collection`, and `sign_ansiblerepository`.
+- For remote repository configuration, `change_collectionremote`, `view_collectionremote`,
+  `add_collectionremote`, `delete_collectionremote`, and `manage_roles_collectionremote`.
+- For Ansible Repository management, only with private automation hub v4.7.0
+  `add_ansiblerepository`, `change_ansiblerepository`, `delete_ansiblerepository`, `manage_roles_ansiblerepository`,
+  `repair_ansiblerepository`, `view_ansiblerepository`,
+- For container image management, only with private automation hub v4.3.2 or later,
+  `change_containernamespace_perms`, `change_container`, `change_image_tag`, `create_container`,
+  Push existing container `push_container`, `namespace_add_containerdistribution`, `manage_roles_containernamespace`,
+  and `delete_containerrepository`.
+- For remote registry management, `add_containerregistryremote`, `change_containerregistryremote`, and`delete_containerregistryremote`.
 - For task management, `change_task`, `view_task`, and `delete_task`.
 - You can also grant or revoke all permissions with `*` or `all`.
 
@@ -99,7 +105,6 @@ ah_roles:
     ah_validate_certs: false
   # Define following vars here, or in ah_configs/ah_auth.yml
   # ah_host: ansible-ah-web-svc-test-project.example.com
-  # ah_token: changeme
   pre_tasks:
     - name: Include vars from ah_configs directory
       ansible.builtin.include_vars:

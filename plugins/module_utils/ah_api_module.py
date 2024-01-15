@@ -17,6 +17,7 @@ import json
 import time
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback
+from ansible.module_utils.compat.version import LooseVersion as Version
 from ansible.module_utils._text import to_bytes, to_text
 
 from ansible.module_utils.six.moves.urllib.parse import urlparse, urlencode
@@ -96,6 +97,8 @@ class AHAPIModule(AnsibleModule):
             self.params = direct_params
         else:
             super(AHAPIModule, self).__init__(argument_spec=full_argspec, **kwargs)
+
+        self.json_output = {'changed': False}
 
         # Update the current object with the provided parameters
         for short_param, long_param in self.short_params.items():
@@ -291,7 +294,9 @@ class AHAPIModule(AnsibleModule):
         try:
             response_body = response.read()
         except Exception as e:
-            if response["json"]["errors"]:
+            if response["json"]["non_field_errors"]:
+                raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["json"]["non_field_errors"]))
+            elif response["json"]["errors"]:
                 raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["json"]["errors"]))
             elif response["text"]:
                 raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["text"]))
@@ -481,9 +486,9 @@ class AHAPIModule(AnsibleModule):
     def get_server_version(self):
         """Return the automation hub/galaxy server version.
 
-        :return: the server version ("4.2.5" for example) or an empty string if
+        :return: the server Version("4.2.5") for example or Version("0") if
                  that information is not available.
-        :rtype: str
+        :rtype: Version
         """
         url = self._build_url(self.galaxy_path_prefix)
         try:
@@ -497,4 +502,6 @@ class AHAPIModule(AnsibleModule):
             else:
                 fail_msg = "Unable to get server version: {code}".format(code=response["status_code"])
             self.fail_json(msg=fail_msg)
-        return response["json"]["server_version"] if "server_version" in response["json"] else ""
+        return Version(
+            response["json"]["server_version"].replace('dev', '') if "server_version" in response["json"] else "0"
+        )

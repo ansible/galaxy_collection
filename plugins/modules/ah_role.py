@@ -38,11 +38,16 @@ options:
       - For user management, C(add_user), C(change_user), C(delete_user), and C(view_user).
       - For group management, C(add_group), C(change_group), C("delete_group"), and C(view_group).
       - For collection namespace management, C(add_namespace), C(change_namespace), C(upload_to_namespace), and C(delete_namespace).
-      - For collection content management, C(modify_ansible_repo_content), and C(delete_collection).
-      - For remote repository configuration, C(change_collectionremote), and C(view_collectionremote).
-      - For container image management, only with private automation hub v4.3.2
-        or later, C(change_containernamespace_perms), C(change_container),
-        C(change_image_tag), C(create_container), and C(push_container), and C(delete_containerrepository).
+      - For collection content management, C(modify_ansible_repo_content), C(delete_collection), and C(sign_ansiblerepository).
+      - For remote repository configuration, C(change_collectionremote), C(view_collectionremote),
+        C(add_collectionremote), C(delete_collectionremote), and C(manage_roles_collectionremote).
+      - For Ansible Repository management, only with private automation hub v4.7.0
+        C(add_ansiblerepository), C(change_ansiblerepository), C(delete_ansiblerepository), C(manage_roles_ansiblerepository),
+        C(repair_ansiblerepository), C(view_ansiblerepository),
+      - For container image management, only with private automation hub v4.3.2 or later,
+        C(change_containernamespace_perms), C(change_container), C(change_image_tag), C(create_container),
+        Push existing container C(push_container), C(namespace_add_containerdistribution), C(manage_roles_containernamespace),
+        and C(delete_containerrepository).
       - For remote registry management, C(add_containerregistryremote), C(change_containerregistryremote), and C(delete_containerregistryremote).
       - For task management, C(change_task), C(view_task), and C(delete_task).
       - You can also grant or revoke all permissions with C(*) or C(all).
@@ -58,18 +63,18 @@ options:
     default: present
     choices: [absent, present]
 seealso:
-  - module: ansible.automation_hub.ah_group
-  - module: ansible.automation_hub.ah_user
+  - module: galaxy.galaxy.ah_group
+  - module: galaxy.galaxy.ah_user
 notes:
   - Supports C(check_mode).
   - This module only works up to Automation Hub version 4.6 (AAP 2.3)
-extends_documentation_fragment: ansible.automation_hub.auth_ui
+extends_documentation_fragment: galaxy.galaxy.auth_ui
 """
 
 
 EXAMPLES = r"""
 - name: Ensure the operators have the correct permissions to manage users
-  ansible.automation_hub.ah_role:
+  galaxy.galaxy.ah_role:
     name: galaxy.operators
     perms:
       - add_user
@@ -82,7 +87,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the administrators have all the permissions
-  ansible.automation_hub.ah_role:
+  galaxy.galaxy.ah_role:
     name: galaxy.administrators
     perms: "*"
     state: present
@@ -91,7 +96,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the developers cannot manage groups nor users
-  ansible.automation_hub.ah_role:
+  galaxy.galaxy.ah_role:
     name: galaxy.developers
     perms:
       - add_user
@@ -123,6 +128,7 @@ FRIENDLY_PERM_NAMES = {
     # Collections
     "modify_ansible_repo_content": "ansible.modify_ansible_repo_content",
     "delete_collection": "ansible.delete_collection",
+    "sign_ansiblerepository": "ansible.sign_ansiblerepository",
     # Users
     "add_user": "galaxy.add_user",
     "change_user": "galaxy.change_user",
@@ -136,12 +142,24 @@ FRIENDLY_PERM_NAMES = {
     # Remotes (Collections)
     "change_collectionremote": "ansible.change_collectionremote",
     "view_collectionremote": "ansible.view_collectionremote",
+    "add_collectionremote": "ansible.add_collectionremote",
+    "delete_collectionremote": "ansible.delete_collectionremote",
+    "manage_roles_collectionremote": "ansible.manage_roles_collectionremote",
+    # Ansible Repository (Collections)
+    "add_ansiblerepository": "ansible.add_ansiblerepository",
+    "change_ansiblerepository": "ansible.change_ansiblerepository",
+    "delete_ansiblerepository": "ansible.delete_ansiblerepository",
+    "manage_roles_ansiblerepository": "ansible.manage_roles_ansiblerepository",
+    "repair_ansiblerepository": "ansible.repair_ansiblerepository",
+    "view_ansiblerepository": "ansible.view_ansiblerepository",
     # Containers
     "change_containernamespace_perms": "container.change_containernamespace",
     "change_container": "container.namespace_change_containerdistribution",
     "change_image_tag": "container.namespace_modify_content_containerpushrepository",
     "create_container": "container.add_containernamespace",
     "push_container": "container.namespace_push_containerdistribution",
+    "namespace_add_containerdistribution": "container.namespace_add_containerdistribution",
+    "manage_roles_containernamespace": "container.manage_roles_containernamespace",
     "delete_containerrepository": "container.delete_containerrepository",
     # Remote Registries
     "add_containerregistryremote": "galaxy.add_containerregistryremote",

@@ -1,8 +1,9 @@
-# ansible.automation_hub.repository
+# galaxy.galaxy.repository
 
 ## Description
 
 An Ansible Role to create Repositories in Automation Hub.
+This role has been depreciated and is not supported in AAP 2.4 onwards. It is replaced by collection_remote.
 
 ## Variables
 
@@ -77,23 +78,19 @@ This also speeds up the overall role.
 |`client_cert_path`|""|no|Path to a PEM encoded client certificate used for authentication||
 |`ca_cert_path`|""|no|Path to a PEM encoded CA certificate used for authentication||
 
-### Standard Project Data Structure
-
 #### Yaml Example
 
 ```yaml
 ---
-ah_repository_certified:
-  url: 'https://cloud.redhat.com/api/automation-hub/<custom_sync_url_from_cloud>'
-  token: 'secretToken'
-
-ah_repository_community:
-  url: https://galaxy.ansible.com/api/
-  requirements:
-    - ansible.automation_hub
-    - infra.controller_configuration
-    - infra.aap_utilities
-    - infra.ee_utilities
+ah_repositories:
+  - name: community
+    url: https://beta-galaxy.ansible.com/
+    requirements:
+      - name: infra.ee_utilities
+      - name: infra.controller_configuration
+    wait: true
+    interval: 25
+    timeout: 1000000
 ```
 
 ## Playbook Examples

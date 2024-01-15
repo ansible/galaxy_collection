@@ -36,16 +36,16 @@ options:
     default: present
     choices: [absent, present]
 seealso:
-  - module: ansible.automation_hub.ah_group_perm
-  - module: ansible.automation_hub.ah_user
+  - module: galaxy.galaxy.ah_group_perm
+  - module: galaxy.galaxy.ah_user
 notes:
   - Supports C(check_mode).
-extends_documentation_fragment: ansible.automation_hub.auth_ui
+extends_documentation_fragment: galaxy.galaxy.auth_ui
 """
 
 EXAMPLES = r"""
 - name: Ensure the group exists
-  ansible.automation_hub.ah_group:
+  galaxy.galaxy.ah_group:
     name: administrators
     state: present
     ah_host: hub.example.com
@@ -53,7 +53,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the group is removed
-  ansible.automation_hub.ah_group:
+  galaxy.galaxy.ah_group:
     name: operators
     state: absent
     ah_host: hub.example.com
@@ -65,6 +65,7 @@ RETURN = r""" # """
 
 from ..module_utils.ah_api_module import AHAPIModule
 from ..module_utils.ah_ui_object import AHUIGroup
+from ..module_utils.ah_pulp_object import AHPulpGroups
 
 
 def main():
@@ -79,23 +80,22 @@ def main():
     # Extract our parameters
     name = module.params.get("name")
     state = module.params.get("state")
-
     # Authenticate
     module.authenticate()
     vers = module.get_server_version()
-    group = AHUIGroup(module)
 
-    # Get the group details from its name.
-    # API (GET): /api/galaxy/_ui/v1/groups/?name=<group_name>
-    group.get_object(name, vers)
-
+    # Use Pulp with newer versions
+    if vers > "4.7.0":
+        group = AHPulpGroups(module)
+        group.get_object(name)
+    else:
+        group = AHUIGroup(module)
+        group.get_object(name, vers)
     # Removing the group
     if state == "absent":
         group.delete()
 
-    # Creating the group. The group can never be updated (name change) because
-    # the API does not allow it.
-    # API (POST): /api/galaxy/_ui/v1/groups/
+    # Creating the group.
     group.create_or_update({"name": name})
 
 

@@ -1,8 +1,8 @@
-# ansible.automation_hub.user
+# galaxy.galaxy.user
 
 ## Description
 
-An Ansible Role to create execution environment images in Automation Hub.
+An Ansible Role to create users in Automation Hub.
 
 ## Variables
 
@@ -56,7 +56,7 @@ This also speeds up the overall role.
 |`last_name`|""|no|str|User's last name.|
 |`email`|""|no|str|User's email address.|
 |`is_superuser`|false|no|bool|Whether the user is a superuser.|
-|`password`|""|no|bool|User's password as a clear string. The password must contain at least 9 characters with numbers or special characters.|
+|`password`|""|no|str|User's password as a clear string. The password must contain at least 9 characters with numbers or special characters.|
 |`state`|`present`|no|str|Desired state of the user.|
 <!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
 
@@ -93,7 +93,6 @@ ah_users:
     ah_validate_certs: false
   # Define following vars here, or in ah_configs/ah_auth.yml
   # ah_host: ansible-ah-web-svc-test-project.example.com
-  # ah_token: changeme
   pre_tasks:
     - name: Include vars from ah_configs directory
       ansible.builtin.include_vars:
