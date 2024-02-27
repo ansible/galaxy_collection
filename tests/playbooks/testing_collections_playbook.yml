@@ -4,7 +4,7 @@
   connection: local
   gather_facts: false
   collections:
-    - galaxy.galaxy
+    - infra.ah_configuration
   pre_tasks:
     - name: Include vars from ah_configs directory
       ansible.builtin.include_vars:

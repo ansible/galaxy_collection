@@ -1,4 +1,4 @@
-# galaxy.galaxy.group
+# infra.ah_configuration.group
 
 ## Description
 

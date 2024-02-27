@@ -6,7 +6,7 @@
 
 - name: Import ah_configuration role
   ansible.builtin.import_role:
-    name: galaxy.galaxy.namespace
+    name: infra.ah_configuration.namespace
   tags:
     - namespaces
 ...

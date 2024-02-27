@@ -72,16 +72,16 @@ options:
     default: present
     choices: [absent, present]
 seealso:
-  - module: galaxy.galaxy.ah_group_perm
-  - module: galaxy.galaxy.ah_group
+  - module: infra.ah_configuration.ah_group_perm
+  - module: infra.ah_configuration.ah_group
 notes:
   - Supports C(check_mode).
-extends_documentation_fragment: galaxy.galaxy.auth_ui
+extends_documentation_fragment: infra.ah_configuration.auth_ui
 """
 
 EXAMPLES = r"""
 - name: Ensure the user exists
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username: lvasquez
     first_name: Lena
     last_name: Vasquez
@@ -95,7 +95,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the user is removed
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username:  dwilde
     state: absent
     ah_host: hub.example.com
@@ -103,7 +103,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the user only belongs to the operators and developers groups
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username: qhazelrigg
     state: present
     groups:
@@ -115,7 +115,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the user is added to the managers group
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username: chorwitz
     state: present
     groups:
@@ -126,7 +126,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the password is changed
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username: jziglar
     state: present
     password: bQtVeBUK2F
@@ -135,7 +135,7 @@ EXAMPLES = r"""
     ah_password: Sup3r53cr3t
 
 - name: Ensure the user is a super user
-  galaxy.galaxy.ah_user:
+  infra.ah_configuration.ah_user:
     username:  ekrob
     state: present
     is_superuser: true

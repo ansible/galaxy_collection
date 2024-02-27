@@ -28,7 +28,7 @@ deprecated:
   why: The endpoint has been removed and is not supported in AAP 2.4 onwards. It is replaced by collection_remote
   alternative: collection_remote
   removed_in: 3.0.0
-  removed_from_collection: galaxy.galaxy
+  removed_from_collection: infra.ah_configuration
 options:
     name:
       description:
@@ -129,28 +129,28 @@ options:
       type: str
       default: "8"
 
-extends_documentation_fragment: galaxy.galaxy.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 
 EXAMPLES = """
 - name: Configure rh-certified repo
-  galaxy.galaxy.ah_repository:
+  infra.ah_configuration.ah_repository:
     name: rh-certified
     url: https://cloud.redhat.com/api/automation-hub/
     token: aabbcc
     auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
 
 - name: Configure community repo
-  galaxy.galaxy.ah_repository:
+  infra.ah_configuration.ah_repository:
     name: community
     url: https://galaxy.ansible.com/api/
     requirements:
-      - galaxy.galaxy
+      - infra.ah_configuration
       - infra.controller_configuration
 
 - name: Configure community repo from a file
-  galaxy.galaxy.ah_repository:
+  infra.ah_configuration.ah_repository:
     name: community
     url: https://galaxy.ansible.com/api/
     requirements_file: "/tmp/requirements.yml"

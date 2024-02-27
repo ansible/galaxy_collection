@@ -1,4 +1,4 @@
 ---
 collections:
-  - name: galaxy.galaxy
+  - name: infra.ah_configuration
 ...

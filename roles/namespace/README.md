@@ -1,4 +1,4 @@
-# galaxy.galaxy.namespace
+# infra.ah_configuration.namespace
 
 ## Description
 

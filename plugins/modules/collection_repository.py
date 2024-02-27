@@ -106,7 +106,7 @@ options:
       type: str
       choices: ["present", "absent"]
       default: present
-extends_documentation_fragment: galaxy.galaxy.auth_ui
+extends_documentation_fragment: infra.ah_configuration.auth_ui
 """
 
 

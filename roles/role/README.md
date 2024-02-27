@@ -1,4 +1,4 @@
-# galaxy.galaxy.role
+# infra.ah_configuration.role
 
 ## Description
 

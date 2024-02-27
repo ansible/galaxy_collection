@@ -31,7 +31,7 @@ Click the `Content` button to see the list of content included in this collectio
 You can install the galaxy galaxy collection with the Ansible Galaxy CLI:
 
 ```bash
-ansible-galaxy collection install galaxy.galaxy
+ansible-galaxy collection install infra.ah_configuration
 ```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
@@ -39,7 +39,7 @@ You can also include it in a `requirements.yml` file and install it with `ansibl
 ```yaml
 ---
 collections:
-  - name: galaxy.galaxy
+  - name: infra.ah_configuration
     # If you need a specific version of the collection, you can specify like this:
     # version: ...
 ```

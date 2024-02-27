@@ -1,5 +1,98 @@
 objects:
-  role: {}
+  role:
+    ansible_config:
+      description: An Ansible Role to create ansible.cfg files based on your Automation
+        Hub servers
+      name: ansible_config
+      version_added: null
+    collection:
+      description: An Ansible Role to update, or destroy Automation Hub Collections.
+      name: collection
+      version_added: null
+    collection_remote:
+      description: An Ansible Role to create collection remotes in Automation Hub.
+      name: collection_remote
+      version_added: null
+    collection_repository:
+      description: An Ansible Role to create collection remotes in Automation Hub.
+      name: collection_repository
+      version_added: null
+    collection_repository_sync:
+      description: An Ansible Role to create collection remotes in Automation Hub.
+      name: collection_repository_sync
+      version_added: null
+    dispatch:
+      description: An Ansible Role to run all roles for which variables are found
+        on Ansible Automation Hub.
+      name: dispatch
+      version_added: null
+    ee_image:
+      description: An Ansible Role to create execution environment images in Automation
+        Hub.
+      name: ee_image
+      version_added: null
+    ee_namespace:
+      description: An Ansible Role to create execution environment namespaces in Automation
+        Hub.
+      name: ee_namespace
+      version_added: null
+    ee_registry:
+      description: An Ansible Role to create execution environment registry in Automation
+        Hub.
+      name: ee_registry
+      version_added: null
+    ee_registry_index:
+      description: An Ansible Role to index execution environment registries in Automation
+        Hub.
+      name: ee_registry_index
+      version_added: null
+    ee_registry_sync:
+      description: An Ansible Role to sync execution environment registries in Automation
+        Hub.
+      name: ee_registry_sync
+      version_added: null
+    ee_repository:
+      description: An Ansible Role to create execution environment repositories in
+        Automation Hub.
+      name: ee_repository
+      version_added: null
+    ee_repository_sync:
+      description: An Ansible Role to sync execution environment repositories in Automation
+        Hub.
+      name: ee_repository_sync
+      version_added: null
+    group:
+      description: An Ansible Role to create groups in Automation Hub.
+      name: group
+      version_added: null
+    group_roles:
+      description: An Ansible Role to create groups roles in Automation Hub.
+      name: group_roles
+      version_added: null
+    namespace:
+      description: An Ansible Role to create namespaces in Automation Hub.
+      name: namespace
+      version_added: null
+    publish:
+      description: An Ansible Role to publish collections in Automation Hub.
+      name: publish
+      version_added: null
+    repository:
+      description: An Ansible Role to create repositories in Automation Hub.
+      name: repository
+      version_added: null
+    repository_sync:
+      description: An Ansible Role to sync repositories in Automation Hub.
+      name: repository_sync
+      version_added: null
+    role:
+      description: An Ansible Role to create role permissions in Automation Hub.
+      name: role
+      version_added: null
+    user:
+      description: An Ansible Role to create users in Automation Hub.
+      name: user
+      version_added: null
 plugins:
   become: {}
   cache: {}
@@ -110,9 +203,29 @@ plugins:
       name: ah_user
       namespace: ''
       version_added: 0.4.3
+    collection_remote:
+      description: Configure a collection remote repository.
+      name: collection_remote
+      namespace: ''
+      version_added: null
+    collection_repository:
+      description: Create, Update, Delete repository.
+      name: collection_repository
+      namespace: ''
+      version_added: null
+    collection_repository_sync:
+      description: Sync an Automation Hub collection repository.
+      name: collection_repository_sync
+      namespace: ''
+      version_added: null
+    group_roles:
+      description: Add roles to private automation hub user groups
+      name: group_roles
+      namespace: ''
+      version_added: 2.0.0
   netconf: {}
   shell: {}
   strategy: {}
   test: {}
   vars: {}
-version: 1.1.1
+version: 2.0.4

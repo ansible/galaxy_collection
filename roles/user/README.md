@@ -1,4 +1,4 @@
-# galaxy.galaxy.user
+# infra.ah_configuration.user
 
 ## Description
 

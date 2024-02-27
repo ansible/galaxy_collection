@@ -1,4 +1,4 @@
-# galaxy.galaxy.repository_sync
+# infra.ah_configuration.repository_sync
 
 ## Description
 

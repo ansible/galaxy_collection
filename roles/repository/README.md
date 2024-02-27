@@ -1,4 +1,4 @@
-# galaxy.galaxy.repository
+# infra.ah_configuration.repository
 
 ## Description
 

@@ -41,13 +41,13 @@ options:
       required: True
       type: str
 
-extends_documentation_fragment: galaxy.galaxy.auth
+extends_documentation_fragment: infra.ah_configuration.auth
 """
 
 
 EXAMPLES = """
 - name: Approve namespace.collection_name:v1.0.0
-  galaxy.galaxy.ah_approval:
+  infra.ah_configuration.ah_approval:
     namespace: namespace
     name: collection_name
     version: v1.0.0
