@@ -11,7 +11,7 @@ An Ansible Role to sync a Collection Repository.
 |`ah_host`|""|yes|URL to the Automation Hub or Galaxy Server. (alias: `ah_hostname`)|127.0.0.1|
 |`ah_username`|""|yes|Admin User on the Automation Hub or Galaxy Server.||
 |`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
-|`ah_validate_certs`|`False`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
+|`ah_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
 |`ah_request_timeout`|`10`|no|Specify the timeout Ansible should use in requests to the Galaxy or Automation Hub host.||
 |`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
 |`ah_configuration_async_dir`|`null`|no|Sets the directory to write the results file for async tasks. The default value is set to `null` which uses the Ansible Default of `/root/.ansible_async/`.||
@@ -53,9 +53,9 @@ This also speeds up the overall role.
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str| Collection Repository name. Probably one of community, validated, rh-certified, or one you have created.|
-|`wait`|`true`|no|bool|Wait for the Collection repository to finish syncing before returning.||
-|`interval`|1.0|no|float|The interval to request an update from Automation Hub.||
-|`timeout`|""|no|int|If waiting for the project to update this will abort after this amount of seconds.||
+|`wait`|`true`|no|bool|Wait for the Collection repository to finish syncing before returning.|
+|`interval`|1.0|no|float|The interval to request an update from Automation Hub.|
+|`timeout`|""|no|int|If waiting for the project to update this will abort after this amount of seconds.|
 |`state`|`present`|no|str|Desired state of the collection repository. Either `present` or `absent`.|
 
 ### Standard Project Data Structure
@@ -78,7 +78,7 @@ ah_collection_repositories:
 
 ```yaml
 ---
-- name: Add repository to Automation Hub
+- name: Sync repository to Automation Hub
   hosts: localhost
   connection: local
   gather_facts: false

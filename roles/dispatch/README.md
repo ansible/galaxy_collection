@@ -51,7 +51,7 @@ The default value is set to  `null` which uses the Ansible Default of `/root/.an
 |`ah_username`|""|yes|Admin User on the Automation Hub or Galaxy Server.||
 |`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
 |`ah_token`|""|yes|Tower Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
-|`ah_validate_certs`|`False`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
+|`ah_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
 |`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
 
 ### Secure Logging Variables
@@ -61,7 +61,7 @@ Each role the dispatch role calls has a separate variable which can be turned on
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-ah_configuration_ee_registry_secure_logging|`False`|no|Whether or not to include the sensitive Registry role tasks in the log. Set this value to `True` if you will be providing your sensitive values from elsewhere.|
+|`ah_configuration_ee_registry_secure_logging`|`False`|no|Whether or not to include the sensitive Registry role tasks in the log. Set this value to `True` if you will be providing your sensitive values from elsewhere.|
 |`ah_configuration_secure_logging`|""|no|This variable enables secure logging as well, but is shared across multiple roles, see above.|
 
 ### Asynchronous Retry Variables

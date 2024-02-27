@@ -11,7 +11,7 @@ An Ansible Role to create a Collection Remote Repository.
 |`ah_host`|""|yes|URL to the Automation Hub or Galaxy Server. (alias: `ah_hostname`)|127.0.0.1|
 |`ah_username`|""|yes|Admin User on the Automation Hub or Galaxy Server.||
 |`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
-|`ah_validate_certs`|`False`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
+|`ah_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
 |`ah_request_timeout`|`10`|no|Specify the timeout Ansible should use in requests to the Galaxy or Automation Hub host.||
 |`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
 |`ah_configuration_async_dir`|`null`|no|Sets the directory to write the results file for async tasks. The default value is set to `null` which uses the Ansible Default of `/root/.ansible_async/`.||
@@ -73,11 +73,11 @@ This also speeds up the overall role.
 |`max_retries`|`0`|no|Retries to use when running sync. Default is 0 which does not limit.||
 |`rate_limit`|`8`|no|Limits total download rate in requests per second.||
 |`signed_only`|`False`|no|Only download signed collections|False|
-|`sync_dependencies`|`False`|no|Whether to download depenencies when syncing collections.|False|
+|`sync_dependencies`|`True`|no|Whether to download depenencies when syncing collections.|False|
 |`proxy_url`|``|no|The URL for the proxy. Defaults to global `proxy_url` variable.||
 |`proxy_username`|``|no|The username for the proxy authentication. Defaults to global `proxy_username` variable.||
 |`proxy_password`|``|no|The password for the proxy authentication. Defaults to global `proxy_password` variable.||
-|`state`|`present`|no|Desired state of the collection_remote. Either `present` or `absent`.|
+|`state`|`present`|no|Desired state of the collection_remote. Either `present` or `absent`.||
 
 ### Standard Project Data Structure
 

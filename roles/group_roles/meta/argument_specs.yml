@@ -3,7 +3,7 @@ argument_specs:
   main:
     short_description: An Ansible Role to create groups roles in Automation Hub.
     options:
-      ah_groups_roles:
+      ah_group_roles:
         default: []
         required: false
         description: Data structure describing your groups roles to manage.
@@ -53,7 +53,6 @@ argument_specs:
         required: false
         description: The path for the Automation Hub API. Usually galaxy or automation-hub unless custom set in AH settings.
       ah_validate_certs:
-        default: true
         required: false
         description: Whether or not to validate the Automation Hub Server's SSL certificate.
         type: str

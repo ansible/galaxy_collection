@@ -11,7 +11,7 @@ An Ansible Role to create a Collection Repository.
 |`ah_host`|""|yes|URL to the Automation Hub or Galaxy Server. (alias: `ah_hostname`)|127.0.0.1|
 |`ah_username`|""|yes|Admin User on the Automation Hub or Galaxy Server.||
 |`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
-|`ah_validate_certs`|`False`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
+|`ah_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
 |`ah_request_timeout`|`10`|no|Specify the timeout Ansible should use in requests to the Galaxy or Automation Hub host.||
 |`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
 |`ah_configuration_async_dir`|`null`|no|Sets the directory to write the results file for async tasks. The default value is set to `null` which uses the Ansible Default of `/root/.ansible_async/`.||
@@ -59,10 +59,10 @@ This also speeds up the overall role.
 |`distribution`|""|no|dict|Distribution options for the collection repository. See additional options below for details. Most users will leave this blank|
 |`private`|""|no|boolean|Make the Collection repository private.|
 |`remote`|""|no|str|Remote repository name. This is used if the collections use a remote source.|
-|`update_repo`|`false`|no|bool|Wait for the Collection repository to finish syncing before returning.||
-|`wait`|`true`|no|bool|Wait for the Collection repository to finish syncing before returning.||
-|`interval`|1.0|no|float|The interval to request an update from Automation Hub.||
-|`timeout`|""|no|int|If waiting for the project to update this will abort after this amount of seconds.||
+|`update`|`false`|no|bool|Wait for the Collection repository to finish syncing before returning.|
+|`wait`|`true`|no|bool|Wait for the Collection repository to finish syncing before returning.|
+|`interval`|1.0|no|float|The interval to request an update from Automation Hub.|
+|`timeout`|""|no|int|If waiting for the project to update this will abort after this amount of seconds.|
 |`state`|`present`|no|str|Desired state of the collection repository. Either `present` or `absent`.|
 
 #### Addtional Option Variables
