@@ -1,0 +1,4 @@
+---
+major_changes:
+  - removed bindep.txt as the only requirement was python. Ansible requires python, it shouldn't be needed in our bindep.
+...
