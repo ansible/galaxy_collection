@@ -53,6 +53,15 @@ jobs:
       - name: Install LDAP requirements
         run: sudo apt-get install -y libsasl2-dev python3 libldap2-dev libssl-dev build-essential
 
+      - name: Build and install the collection
+        id: build
+        uses: redhat-cop/ansible_collections_tooling/actions/build_ansible_collection@main
+        with:
+          collection_namespace: galaxy
+          collection_name: galaxy
+          collection_version: 1.0.0
+          collection_repo: https://github.com/ansible/galaxy_collection
+
       - name: setup oci-env
         working-directory: galaxy_ng
         run: |
@@ -69,15 +78,6 @@ jobs:
 
       - name: Move ansible.cfg to root
         run: mv .github/files/ansible.cfg .
-
-      - name: Build and install the collection
-        id: build
-        uses: redhat-cop/ansible_collections_tooling/actions/build_ansible_collection@main
-        with:
-          collection_namespace: galaxy
-          collection_name: galaxy
-          collection_version: 1.0.0
-          collection_repo: https://github.com/ansible/galaxy_collection
 
       - name: "Perform playbook collection tests"
         run: ansible-playbook tests/playbooks/testing_collections_playbook.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e git_repo_name=${{ github.event.repository.name }}
