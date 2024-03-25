@@ -41,7 +41,7 @@ jobs:
       - name: Set environment variables
         working-directory: galaxy_ng
         run: |
-          echo "OCI_ENV_PATH=${HOME}/work/galaxy_ng/oci_env" >> $GITHUB_ENV
+          echo "OCI_ENV_PATH=${HOME}/work/ah_configuration/ah_configuration/oci_env" >> $GITHUB_ENV
           echo "COMPOSE_INTERACTIVE_NO_CLI=1" >> $GITHUB_ENV
           echo "OCI_VERBOSE=1" >> $GITHUB_ENV
           echo "GH_DUMP_LOGS=1" >> $GITHUB_ENV
@@ -59,9 +59,12 @@ jobs:
           pip install -e $OCI_ENV_PATH/client/
           mkdir $OCI_ENV_PATH/db_backup/
 
-      - name: run integration tests
+      - name: Move ci cfg to oci
+        run: mv .github/files/ci.py ./galaxy_ng/dev/oci_env_integration/actions/ci.py
+
+      - name: Stand up galaxy_ng
         working-directory: galaxy_ng
-        run: make gh-action/standalone
+        run: python3 dev/oci_env_integration/actions/ci.py
 
       - name: Move ansible.cfg to root
         run: mv .github/files/ansible.cfg .
