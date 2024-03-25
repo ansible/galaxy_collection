@@ -7,7 +7,7 @@
   collections:
     - galaxy.galaxy
   vars:
-    hub_host: localhost:5001
+    hub_host: localhost:55001
     ah_hostname: http://localhost:55001/
     ah_username: admin
     ah_password: admin
