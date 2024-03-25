@@ -45,6 +45,7 @@ jobs:
           echo "COMPOSE_INTERACTIVE_NO_CLI=1" >> $GITHUB_ENV
           echo "OCI_VERBOSE=1" >> $GITHUB_ENV
           echo "GH_DUMP_LOGS=1" >> $GITHUB_ENV
+          echo "GH_TEARDOWN=0" >> $GITHUB_ENV
 
       - name: Update apt
         run: sudo apt -y update
