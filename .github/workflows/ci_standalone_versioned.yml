@@ -79,6 +79,9 @@ jobs:
         working-directory: galaxy_ng
         run: python3 dev/oci_env_integration/actions/ci.py
 
+      - name: "Perform playbook user and group management tests"
+        run: ansible-playbook tests/playbooks/testing_playbook_user.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
+
       - name: "Perform playbook collection tests"
         run: ansible-playbook tests/playbooks/testing_collections_playbook.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e git_repo_name=${{ github.event.repository.name }}
 
@@ -87,6 +90,3 @@ jobs:
 
       - name: "Perform playbook repository tests"
         run: ansible-playbook tests/playbooks/testing_playbook_ee_repository.yml -vv -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e redhat_catalog_username=${{ secrets.redhat_catalog_username }} -e redhat_catalog_password=${{ secrets.redhat_catalog_password }}
-
-      - name: "Perform playbook user and group management tests"
-        run: ansible-playbook tests/playbooks/testing_playbook_user.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
