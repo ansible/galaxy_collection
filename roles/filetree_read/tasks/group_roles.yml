@@ -1,0 +1,31 @@
+---
+- name: "Get list of files inside {{ filetree_ah_group_roles }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_ah_group_roles }}"
+    file_type: file
+    recurse: true
+  register: __list_files_ah_group_roles
+
+- name: "Read ah_group_roles definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_group_rules_definitions_item.path }}"
+  loop: "{{ __list_files_ah_group_roles.files }}"
+  loop_control:
+    loop_var: __read_group_rules_definitions_item
+  register: __contents_filetree_ah_group_roles
+
+- name: "Populate ah_group_roles list"
+  ansible.builtin.set_fact:
+    __populate_ah_group_roles: "{{ (__populate_ah_group_roles | default([])) + __populate_group_rules_list_item.ansible_facts.ah_group_roles }}"
+  loop: "{{ __contents_filetree_ah_group_roles.results }}"
+  loop_control:
+    loop_var: __populate_group_rules_list_item
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __contents_filetree_ah_group_roles.results is defined and __populate_group_rules_list_item.ansible_facts.ah_group_roles is defined
+
+- name: "Set ah_group_roles Data Structure"
+  ansible.builtin.set_fact:
+    ah_group_roles: "{{ __populate_ah_group_roles }}"
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __populate_ah_group_roles is defined
+...

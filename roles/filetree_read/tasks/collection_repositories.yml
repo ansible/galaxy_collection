@@ -1,0 +1,31 @@
+---
+- name: "Get list of files inside {{ filetree_ah_collection_repositories }}"
+  ansible.builtin.find:
+    paths: "{{ filetree_ah_collection_repositories }}"
+    file_type: file
+    recurse: true
+  register: __list_files_ah_collection_repositories
+
+- name: "Read ah_collection_repositories definitions"
+  ansible.builtin.include_vars:
+    file: "{{ __read_collection_repositories_definitions_item.path }}"
+  loop: "{{ __list_files_ah_collection_repositories.files }}"
+  loop_control:
+    loop_var: __read_collection_repositories_definitions_item
+  register: __contents_filetree_ah_collection_repositories
+
+- name: "Populate ah_collection_repositories list"
+  ansible.builtin.set_fact:
+    __populate_ah_collection_repositories: "{{ (__populate_ah_collection_repositories | default([])) + __populate_collection_repositories_list_item.ansible_facts.ah_collection_repositories }}"  # noqa: yaml[line-length]
+  loop: "{{ __contents_filetree_ah_collection_repositories.results }}"
+  loop_control:
+    loop_var: __populate_collection_repositories_list_item
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __contents_filetree_ah_collection_repositories.results is defined and __populate_collection_repositories_list_item.ansible_facts.ah_collection_repositories is defined  # noqa: yaml[line-length]
+
+- name: "Set ah_collection_repositories Data Structure"
+  ansible.builtin.set_fact:
+    ah_collection_repositories: "{{ __populate_ah_collection_repositories }}"
+  no_log: "{{ ah_configuration_filetree_read_secure_logging }}"
+  when: __populate_ah_collection_repositories is defined
+...

@@ -1,0 +1,28 @@
+---
+# tasks file for ah_filetree_read
+- name: "Init ah configuration variables"
+  ansible.builtin.set_fact:
+    ah_collections: []
+    ah_collection_remotes: []
+    ah_collection_repositories: []
+    ah_ee_images: []
+    ah_ee_registries: []
+    ah_ee_repositories: []
+    ah_groups: []
+    ah_group_roles: []
+    ah_namespaces: []
+    ah_repositories: []
+    ah_roles: []
+    ah_users: []
+  tags: always
+
+- name: "Include Tasks to config {{ __task_ah_filetree_read.name }}"
+  ansible.builtin.include_tasks: "{{ __task_ah_filetree_read.name }}.yml"
+  args:
+    apply:
+      tags: "{{ __task_ah_filetree_read.tags }}"
+  tags: always
+  loop: "{{ ah_configuration_filetree_read_tasks }}"
+  loop_control:
+    loop_var: __task_ah_filetree_read
+...
