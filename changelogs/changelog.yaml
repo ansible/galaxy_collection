@@ -382,3 +382,16 @@ releases:
     fragments:
     - token_auth.yml
     release_date: '2023-10-14'
+  2.0.6:
+    changes:
+      bugfixes:
+      - Fixed issue in all roles where AH_HOST was not being defaulted to if no variable
+        set.
+      - Fix documentation for validate_certs
+      - Fix documentation for group_roles role by
+      - Fix version comparison
+      - Fix collection_remote - set sync_dependencies default to PAH default
+      - Fix typo in ah_group_roles variable
+    fragments:
+    - ah_host_env.yml
+    release_date: '2024-04-01'

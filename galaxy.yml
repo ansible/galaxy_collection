@@ -10,7 +10,7 @@ license:
   - GPL-3.0-only
 namespace: infra
 name: ah_configuration
-version: 1.1.1-devel
+version: 2.0.6
 readme: README.md
 repository: https://github.com/ansible/galaxy_collection
 issues: https://github.com/ansible/galaxy_collection/issues

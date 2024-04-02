@@ -1,8 +1,21 @@
-====================================
-infra.ah_configuration Release Notes
-====================================
+=====================================
+infra.ah\_configuration Release Notes
+=====================================
 
 .. contents:: Topics
+
+v2.0.6
+======
+
+Bugfixes
+--------
+
+- Fixed issue in all roles where AH_HOST was not being defaulted to if no variable set.
+- Fix documentation for validate_certs
+- Fix documentation for group_roles role by
+- Fix version comparison
+- Fix collection_remote- set sync_dependencies default to PAH default
+- Fix typo in ah_group_roles variable
 
 
 v2.0.4
