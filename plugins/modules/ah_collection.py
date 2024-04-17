@@ -142,7 +142,7 @@ def main():
     if auto_approve:
         if version:
             pass
-        else:
+        elif path:
             version = path.split("-")[-1].replace('.tar.gz', '')
 
     # Attempt to look up an existing item based on the provided data
