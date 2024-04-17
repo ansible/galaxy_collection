@@ -143,7 +143,7 @@ def main():
         if version:
             pass
         elif path:
-            version = path.split("-")[-1].replace('.tar.gz', '')
+            version = "-".join(path.split("-")[2:]).replace('.tar.gz', '')
 
     # Attempt to look up an existing item based on the provided data
     if version:
