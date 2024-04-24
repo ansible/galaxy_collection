@@ -1,0 +1,14 @@
+[galaxy]
+server_list = {% for repo in r_repositories['json']['results'] %}{% if repo['name'] != 'rejected' or repo['name'] != 'staging' %}{{ repo['name'] }},{% endif %}{% endfor %}
+
+ignore_certs = {% if ah_validate_certs %}false{% else %}true{% endif %}
+
+
+{% for repo in r_repositories['json']['results'] %}
+{% if repo['name'] != 'rejected' or repo['name'] != 'staging' %}
+[galaxy_server.{{ repo['name'] }}]
+url=https://{{ ah_host }}/api/galaxy/content/{{ repo['base_path'] }}/
+token={{ ah_token }}
+
+{% endif %}
+{% endfor %}
