@@ -10,12 +10,5 @@ ah_collections:
     namespace: {{ (each | basename).split('-')[0] }}
     path: {{ each }}
     state: present
-    collection_local_path: {{ each }}
-    collection_name: {{ each | basename }}
-{% endfor %}
-ah_collection_list:
-{% for each in _collections %}
-  - collection_local_path: {{ each }}
-    collection_name: {{ each | basename }}
 {% endfor %}
 ...
