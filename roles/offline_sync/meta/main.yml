@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  role_name: "offline_sync"
-  author: "David Danielsson"
-  description: "An Ansible Role to offline_sync collections to Automation Hub or Galaxies."
-  company: "Red Hat"
+  role_name: offline_sync
+  author: David Danielsson
+  description: An Ansible Role to offline_sync collections to Automation Hub or Galaxies.
+  company: Red Hat
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
@@ -25,19 +25,17 @@ galaxy_info:
   # platforms is a list of platforms, and each platform has a name and a list of versions.
   #
   platforms:
-    - name: "EL"
+    - name: EL
       versions:
-        - "all"
+        - all
 
   galaxy_tags:
-    - "automationhub"
-    - "galaxy"
-    - "configuration"
-    - "collection"
-    - "collections"
-    - "offlinesync"
+    - automationhub
+    - galaxy
+    - configuration
+    - collection
+    - collections
+    - offlinesync
 
 dependencies: []
-# List your role dependencies here, one per line. Be sure to remove the '[]' above,
-# if you add dependencies to this list.
 ...

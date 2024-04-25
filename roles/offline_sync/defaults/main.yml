@@ -6,12 +6,8 @@
 # ah_oauthtoken: ""
 # ah_validate_certs: false
 
-ah_configuration_working_dir: "/var/tmp/pah_offline_sync"
-ah_overwrite_existing: false
-ah_configuration_no_deps: true
+ah_configuration_working_dir: /var/tmp/pah_offline_sync
+ah_configuration_no_deps: false
+# ah_overwrite_existing: false
 
-ah_configuration_offline_sync_secure_logging: "{{ ah_configuration_secure_logging | default(false) }}"
-ah_configuration_offline_sync_async_retries: "{{ ah_configuration_async_retries | default(50) }}"
-ah_configuration_offline_sync_async_delay: "{{ ah_configuration_async_delay | default(1) }}"
-ah_configuration_async_dir: null
 ...

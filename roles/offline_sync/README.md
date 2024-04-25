@@ -2,7 +2,7 @@
 
 ## Description
 
-An Ansible Role to offline_sync collections to Automation Hub or Galaxies.
+An Ansible Role to offline_sync collections to Automation Hub or Galaxies. NOTE: if you do not provide an ah_token one will be generated which will invalidate any prior token.
 
 ## Variables
 
@@ -10,12 +10,11 @@ An Ansible Role to offline_sync collections to Automation Hub or Galaxies.
 |:---:|:---:|:---:|:---:|:---:|
 |`ah_host`|""|yes|URL to the Automation Hub or Galaxy Server. (alias: `ah_hostname`)|127.0.0.1|
 |`ah_username`|""|yes|Admin User on the Automation Hub or Galaxy Server.||
-|`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
-|`ah_token`|""|no|Admin User's token on the Automation Hub Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
+|`ah_password`|""|yes|Automation Hub Admin User's password on the Automation Hub Server. This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
+|`ah_token`|""|no|Admin User's token on the Automation Hub Server. This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
 |`ah_validate_certs`|`true`|no|Whether or not to validate the Ansible Automation Hub Server's SSL certificate.||
 |`ah_request_timeout`|`10`|no|Specify the timeout Ansible should use in requests to the Galaxy or Automation Hub host.||
 |`ah_path_prefix`|""|no|API path used to access the api. Either galaxy, automation-hub, or custom||
-|`ah_configuration_working_dir`|`/var/tmp/pah_offline_sync`|no|The working directory where the collections will be downloaded and any required files.||
 
 ## Data Structure
 
@@ -23,12 +22,8 @@ An Ansible Role to offline_sync collections to Automation Hub or Galaxies.
 
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
-|`collection_name`|""|yes|str|Name of collection, normally the last part before the / in a git url.|
-|`git_url`|""|no|str|Url to git repo. Required if collection_local_path not set|
-|`version`|""|no|str|Git ref to pull. Will default to default branch if unset. Can specify tag, branch or commit ref here.|
-|`key_path`|""|no|str|Path to ssh key for authentication.|
-|`ssh_opts`|""|no|str|Options git will pass to ssh when used as protocol.|
-|`collection_local_path`|""|no|str|Path to collection stored locally. Required if git_url not set. This value will be used rather than git_url if set.|
+|`ah_configuration_working_dir`|`/var/tmp/pah_offline_sync`|no|string|The working directory where the collections will be downloaded and any required files.|
+|`ah_configuration_no_deps`|false|no|bool|Whether to download all dependencies for each collection or not, if false it may cause errors if dependency sync is off in Automation Hub.|
 
 ## Playbook Examples
 

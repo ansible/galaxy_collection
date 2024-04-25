@@ -9,10 +9,10 @@ argument_specs:
         required: false
         description: The working directory where the collections will be downloaded and any required files.
       ah_configuration_no_deps:
-        default: true
+        default: false
         type: bool
         required: false
-        description: Whether to download all dependencies for each colleciton or not, if false it may cause errors if dependency sync is off in Automation Hub.
+        description: Whether to download all dependencies for each collection or not, if false it may cause errors if dependency sync is off in Automation Hub.
 
       # Generic across all roles
       ah_host:
@@ -39,4 +39,9 @@ argument_specs:
         required: false
         description: User's password For Automation Hub
         type: str
+      ah_token:
+        required: false
+        description: User's token on the Automation Hub Server
+        type: str
+
 ...

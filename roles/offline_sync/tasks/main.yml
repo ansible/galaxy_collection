@@ -31,7 +31,7 @@
             ah_host: "{{ ah_host }}"
             ah_username: "{{ ah_username }}"
             ah_password: "{{ ah_password }}"
-            ah_path_prefix: 'galaxy'  # this is for private automation hub
+            ah_path_prefix: galaxy  # this is for private automation hub
             validate_certs: false
           register: r_ah_token
 
@@ -74,7 +74,7 @@
 
 - name: Find all relevant built collection files
   ansible.builtin.find:
-    paths:    "{{ collection_dir }}"
+    paths: "{{ collection_dir }}"
     patterns: "{{ (collection_dir) | ternary('*.tar.gz', (collection_dir | basename)) }}"
   register: __ah_collections_find_results
   vars:
