@@ -10,41 +10,29 @@
     path: "{{ ah_configuration_working_dir }}/ansible.cfg"
   register: r_ansible_cfg
 
-- name: Build ansible.cfg
-  when: not r_ansible_cfg['stat']['exists']
+- name: Figuring out AH token
+  when: (not r_ansible_cfg['stat']['exists']) and (ah_token is not defined or ah_token['token'] is defined)
   block:
-    - name: Get list of repositories
-      ansible.builtin.uri:
-        url: https://{{ ah_host }}/api/galaxy/pulp/api/v3/distributions/ansible/ansible/
-        user: "{{ ah_username }}"
-        password: "{{ ah_password }}"
-        method: GET
-        force_basic_auth: true
-        validate_certs: "{{ ah_validate_certs }}"
-      register: r_repositories
+    - name: Authenticate and get an API token from Automation Hub
+      ah_token:
+        ah_host: "{{ ah_host }}"
+        ah_username: "{{ ah_username }}"
+        ah_password: "{{ ah_password }}"
+        ah_path_prefix: galaxy  # this is for private automation hub
+        validate_certs: false
+      register: r_ah_token
 
-    - name: Figuring out AH token
-      when: ah_token is not defined or ah_token['token'] is defined
-      block:
-        - name: Authenticate and get an API token from Automation Hub
-          ah_token:
-            ah_host: "{{ ah_host }}"
-            ah_username: "{{ ah_username }}"
-            ah_password: "{{ ah_password }}"
-            ah_path_prefix: galaxy  # this is for private automation hub
-            validate_certs: false
-          register: r_ah_token
+    - name: Fixing format
+      ansible.builtin.set_fact:
+        ah_token: "{{ ah_token['token'] }}"
+      when: r_ah_token['changed']  # noqa: no-handler
 
-        - name: Fixing format
-          ansible.builtin.set_fact:
-            ah_token: "{{ ah_token['token'] }}"
-          when: r_ah_token['changed']  # noqa: no-handler
-
-    - name: Create ansible.cfg
-      ansible.builtin.template:
-        src: ansible.cfg.j2
-        dest: "{{ ah_configuration_working_dir }}/ansible.cfg"
-        mode: "0755"
+- name: Create ansible.cfg
+  ansible.builtin.template:
+    src: ansible.cfg.j2
+    dest: "{{ ah_configuration_working_dir }}/ansible.cfg"
+    mode: "0755"
+  when: not r_ansible_cfg['stat']['exists']
 
 - name: Get list of all collections
   ansible.builtin.uri:
