@@ -8,9 +8,9 @@
     - galaxy.galaxy
   vars:
     hub_host: localhost:55001
-    ah_hostname: http://localhost:55001/
-    ah_username: admin
-    ah_password: admin
+    # ah_hostname: http://localhost:55001/
+    # ah_username: admin
+    # ah_password: admin
     ah_path_prefix: 'galaxy'
     ah_validate_certs: false
     repository: test-namespace/ee-minimal-rhel8
