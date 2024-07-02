@@ -24,9 +24,34 @@
       ansible.builtin.include_role:
         name: ansible_config
 
-    - name: Create namespace
-      ansible.builtin.include_role:
-        name: namespace
+    - name: Override namespaces vars standalone workflow
+      when: ci_workflow == "standalone"
+      block:
+        - name: Create namespace
+          ansible.builtin.include_role:
+            name: namespace
+
+    - name: Override namespaces vars ci_dab_jwt workflow
+      when: ci_workflow == "ci_dab_jwt"
+      block:
+        - name: Create namespace
+          ansible.builtin.include_role:
+            name: namespace
+          vars:
+            ah_namespaces:
+              - name: community_test
+                company: Community Test
+                email: user@example.com
+                avatar_url: https://github.com/ansible/awx-logos/blob/master/awx/ui/client/assets/logo-header.svg
+                description: string
+                resources: "# Community\nA Namespace test with changes"
+                links:
+                  - name: "Nothing"
+                    url: "https://github.com/ansible/awx"
+              - name: infra
+              - name: test_namespace
+              - name: galaxy
+
 
     - name: Rename namespace
       ansible.builtin.include_role:

@@ -15,6 +15,7 @@ import re
 import socket
 import json
 import time
+import os
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback
 from ansible.module_utils.compat.version import LooseVersion as Version
@@ -133,6 +134,8 @@ class AHAPIModule(AnsibleModule):
         self.galaxy_path_prefix = self.get_galaxy_path_prefix()
         self.ui_path_prefix = "{galaxy_prefix}/_ui/v1".format(galaxy_prefix=self.galaxy_path_prefix)
         self.plugin_path_prefix = "{galaxy_prefix}/v3/plugin".format(galaxy_prefix=self.galaxy_path_prefix)
+        self.ah_login_path = os.getenv("AH_LOGIN_PATH", None)
+        self.ah_logout_path = os.getenv("AH_LOGOUT_PATH", None)
         self.authenticate()
         self.server_version = self.get_server_version()
         if self.server_version < "4.6":
@@ -397,20 +400,28 @@ class AHAPIModule(AnsibleModule):
         # Set-Cookie: csrftoken=jvdb...kKHo; expires=Tue, 09 Aug 2022 07:33:37 GMT; Max-Age=31449600; Path=/; SameSite=Lax
         # Strict-Transport-Security: max-age=15768000
 
-        url = self.build_ui_url("auth/login")
+        if self.ah_login_path:
+            url = self._build_url("/api", self.ah_login_path.split("/api/")[1])
+        else:
+            url = self.build_ui_url("auth/login")
         try:
-            response = self.make_request_raw_reponse("GET", url)
+            response = self.make_request_raw_reponse("GET", url, headers={"Content-Type": "application/json"})
         except AHAPIModuleError as e:
             self.fail_json(msg="Authentication error: {error}".format(error=e))
-        # Set-Cookie: csrftoken=jvdb...kKHo; expires=Tue, 09 Aug 2022 07:33:37 GMT
-        for h in response.getheaders():
-            if h[0].lower() == "set-cookie":
-                k, v = h[1].split("=", 1)
-                if k.lower() == "csrftoken":
-                    header = {"X-CSRFToken": v.split(";", 1)[0]}
-                    break
+
+        if self.ah_login_path:
+            response_data = json.loads(response.read().decode('utf-8'))
+            header = {"X-CSRFToken": response_data["csrfToken"]}
         else:
-            header = {}
+            # Set-Cookie: csrftoken=jvdb...kKHo; expires=Tue, 09 Aug 2022 07:33:37 GMT
+            for h in response.getheaders():
+                if h[0].lower() == "set-cookie":
+                    k, v = h[1].split("=", 1)
+                    if k.lower() == "csrftoken":
+                        header = {"X-CSRFToken": v.split(";", 1)[0]}
+                        break
+                else:
+                    header = {}
 
         # curl -k -i -X POST  -H 'referer: https://hub.lab.example.com' -H "Accept: application/json" -H "Content-Type: application/json"
         #      -H 'X-CSRFToken: jvdb...kKHo' --cookie 'csrftoken=jvdb...kKHo' -d '{"username":"admin","password":"redhat"}'
@@ -430,13 +441,27 @@ class AHAPIModule(AnsibleModule):
 
         try:
             try:
-                response = self.make_request_raw_reponse(
-                    "POST",
-                    url,
-                    data={"username": self.username, "password": self.password},
-                    headers=header,
-                )
-                for h in response.getheaders():
+                response_headers = None
+                if self.ah_login_path:
+                    csrftoken = response_data["csrfToken"]
+                    data = {"username": self.username, "password": self.password, "csrfToken": csrftoken}
+                    headers = {"Content-Type": "multipart/form-data", "referer": self.host, "Accept": "application/json", "X-CSRFToken": csrftoken}
+                    response = self.make_request_raw_reponse(
+                        "GET",
+                        url,
+                        data=data,
+                        headers=headers,
+                    )
+                    response_headers = response.getheaders()
+                else:
+                    response = self.make_request_raw_reponse(
+                        "POST",
+                        url,
+                        data={"username": self.username, "password": self.password},
+                        headers=header,
+                    )
+                    response_headers = response.getheaders()
+                for h in response_headers:
                     if h[0].lower() == "set-cookie":
                         k, v = h[1].split("=", 1)
                         if k.lower() == "csrftoken":
@@ -465,7 +490,10 @@ class AHAPIModule(AnsibleModule):
         if not self.authenticated:
             return
 
-        url = self.build_ui_url("auth/logout")
+        if self.ah_login_path:
+            url = self._build_url("/api", self.ah_logout_path.split("/api/")[1])
+        else:
+            url = self.build_ui_url("auth/logout")
         try:
             self.make_request_raw_reponse("POST", url)
         except AHAPIModuleError:
