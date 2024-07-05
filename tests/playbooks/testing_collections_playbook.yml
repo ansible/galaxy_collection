@@ -25,7 +25,7 @@
         name: ansible_config
 
     - name: Override namespaces vars standalone workflow
-      when: ci_workflow == "standalone"
+      when: ci_workflow == "ci_standalone"
       block:
         - name: Create namespace
           ansible.builtin.include_role:
