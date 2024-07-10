@@ -15,7 +15,7 @@
     ah_validate_certs: false
     repository: test-namespace/ee-minimal-rhel8
     tag: latest
-    fake_image: quay.io/ansible/http-test-container:2.0.0
+    fake_image: quay.io/v2/ansible/http-test-container:2.0.0
   pre_tasks:
     - name: Include vars from ah_configs directory
       ansible.builtin.include_vars:
