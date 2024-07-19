@@ -60,6 +60,13 @@ options:
     description:
       - A yaml requirements file to download from remote.
     type: str
+  empty_requirements:
+    description:
+      - Empty the contents of requirements.yml for collection remote.
+      - If a new collection remote is created, the content of requirements.yml will be empty.
+      - If a collection remote already exists, empty the contents of requirements.yml.
+    type: bool
+    default: False
   username:
     description:
       - Username to authenticate to the remote repository.
@@ -189,6 +196,7 @@ def main():
         policy=dict(choices=['immediate', 'When syncing, download all metadata and content now.'], default='immediate'),
         requirements=dict(type="list", elements="str"),
         requirements_file=dict(),
+        empty_requirements=dict(type="bool", default=False),
         username=dict(),
         password=dict(no_log=True),
         tls_validation=dict(type="bool", default=True),
@@ -214,7 +222,7 @@ def main():
         argument_spec=argument_spec,
         supports_check_mode=True,
         mutually_exclusive=[
-            ("requirements", "requirements_file"),
+            ("requirements", "requirements_file", "empty_requirements"),
             ("client_key", "client_key_path"),
             ("client_cert", "client_cert_path"),
             ("ca_cert", "ca_cert_path"),
@@ -237,6 +245,10 @@ def main():
     requirements_file = module.params.get("requirements_file")
     if requirements_file:
         new_fields["requirements_file"] = module.getFileContent(requirements_file)
+
+    empty_requirements = module.params.get("empty_requirements")
+    if empty_requirements:
+        new_fields["requirements_file"] = None
 
     for field_name in (
         "name",
