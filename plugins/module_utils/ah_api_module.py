@@ -134,7 +134,6 @@ class AHAPIModule(AnsibleModule):
         self.galaxy_path_prefix = self.get_galaxy_path_prefix()
         self.ui_path_prefix = "{galaxy_prefix}/_ui/v1".format(galaxy_prefix=self.galaxy_path_prefix)
         self.plugin_path_prefix = "{galaxy_prefix}/v3/plugin".format(galaxy_prefix=self.galaxy_path_prefix)
-        self.ah_login_path = os.getenv("AH_LOGIN_PATH", None)
         self.ah_logout_path = os.getenv("AH_LOGOUT_PATH", None)
         self.authenticate()
         self.server_version = self.get_server_version()
@@ -410,7 +409,7 @@ class AHAPIModule(AnsibleModule):
         if not self.authenticated:
             return
 
-        if self.ah_login_path:
+        if self.ah_logout_path:
             url = self._build_url("/api", self.ah_logout_path.split("/api/")[1])
         else:
             url = self.build_ui_url("auth/logout")
