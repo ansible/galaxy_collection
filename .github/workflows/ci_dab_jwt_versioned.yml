@@ -61,7 +61,6 @@ jobs:
           echo "AH_HOST=http://localhost:8080/" >> $GITHUB_ENV
           echo "AH_USERNAME=admin" >> $GITHUB_ENV
           echo "AH_PASSWORD=admin" >> $GITHUB_ENV
-          echo "AH_LOGIN_PATH=/api/gateway/v1/login/" >> $GITHUB_ENV
           echo "AH_LOGOUT_PATH=/api/gateway/v1/logout/" >> $GITHUB_ENV
 
       - name: Update apt
@@ -88,7 +87,7 @@ jobs:
         run: ansible-playbook tests/playbooks/testing_collections_playbook.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e git_repo_name=${{ github.event.repository.name }} -e ci_workflow=ci_dab_jwt
 
       - name: "Perform collection repository tests"
-        run: ansible-playbook tests/playbooks/testing_collections_repos.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }}
+        run: ansible-playbook tests/playbooks/testing_collections_repos.yml -v -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e ci_workflow=ci_dab_jwt
 
       - name: "Perform playbook repository tests"
         run: ansible-playbook tests/playbooks/testing_playbook_ee_repository.yml -vv -e galaxy_ng_version=${{ inputs.galaxy_ng_version }} -e redhat_catalog_username=${{ secrets.redhat_catalog_username }} -e redhat_catalog_password=${{ secrets.redhat_catalog_password }}
