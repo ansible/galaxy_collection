@@ -611,9 +611,20 @@ class AHModule(AnsibleModule):
                 else:
                     break
         else:
-            # Get collection version pulp_href
             cv_endpoint = "/api/galaxy/pulp/api/v3/content/ansible/collection_versions/"
-            cv_href = self.make_request("GET", cv_endpoint, data={"namespace": namespace, "name": name, "version": version})["json"]["results"][0]["pulp_href"]
+            cv = self.make_request("GET", cv_endpoint, data={"namespace": namespace, "name": name, "version": version})["json"]
+            i = 0
+            # Wait for it...
+            while timeout is None or i < timeout:
+                if cv["count"] < 1:
+                    time.sleep(interval)
+                    cv = self.make_request("GET", cv_endpoint, data={"namespace": namespace, "name": name, "version": version})["json"]
+                    i += interval
+                else:
+                    # Legendary.
+                    break
+            # Get collection version pulp_href
+            cv_href = cv["results"][0]["pulp_href"]
 
             # Get staging/published repo pulp_href
             repos_endpoint = "/api/galaxy/pulp/api/v3/repositories/"
