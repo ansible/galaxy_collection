@@ -409,7 +409,7 @@ class AHModule(AnsibleModule):
         #   the on_delete parameter will be called as a method pasing in this object and the json from the response
         # This will return one of two things:
         #   1. None if the existing_item is not defined (so no delete needs to happen)
-        #   2. The response from Automation Hub from calling the delete on the endpont. It's up to you to process the response and exit from the module
+        #   2. The response from Automation Hub from calling the delete on the endpoint. It's up to you to process the response and exit from the module
         # Note: common error codes from the Automation Hub API can cause the module to fail
         if existing_item:
             if existing_item["type"] == "token":
@@ -527,7 +527,7 @@ class AHModule(AnsibleModule):
         #    the on_create parameter will be called as a method pasing in this object and the json from the response
         # This will return one of two things:
         #    1. None if the existing_item is already defined (so no create needs to happen)
-        #    2. The response from Automation Hub from calling the patch on the endpont. It's up to you to process the response and exit from the module
+        #    2. The response from Automation Hub from calling the patch on the endpoint. It's up to you to process the response and exit from the module
         # Note: common error codes from the Automation Hub API can cause the module to fail
 
         if not endpoint:
