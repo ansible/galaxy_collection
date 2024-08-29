@@ -411,6 +411,9 @@ class AHModule(AnsibleModule):
         #   1. None if the existing_item is not defined (so no delete needs to happen)
         #   2. The response from Automation Hub from calling the delete on the endpoint. It's up to you to process the response and exit from the module
         # Note: common error codes from the Automation Hub API can cause the module to fail
+        item_id = ""
+        item_type = ""
+        item_name = ""
         if existing_item:
             if existing_item["type"] == "token":
                 response = self.delete_endpoint(existing_item["endpoint"])
