@@ -38,10 +38,12 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
+|`ah_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
+|`ah_configuration_group_roles_async_timeout`|`ah_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`ah_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
-|`ah_configuration_group_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
+|`ah_configuration_group_roles_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`ah_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
-|`ah_configuration_group_async_delay`|`ah_configuration_async_delay`|no|This sets the delay between retries for the role.|
+|`ah_configuration_group_roles_async_delay`|`ah_configuration_async_delay`|no|This sets the delay between retries for the role.|
 
 ## Data Structure
 
@@ -77,7 +79,7 @@ Targets consist of the following.
 |`collection_remotes`|List of collection remotes to apply the roles to.|
 |`collection_repositories`|List of collection repositories to apply the roles to.|
 |`execution_environments`|List of execution environments to apply the roles to.|
-|`container_registery_remotes`|List of container registery remotes to apply the roles to.|
+|`container_registery_remotes`|List of container registry remotes to apply the roles to.|
 
 #### Yaml Example
 
@@ -146,7 +148,7 @@ ah_group_roles:
 
 ## License
 
-[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
+[GPLv3+](https://github.com/ansible/galaxy_collection#licensing)
 
 ## Author
 

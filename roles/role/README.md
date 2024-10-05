@@ -2,7 +2,7 @@
 
 ## Description
 
-An Ansible Role to create role permisions in Automation Hub.
+An Ansible Role to create role permissions in Automation Hub.
 
 ## Variables
 
@@ -38,6 +38,8 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
+|`ah_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
+|`ah_configuration_role_async_timeout`|`ah_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`ah_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
 |`ah_configuration_role_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`ah_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
@@ -50,7 +52,7 @@ This also speeds up the overall role.
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Group Name. Must be lower case containing only alphanumeric characters and underscores. Must start with 'galaxy.'.|
-|`description`|""|yes|str|The description of the permision role.|
+|`description`|""|yes|str|The description of the permission role.|
 |`perms`|""|yes|str|The list of permissions for the given role. See below for options.|
 |`state`|`present`|no|str|Desired state of the group.|
 <!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
@@ -118,7 +120,7 @@ ah_roles:
 
 ## License
 
-[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
+[GPLv3+](https://github.com/ansible/galaxy_collection#licensing)
 
 ## Author
 

@@ -38,6 +38,8 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
+|`ah_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
+|`ah_configuration_ee_image_async_timeout`|`ah_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`ah_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
 |`ah_configuration_ee_image_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`ah_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
@@ -50,8 +52,7 @@ This also speeds up the overall role.
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Execution environment image name. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.| -->
-|`append`|true|no|bool|Whether to append or replace the tags specified to the image.|
+|`append`|`true`|no|bool|Whether to append or replace the tags specified to the image.|
 |`tags`|""|no|str|List of the image tags to update.|
 |`state`|`present`|no|str|Desired state of the ee_image. (Possible values of `present` or `absent`)|
 
@@ -98,7 +99,7 @@ ah_ee_images:
 
 ## License
 
-[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
+[GPLv3+](https://github.com/ansible/galaxy_collection#licensing)
 
 ## Author
 

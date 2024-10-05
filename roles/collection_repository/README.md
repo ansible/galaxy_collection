@@ -41,6 +41,8 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
+|`ah_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
+|`ah_configuration_collection_repository_async_timeout`|`ah_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`ah_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
 |`ah_configuration_collection_repository_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`ah_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
@@ -65,7 +67,7 @@ This also speeds up the overall role.
 |`timeout`|""|no|int|If waiting for the project to update this will abort after this amount of seconds.|
 |`state`|`present`|no|str|Desired state of the collection repository. Either `present` or `absent`.|
 
-#### Addtional Option Variables
+#### Additional Option Variables
 
 ```yaml
 ---
@@ -128,4 +130,4 @@ ah_collection_repositories:
 
 ## License
 
-[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
+[GPLv3+](https://github.com/ansible/galaxy_collection#licensing)

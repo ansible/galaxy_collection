@@ -18,4 +18,5 @@ jobs:
       collection_name: ah_configuration
       collection_version: 1.1.1-devel
       collection_repo: https://github.com/ansible/galaxy_collection
+      collection_dependencies: ansible.hub
 ...

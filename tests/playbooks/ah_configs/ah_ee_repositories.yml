@@ -7,7 +7,7 @@ ah_ee_registries:
     download_concurrency: 25
     tls_validation: false
   - name: redhat
-    url: https://registry.redhat.io/v2/
+    url: https://registry.redhat.io/
     username: "{{ redhat_catalog_username }}"
     password: "{{ redhat_catalog_password }}"
     rate_limit: 100000
@@ -33,15 +33,17 @@ ah_ee_repositories:
     interval: 5
     timeout: 600
   # Adding a description and a README file to the repository
-  - name: test-namespace/ee-minimal-rhel8
+  - name: local/http-test-container
     # Testing with UTF-8 characters
+    registry: quay
+    upstream_name: "{{ fake_image }}"
+    included_tags:
+      - main
+      - 2.0.0
     description: To jest jakiś opis
     readme: |
       # Min avrättningsmiljö
 
       * bullet 1
       * bullet 2
-  # Testing updating the repository README file from a local file
-  - name: test-namespace/ee-minimal-rhel8
-    readme_file: "{{ tempfile['path'] }}"
 ...

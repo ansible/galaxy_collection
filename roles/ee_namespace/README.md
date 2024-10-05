@@ -39,6 +39,8 @@ This also speeds up the overall role.
 
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
+|`ah_configuration_async_timeout`|1000|no|This variable sets the async timeout for the role globally.|
+|`ah_configuration_ee_namespace_async_timeout`|`ah_configuration_async_timeout`|no|This variable sets the async timeout for the role.|
 |`ah_configuration_async_retries`|50|no|This variable sets the number of retries to attempt for the role globally.|
 |`ah_configuration_ee_namespace_async_retries`|`ah_configuration_async_retries`|no|This variable sets the number of retries to attempt for the role.|
 |`ah_configuration_async_delay`|1|no|This sets the delay between retries for the role globally.|
@@ -51,8 +53,8 @@ This also speeds up the overall role.
 |Variable Name|Default Value|Required|Type|Description|
 |:---:|:---:|:---:|:---:|:---:|
 |`name`|""|yes|str|Namespace name. Must be lower case containing only alphanumeric characters and underscores.|
-<!-- |`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.)| -->
-|`append`|true|no|bool|Whether to append or replace the groups specified for the ee_namespace.|
+|`new_name`|""|yes|str|Setting this option will change the existing name (looked up via the name field.)|
+|`append`|`true`|no|bool|Whether to append or replace the groups specified for the ee_namespace.|
 |`groups`|[]|yes|list|A list of names for groups that control the Namespace.|
 |`state`|`present`|no|str|Desired state of the ee_namespace.|
 
@@ -96,7 +98,7 @@ ah_ee_namespaces:
 
 ## License
 
-[GPLv3+](https://github.com/redhat-cop/ah_configuration#licensing)
+[GPLv3+](https://github.com/ansible/galaxy_collection#licensing)
 
 ## Author
 

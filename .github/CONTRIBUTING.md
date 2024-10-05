@@ -30,7 +30,7 @@ If you feel like getting your hands dirty, feel free to make the change yourself
 1. Fork the repo on Github, and then clone it locally.
 2. Create a branch named appropriately for the change you are going to make. Ensure this branch starts from an up to date pull of the `devel` branch (the default branch).
 3. Make your code change.
-4. If you are creating a new role, please add a test for it in our [testing playbooks.](https://github.com/redhat-cop/ah_configuration/blob/devel/playbooks/) by adding a new role entry and adding the appropriate yaml file with test data in the ah_configs directory.
+4. If you are creating a new role, please add a test for it in our [testing playbooks.](https://github.com/ansible/galaxy_collection/tree/devel/tests/playbooks) by adding a new role entry and adding the appropriate yaml file with test data in the ah_configs directory.
 5. Add a changelog fragment in `changelogs/fragments` as per <https://docs.ansible.com/ansible/latest/community/development_process.html#changelogs>
 6. Push your code change up to your forked repo.
 7. Open a Pull Request to merge your changes to this repo (against the `devel` branch). The comment box will be filled in automatically via a template.
@@ -43,8 +43,7 @@ For an in depth guide on how to contribute see [this article](https://opensource
 
 Note that we follow the [Automation Good Practices](https://redhat-cop.github.io/automation-good-practices) and so are you expected to do.
 
-Use Github [discussions] forum or for a live chat experience try
-Matrix room [#aap_config_as_code:ansible.com](https://matrix.to/#/#aap_config_as_code:ansible.com).
+Use our live chat Matrix room [#aap_config_as_code:ansible.com](https://matrix.to/#/#aap_config_as_code:ansible.com).
 
 For the full list of Ansible IRC and Mailing list, please see the
 [Ansible Communication] page.
@@ -61,5 +60,4 @@ As with all Ansible projects, we have a [Code of Conduct].
 [ansible communication](https://docs.ansible.com/ansible/latest/community/communication.html)
 [code of conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
 [creating your fork on github](https://guides.github.com/activities/forking/)
-[discussions](https://github.com/redhat-cop/ah_configuration/discussions)
 [supported ansible versions](https://docs.ansible.com/ansible-core/devel/reference_appendices/release_and_maintenance.html#ansible-core-release-cycle)
