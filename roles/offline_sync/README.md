@@ -1,4 +1,4 @@
-# galaxy.galaxy.offline_sync
+# infra.ah_configuration.offline_sync
 
 ## Description
 
@@ -62,7 +62,7 @@ This also speeds up the overall role.
       tags:
         - always
   roles:
-    - galaxy.galaxy.offline_sync
+    - infra.ah_configuration.offline_sync
 ```
 
 ### Playbook to upload to offline Automation Hub after using this role to download the collections
@@ -85,11 +85,11 @@ This also speeds up the overall role.
   tasks:
     - name: Ensure the namespaces exists
       ansible.builtin.import_role:
-        name: galaxy.galaxy.namespace
+        name: infra.ah_configuration.namespace
 
     - name: Upload collections
       ansible.builtin.include_role:
-        name: galaxy.galaxy.collection
+        name: infra.ah_configuration.collection
 ```
 
 ## License
