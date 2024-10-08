@@ -4,19 +4,48 @@ infra.ah\_configuration Release Notes
 
 .. contents:: Topics
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- Add new CI workflow to test Galaxy api prefix supplied from resource_provider (#403).
+- Added AH_HOST, AH_USERNAME and AH_PASSWORD to github environment variables
+- Added extra variable ci_workflow to allow for more flexibility in testing playbooks.
+- Gathers a token on collection role if necessary to prevent token becoming invalid by another async task.
+- Gathers a token on namespace role if necessary to prevent token becoming invalid by another async task.
+- Gathers a token on publish role if necessary to prevent token becoming invalid by another async task.
+- Gathers a token on repository role if necessary to prevent token becoming invalid by another async task.
+- Gathers a token on repository_sync role if necessary to prevent token becoming invalid by another async task.
+- Remove testing playbook, expected to fail, from new CI workflow. (#416).
+- Retrieves Galaxy api prefix when resource_provider is present, defaults to existing behavior.
+- added offline_sync role
+
+Bugfixes
+--------
+
+- Fixed an issue where ah_collection_upload was breaking when colelcting from a URL due to generated temp filenames
+- Fixed an issue where if the collection version has a '-' then it would not be referenced properly from the file path
+- Fixed an issue where if version was not specified in ah_collection and state=absent then the module will fail
+- Fixed an issue where where default async timeout was not set in the group role
+- Fixed issue where collection exits when detecting Galaxy path prefix
+- Fixes issue in collection_remotes module where the requriements could not be blanked out
+- Fixes issue with overwriting existing collection where timing didn't work correctly
+- removed bindep.txt as the only requirement was python. Ansible requires python, it shouldn't be needed in our bindep.
+
 v2.0.6
 ======
 
 Bugfixes
 --------
 
-- Fixed issue in all roles where AH_HOST was not being defaulted to if no variable set.
-- Fix documentation for validate_certs
+- Fix collection_remote - set sync_dependencies default to PAH default
 - Fix documentation for group_roles role by
-- Fix version comparison
-- Fix collection_remote- set sync_dependencies default to PAH default
+- Fix documentation for validate_certs
 - Fix typo in ah_group_roles variable
-
+- Fix version comparison
+- Fixed issue in all roles where AH_HOST was not being defaulted to if no variable set.
 
 v2.0.4
 ======

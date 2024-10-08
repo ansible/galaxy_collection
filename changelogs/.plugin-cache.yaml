@@ -73,6 +73,10 @@ objects:
       description: An Ansible Role to create namespaces in Automation Hub.
       name: namespace
       version_added: null
+    offline_sync:
+      description: An Ansible Role to offline sync collections in Automation Hub.
+      name: offline_sync
+      version_added: null
     publish:
       description: An Ansible Role to publish collections in Automation Hub.
       name: publish
@@ -108,64 +112,9 @@ plugins:
       name: ah_api
       version_added: null
   module:
-    ah_approval:
-      description: Approve a collection in Automation Hub.
-      name: ah_approval
-      namespace: ''
-      version_added: null
-    ah_build:
-      description: Build a collection tar.
-      name: ah_build
-      namespace: ''
-      version_added: null
-    ah_collection:
-      description: update, or destroy Automation Hub Collections.
-      name: ah_collection
-      namespace: ''
-      version_added: null
-    ah_collection_upload:
-      description: Upload a collection artifact to Automation Hub.
-      name: ah_collection_upload
-      namespace: ''
-      version_added: null
-    ah_ee_image:
-      description: Manage private automation hub execution environment images
-      name: ah_ee_image
-      namespace: ''
-      version_added: 0.4.3
     ah_ee_namespace:
       description: Manage private automation hub execution environment namespaces
       name: ah_ee_namespace
-      namespace: ''
-      version_added: 0.4.3
-    ah_ee_registry:
-      description: Manage private automation hub execution environment remote registries.
-      name: ah_ee_registry
-      namespace: ''
-      version_added: 0.7.0
-    ah_ee_registry_index:
-      description: Initiate an execution environment registry indexing.
-      name: ah_ee_registry_index
-      namespace: ''
-      version_added: null
-    ah_ee_registry_sync:
-      description: Initiate an execution environment registry sync.
-      name: ah_ee_registry_sync
-      namespace: ''
-      version_added: null
-    ah_ee_repository:
-      description: Manage private automation hub execution environment repositories/containers
-      name: ah_ee_repository
-      namespace: ''
-      version_added: 0.4.3
-    ah_ee_repository_sync:
-      description: Initiate an execution environment repository sync.
-      name: ah_ee_repository_sync
-      namespace: ''
-      version_added: null
-    ah_group:
-      description: Manage private automation hub user groups
-      name: ah_group
       namespace: ''
       version_added: 0.4.3
     ah_group_perm:
@@ -173,11 +122,6 @@ plugins:
       name: ah_group_perm
       namespace: ''
       version_added: 0.4.3
-    ah_namespace:
-      description: create, update, or destroy Automation Hub Namespace.
-      name: ah_namespace
-      namespace: ''
-      version_added: null
     ah_repository:
       description: Configure a repository.
       name: ah_repository
@@ -188,44 +132,9 @@ plugins:
       name: ah_repository_sync
       namespace: ''
       version_added: null
-    ah_role:
-      description: Manage a role of group permissions
-      name: ah_role
-      namespace: ''
-      version_added: 1.1.0
-    ah_token:
-      description: create, update, or destroy Automation Hub tokens.
-      name: ah_token
-      namespace: ''
-      version_added: null
-    ah_user:
-      description: Manage private automation hub users
-      name: ah_user
-      namespace: ''
-      version_added: 0.4.3
-    collection_remote:
-      description: Configure a collection remote repository.
-      name: collection_remote
-      namespace: ''
-      version_added: null
-    collection_repository:
-      description: Create, Update, Delete repository.
-      name: collection_repository
-      namespace: ''
-      version_added: null
-    collection_repository_sync:
-      description: Sync an Automation Hub collection repository.
-      name: collection_repository_sync
-      namespace: ''
-      version_added: null
-    group_roles:
-      description: Add roles to private automation hub user groups
-      name: group_roles
-      namespace: ''
-      version_added: 2.0.0
   netconf: {}
   shell: {}
   strategy: {}
   test: {}
   vars: {}
-version: 2.0.6
+version: 2.1.0
