@@ -9,8 +9,6 @@ ah_namespaces:
     links:
       - name: "Nothing"
         url: "https://github.com/ansible/awx"
-    groups:
-      - system:partner-engineers
   - name: infra
   - name: test_namespace
   - name: galaxy

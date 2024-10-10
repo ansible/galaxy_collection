@@ -11,18 +11,16 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import base64
-import re
-import socket
 import json
+import os
+import socket
 import time
 
+from ansible.module_utils._text import to_bytes, to_text
 from ansible.module_utils.basic import AnsibleModule, env_fallback
 from ansible.module_utils.compat.version import LooseVersion as Version
-from ansible.module_utils._text import to_bytes, to_text
-
-from ansible.module_utils.six.moves.urllib.parse import urlparse, urlencode
 from ansible.module_utils.six.moves.urllib.error import HTTPError
-
+from ansible.module_utils.six.moves.urllib.parse import urlencode, urlparse
 from ansible.module_utils.urls import Request, SSLValidationError
 
 
@@ -107,8 +105,8 @@ class AHAPIModule(AnsibleModule):
                 setattr(self, short_param, direct_value)
 
         # Perform some basic validation
-        if not re.match("^https{0,1}://", self.host):
-            self.host = "https://{host}".format(host=self.host)
+        if not self.host.startswith(("https://", "http://")):
+            self.host = "https://{0}".format(self.host)
 
         # Try to parse the hostname as a url
         try:
@@ -130,9 +128,10 @@ class AHAPIModule(AnsibleModule):
         self.session = Request(validate_certs=self.verify_ssl, headers=self.headers, follow_redirects=True, timeout=self.request_timeout)
 
         # Define the API paths
-        self.galaxy_path_prefix = "/api/{prefix}".format(prefix=self.path_prefix.strip("/"))
+        self.galaxy_path_prefix = self.get_galaxy_path_prefix()
         self.ui_path_prefix = "{galaxy_prefix}/_ui/v1".format(galaxy_prefix=self.galaxy_path_prefix)
         self.plugin_path_prefix = "{galaxy_prefix}/v3/plugin".format(galaxy_prefix=self.galaxy_path_prefix)
+        self.ah_logout_path = os.getenv("AH_LOGOUT_PATH", None)
         self.authenticate()
         self.server_version = self.get_server_version()
         if self.server_version < "4.6":
@@ -205,17 +204,17 @@ class AHAPIModule(AnsibleModule):
         :type method: str
         :param url: URL to the API endpoint
         :type url: :py:class:``urllib.parse.ParseResult``
-        :param kwargs: Additionnal parameter to pass to the API (headers, data
+        :param kwargs: Additional parameter to pass to the API (headers, data
                        for PUT and POST requests, ...)
 
         :raises AHAPIModuleError: The API request failed.
 
-        :return: The reponse from the API call
+        :return: The response from the API call
         :rtype: :py:class:``http.client.HTTPResponse``
         """
         # In case someone is calling us directly; make sure we were given a method, let's not just assume a GET
         if not method:
-            raise Exception("The HTTP method must be defined")
+            raise AHAPIModuleError("The HTTP method must be defined")
 
         # Extract the provided headers and data
         headers = kwargs.get("headers", {})
@@ -237,22 +236,22 @@ class AHAPIModule(AnsibleModule):
                     "The host sent back a server error: {path}: {error}. Please check the logs and try again later".format(path=url.path, error=he)
                 )
             # Sanity check: Did we fail to authenticate properly?  If so, fail out now; this is always a failure.
-            elif he.code == 401:
+            if he.code == 401:
                 raise AHAPIModuleError("Invalid authentication credentials for {path} (HTTP 401).".format(path=url.path))
             # Sanity check: Did we get a forbidden response, which means that the user isn't allowed to do this? Report that.
-            elif he.code == 403:
+            if he.code == 403:
                 raise AHAPIModuleError("You do not have permission to {method} {path} (HTTP 403).".format(method=method, path=url.path))
             # Sanity check: Did we get a 404 response?
             # Requests with primary keys will return a 404 if there is no response, and we want to consistently trap these.
-            elif he.code == 404:
+            if he.code == 404:
                 raise AHAPIModuleError("The requested object could not be found at {path}.".format(path=url.path))
             # Sanity check: Did we get a 405 response?
             # A 405 means we used a method that isn't allowed. Usually this is a bad request, but it requires special treatment because the
             # API sends it as a logic error in a few situations (e.g. trying to cancel a job that isn't running).
-            elif he.code == 405:
+            if he.code == 405:
                 raise AHAPIModuleError("Cannot make a {method} request to this endpoint {path}".format(method=method, path=url.path))
             # Sanity check: Did we get some other kind of error?  If so, write an appropriate error message.
-            elif he.code >= 400:
+            if he.code >= 400:
                 # We are going to return a 400 so the module can decide what to do with it
                 page_data = he.read()
                 try:
@@ -279,12 +278,12 @@ class AHAPIModule(AnsibleModule):
         :type method: str
         :param url: URL to the API endpoint
         :type url: :py:class:``urllib.parse.ParseResult``
-        :param kwargs: Additionnal parameter to pass to the API (headers, data
+        :param kwargs: Additional parameter to pass to the API (headers, data
                        for PUT and POST requests, ...)
 
         :raises AHAPIModuleError: The API request failed.
 
-        :return: A dictionnary with two entries: ``status_code`` provides the
+        :return: A dictionary with two entries: ``status_code`` provides the
                  API call returned code and ``json`` provides the returned data
                  in JSON format.
         :rtype: dict
@@ -294,11 +293,14 @@ class AHAPIModule(AnsibleModule):
         try:
             response_body = response.read()
         except Exception as e:
-            if response["json"]["non_field_errors"]:
+            if "non_field_errors" in response["json"]:
                 raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["json"]["non_field_errors"]))
-            elif response["json"]["errors"]:
-                raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["json"]["errors"]))
-            elif response["text"]:
+            if "errors" in response["json"]:
+                def get_details(err):
+                    return err["detail"]
+                raise AHAPIModuleError("Errors occurred with request (HTTP 400). Details: {errors}".format(
+                    errors=", ".join(map(get_details, response["json"]["errors"]))))
+            if "text" in response:
                 raise AHAPIModuleError("Errors occurred with request (HTTP 400). Errors: {errors}".format(errors=response["text"]))
             raise AHAPIModuleError("Failed to read response body: {error}".format(error=e))
 
@@ -364,7 +366,7 @@ class AHAPIModule(AnsibleModule):
                          in JSON format.
         :type response: dict
 
-        :return: The error message or an empty string if the reponse does not
+        :return: The error message or an empty string if the response does not
                  provide a message.
         :rtype: str
         """
@@ -381,71 +383,13 @@ class AHAPIModule(AnsibleModule):
 
     def authenticate(self):
         """Authenticate with the API."""
-        # curl -k -i  -X GET -H "Accept: application/json" -H "Content-Type: application/json" https://hub.lab.example.com/api/galaxy/_ui/v1/auth/login/
-
-        # HTTP/1.1 204 No Content
-        # Server: nginx/1.18.0
-        # Date: Tue, 10 Aug 2021 07:33:37 GMT
-        # Content-Length: 0
-        # Connection: keep-alive
-        # Vary: Accept, Cookie
-        # Allow: GET, POST, HEAD, OPTIONS
-        # X-Frame-Options: SAMEORIGIN
-        # Set-Cookie: csrftoken=jvdb...kKHo; expires=Tue, 09 Aug 2022 07:33:37 GMT; Max-Age=31449600; Path=/; SameSite=Lax
-        # Strict-Transport-Security: max-age=15768000
-
-        url = self.build_ui_url("auth/login")
+        # Use basic auth
+        test_url = self.build_ui_url("me")
+        basic_str = base64.b64encode("{0}:{1}".format(self.username, self.password).encode("ascii"))
+        header = {"Authorization": "Basic {0}".format(basic_str.decode("ascii"))}
         try:
-            response = self.make_request_raw_reponse("GET", url)
-        except AHAPIModuleError as e:
-            self.fail_json(msg="Authentication error: {error}".format(error=e))
-        # Set-Cookie: csrftoken=jvdb...kKHo; expires=Tue, 09 Aug 2022 07:33:37 GMT
-        for h in response.getheaders():
-            if h[0].lower() == "set-cookie":
-                k, v = h[1].split("=", 1)
-                if k.lower() == "csrftoken":
-                    header = {"X-CSRFToken": v.split(";", 1)[0]}
-                    break
-        else:
-            header = {}
-
-        # curl -k -i -X POST  -H 'referer: https://hub.lab.example.com' -H "Accept: application/json" -H "Content-Type: application/json"
-        #      -H 'X-CSRFToken: jvdb...kKHo' --cookie 'csrftoken=jvdb...kKHo' -d '{"username":"admin","password":"redhat"}'
-        #      https://hub.lab.example.com/api/galaxy/_ui/v1/auth/login/
-
-        # HTTP/1.1 204 No Content
-        # Server: nginx/1.18.0
-        # Date: Tue, 10 Aug 2021 07:35:33 GMT
-        # Content-Length: 0
-        # Connection: keep-alive
-        # Vary: Accept, Cookie
-        # Allow: GET, POST, HEAD, OPTIONS
-        # X-Frame-Options: SAMEORIGIN
-        # Set-Cookie: csrftoken=6DVP...at9a; expires=Tue, 09 Aug 2022 07:35:33 GMT; Max-Age=31449600; Path=/; SameSite=Lax
-        # Set-Cookie: sessionid=87b0iw12wyvy0353rk5fwci0loy5s615; expires=Tue, 24 Aug 2021 07:35:33 GMT; HttpOnly; Max-Age=1209600; Path=/; SameSite=Lax
-        # Strict-Transport-Security: max-age=15768000
-
-        try:
-            try:
-                response = self.make_request_raw_reponse(
-                    "POST",
-                    url,
-                    data={"username": self.username, "password": self.password},
-                    headers=header,
-                )
-                for h in response.getheaders():
-                    if h[0].lower() == "set-cookie":
-                        k, v = h[1].split("=", 1)
-                        if k.lower() == "csrftoken":
-                            header = {"X-CSRFToken": v.split(";", 1)[0]}
-                            self.headers.update(header)
-                            break
-            except AHAPIModuleError:
-                test_url = self.build_ui_url("me")
-                basic_str = base64.b64encode("{0}:{1}".format(self.username, self.password).encode("ascii"))
-                header = {"Authorization": "Basic {0}".format(basic_str.decode("ascii"))}
-                response = self.make_request_raw_reponse("GET", test_url, headers=header)
-                self.headers.update(header)
+            self.make_request_raw_reponse("GET", test_url, headers=header)
+            self.headers.update(header)
         except AHAPIModuleError as e:
             self.fail_json(msg="Authentication error: {error}".format(error=e))
         self.authenticated = True
@@ -462,7 +406,10 @@ class AHAPIModule(AnsibleModule):
         if not self.authenticated:
             return
 
-        url = self.build_ui_url("auth/logout")
+        if self.ah_logout_path:
+            url = self._build_url("/api", self.ah_logout_path.split("/api/")[1])
+        else:
+            url = self.build_ui_url("auth/logout")
         try:
             self.make_request_raw_reponse("POST", url)
         except AHAPIModuleError:
@@ -482,6 +429,34 @@ class AHAPIModule(AnsibleModule):
     def exit_json(self, **kwargs):
         self.logout()
         super(AHAPIModule, self).exit_json(**kwargs)
+
+    def get_galaxy_path_prefix(self):
+        """Return the automation hub/galaxy path prefix
+
+        :return: '/api/{prefix}' unless behind resource_server wherein the api path prefix may differ.
+                 resource_server expected response structure:
+                {
+                    "description": "",
+                    "apis": {
+                        "galaxy": "/api/galaxy/"
+                    }
+                }
+        :rtype: String
+        """
+
+        url = self._build_url(prefix="api", endpoint=None, query_params=None)
+
+        try:
+            response = self.make_request("GET", url)
+            # No exception this is behind rescource_provider
+            try:
+                rs_prefix = response["json"]["apis"]["galaxy"]
+                return rs_prefix.strip("/")
+            except KeyError as e:
+                self.fail_json(msg="Error while getting Galaxy api path prefix: {error}".format(error=e))
+        except AHAPIModuleError:
+            # Indicates standalone galaxy
+            return "/api/{prefix}".format(prefix=self.path_prefix.strip("/"))
 
     def get_server_version(self):
         """Return the automation hub/galaxy server version.

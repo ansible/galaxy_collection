@@ -3,9 +3,9 @@ authors:
   - Sean Sullivan @sean-m-sullivan
   - Tom Page @Tompage1994
   - David Danielsson @djdanielsson
-dependencies: {}  # ansible.hub
+dependencies: {}
 description: Ansible content that interacts with the Ansible Automation Hub or Galaxy NG API.
-documentation: https://github.com/ansible/galaxy_collection/blob/devel/README.md
+documentation: https://github.com/redhat-cop/ah_configuration/blob/master/README.md
 license:
   - GPL-3.0-only
 namespace: infra
