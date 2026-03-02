@@ -144,4 +144,10 @@
   retries: 3
   delay: 2
   until: not approval is failed
+
+- name: Cleanup working directory
+  ansible.builtin.file:
+    path: "{{ ah_configuration_working_dir }}"
+    state: absent
+  when: ah_configuration_publish_cleanup | default(true)
 ...
