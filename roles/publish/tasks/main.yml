@@ -149,5 +149,5 @@
   ansible.builtin.file:
     path: "{{ ah_configuration_working_dir }}"
     state: absent
-  when: ah_configuration_publish_cleanup | default(true)
+  when: ah_configuration_publish_cleanup | default(false)
 ...
