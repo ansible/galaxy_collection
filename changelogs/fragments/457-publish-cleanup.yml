@@ -1,0 +1,4 @@
+---
+minor_changes:
+  - Added ah_configuration_publish_cleanup variable to the publish role to optionally remove the working directory after collection publish (default false).
+...
